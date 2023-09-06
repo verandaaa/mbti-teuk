@@ -76,7 +76,7 @@ export default function SignupPage() {
   };
 
   const handleSignUp = async () => {
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: user.email,
       password: user.password,
       options: {
@@ -86,7 +86,11 @@ export default function SignupPage() {
       },
     });
     if (error) {
-      setResult({ type: "error", message: error.message });
+      if (error.message === "User already registered") {
+        setResult({ type: "error", message: "이미 가입한 이메일 입니다." });
+      } else {
+        setResult({ type: "error", message: error.message });
+      }
       return;
     }
     router.push("/");

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ResultView from "@/components/ResultView";
 import { SignupUser } from "@/model/user";
 import { Result } from "@/model/result";
+import { supabase } from "@/lib/supabase/supabase-client";
 
 export default function SignupPage() {
   const [user, setUser] = useState<SignupUser>({
@@ -44,26 +45,11 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isVailidForm()) {
-      return;
-    }
+    // if (!isVailidForm()) {
+    //   return;
+    // }
 
-    const formData = new FormData();
-    formData.append("email", user.email);
-    formData.append("mbti", user.mbti);
-    formData.append("password", user.password);
-
-    const response = await fetch("http://localhost:3000/auth/signup", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-    if (data.type === "error") {
-      setResult({ type: data.type, message: "회원가입에 실패하였습니다." });
-      return;
-    }
-    router.replace("/");
+    handleSignUp();
   };
 
   const isVailidForm = () => {
@@ -89,6 +75,23 @@ export default function SignupPage() {
     return true;
   };
 
+  const handleSignUp = async () => {
+    const { data, error } = await supabase.auth.signUp({
+      email: user.email,
+      password: user.password,
+      options: {
+        data: {
+          mbti: user.mbti,
+        },
+      },
+    });
+    if (error) {
+      setResult({ type: "error", message: error.message });
+      return;
+    }
+    router.push("/");
+  };
+
   return (
     <div className="border border-black">
       <h1>회원가입</h1>
@@ -101,7 +104,7 @@ export default function SignupPage() {
           onChange={handleChange}
         />
         <select name="mbti" onChange={handleChange}>
-          <option value="select">mbti 선택</option>
+          <option value="default">mbti 선택</option>
           {mbtiList.map((mbti, index) => (
             <option key={index} value={mbti}>
               {mbti}

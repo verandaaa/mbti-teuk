@@ -1,8 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import ReactQueryContext from "@/context/ReactQueryContext";
+import { ReactQueryContextProvider } from "@/context/ReactQueryContext";
 import Navbar from "@/components/Navbar";
+import { AuthContextProvider } from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,14 +20,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <header className="border-b">
-          <div className="max-w-screen-xl mx-auto px-6 ">
-            <Navbar />
-          </div>
-        </header>
-        <main className="max-w-screen-lg mx-auto px-6 ">
-          <ReactQueryContext>{children}</ReactQueryContext>
-        </main>
+        <AuthContextProvider>
+          <header className="border-b">
+            <div className="max-w-screen-xl mx-auto px-6 ">
+              <Navbar />
+            </div>
+          </header>
+          <main className="max-w-screen-lg mx-auto px-6 ">
+            <ReactQueryContextProvider>{children}</ReactQueryContextProvider>
+          </main>
+        </AuthContextProvider>
       </body>
     </html>
   );

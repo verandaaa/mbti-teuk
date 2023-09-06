@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useAuthContext } from "@/context/AuthContext";
 
 const menu = [
   {
@@ -16,7 +17,9 @@ const menu = [
     title: "소개",
   },
 ];
+
 export default function Navbar() {
+  const { user } = useAuthContext();
   return (
     <div className="flex justify-between py-4">
       <Link href="/" aria-label="홈">
@@ -31,9 +34,16 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
-      <Link href="/signin" aria-label="로그인">
-        로그인
-      </Link>
+      {user ? (
+        <div>
+          <span>{user.mbti}</span>
+          <span>로그아웃</span>
+        </div>
+      ) : (
+        <Link href="/signin" aria-label="로그인">
+          로그인
+        </Link>
+      )}
     </div>
   );
 }

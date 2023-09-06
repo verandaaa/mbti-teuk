@@ -18,11 +18,11 @@ const menu = [
 ];
 export default function Navbar() {
   return (
-    <div>
+    <div className="flex justify-between py-4">
       <Link href="/" aria-label="홈">
         <h1>MBTI특</h1>
       </Link>
-      <ul>
+      <ul className="flex gap-20">
         {menu.map(({ href, title }) => (
           <li key={href}>
             <Link href={href} aria-label={title}>

@@ -17,12 +17,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <header>
-          <Navbar />
+    <html lang="en" className={inter.className}>
+      <body>
+        <header className="border-b">
+          <div className="max-w-screen-xl mx-auto px-6 ">
+            <Navbar />
+          </div>
         </header>
-        <main>
+        <main className="max-w-screen-lg mx-auto px-6 ">
           <ReactQueryContext>{children}</ReactQueryContext>
         </main>
       </body>

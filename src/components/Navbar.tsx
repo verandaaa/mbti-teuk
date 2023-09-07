@@ -1,7 +1,6 @@
-"use client";
-
 import Link from "next/link";
-import { useAuthContext } from "@/context/AuthContext";
+import Signout from "@/components/Signout";
+import useUserServer from "@/hooks/useUserServer";
 
 const menu = [
   {
@@ -18,8 +17,10 @@ const menu = [
   },
 ];
 
-export default function Navbar() {
-  const { user } = useAuthContext();
+export default async function Navbar() {
+  const { getUser } = useUserServer();
+  const user = await getUser();
+
   return (
     <div className="flex justify-between py-4">
       <Link href="/" aria-label="홈">
@@ -37,7 +38,7 @@ export default function Navbar() {
       {user ? (
         <div>
           <span>{user.mbti}</span>
-          <span>로그아웃</span>
+          <Signout />
         </div>
       ) : (
         <Link href="/signin" aria-label="로그인">

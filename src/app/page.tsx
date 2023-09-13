@@ -13,8 +13,7 @@ export default function HomePage() {
       const text = data.text;
       return text;
     },
-    // staleTime: 5 * 60 * 1000,
-    staleTime: 10 * 1000,
+    staleTime: 5 * 60 * 1000,
   });
 
   return <main>{data}</main>;

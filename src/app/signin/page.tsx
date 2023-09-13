@@ -64,6 +64,8 @@ export default function SigninPage() {
       }
       return;
     }
+    router.push("/");
+    router.refresh();
   };
 
   const formClassName = "border border-black rounded p-2";

@@ -1,24 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import ResultView from "@/components/ResultView";
 import { SigninUser } from "@/model/user";
-import { Result } from "@/model/result";
-import { supabase } from "@/lib/supabase/supabase-client";
 import Link from "next/link";
+import userUserClient from "@/hooks/useUserClient";
 
 export default function SigninPage() {
   const [user, setUser] = useState<SigninUser>({
     email: "",
     password: "",
   });
-  const [result, setResult] = useState<Result>();
-  const router = useRouter();
+  const { handleSignIn, isVailidForm, result } = userUserClient();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
   };
@@ -26,46 +21,11 @@ export default function SigninPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isVailidForm()) {
+    if (!isVailidForm(user)) {
       return;
     }
 
-    handleSignIn();
-  };
-
-  const isVailidForm = () => {
-    if (!user.email.match(/^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
-      setResult({ type: "error", message: "올바른 이메일 형식을 입력하세요." });
-      return false;
-    }
-    if (user.password.length < 6) {
-      setResult({
-        type: "error",
-        message: "비밀번호는 최소 6글자 이상입니다.",
-      });
-      return false;
-    }
-    return true;
-  };
-
-  const handleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: user.email,
-      password: user.password,
-    });
-    if (error) {
-      if (error.message === "Invalid login credentials") {
-        setResult({
-          type: "error",
-          message: "이메일 혹은 비밀번호를 확인해주세요.",
-        });
-      } else {
-        setResult({ type: "error", message: error.message });
-      }
-      return;
-    }
-    router.push("/");
-    router.refresh();
+    handleSignIn(user);
   };
 
   const formClassName = "border border-black rounded p-2";

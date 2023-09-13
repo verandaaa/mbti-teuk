@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import ResultView from "@/components/ResultView";
 import { SignupUser } from "@/model/user";
-import { Result } from "@/model/result";
-import { supabase } from "@/lib/supabase/supabase-client";
+import userUserClient from "@/hooks/useUserClient";
 
 export default function SignupPage() {
   const [user, setUser] = useState<SignupUser>({
@@ -14,26 +12,8 @@ export default function SignupPage() {
     password: "",
     passwordCheck: "",
   });
-  const [result, setResult] = useState<Result>();
-  const router = useRouter();
-  const mbtiList = [
-    "ISTJ",
-    "ISFJ",
-    "INFJ",
-    "INTJ",
-    "ISTP",
-    "ISFP",
-    "INFP",
-    "INTP",
-    "ESTP",
-    "ESFP",
-    "ENFP",
-    "ENTP",
-    "ESTJ",
-    "ESFJ",
-    "ENFJ",
-    "ENTJ",
-  ];
+  const { handleSignUp, isVailidForm, result } = userUserClient();
+  const mbtiList: string[] = require("/public/data/mbti_list.json");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -45,56 +25,11 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isVailidForm()) {
+    if (!isVailidForm(user)) {
       return;
     }
 
-    handleSignUp();
-  };
-
-  const isVailidForm = () => {
-    if (!user.email.match(/^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
-      setResult({ type: "error", message: "올바른 이메일 형식을 입력하세요." });
-      return false;
-    }
-    if (!mbtiList.includes(user.mbti)) {
-      setResult({ type: "error", message: "MBTI를 선택해주세요." });
-      return false;
-    }
-    if (user.password.length < 6) {
-      setResult({
-        type: "error",
-        message: "비밀번호는 최소 6글자 이상입니다.",
-      });
-      return false;
-    }
-    if (user.password !== user.passwordCheck) {
-      setResult({ type: "error", message: "비밀번호가 일치하지 않습니다." });
-      return false;
-    }
-    return true;
-  };
-
-  const handleSignUp = async () => {
-    const { error } = await supabase.auth.signUp({
-      email: user.email,
-      password: user.password,
-      options: {
-        data: {
-          mbti: user.mbti,
-        },
-      },
-    });
-    if (error) {
-      if (error.message === "User already registered") {
-        setResult({ type: "error", message: "이미 가입한 이메일 입니다." });
-      } else {
-        setResult({ type: "error", message: error.message });
-      }
-      return;
-    }
-    router.push("/");
-    router.refresh();
+    handleSignUp(user);
   };
 
   const formClassName = "border border-black rounded p-2";

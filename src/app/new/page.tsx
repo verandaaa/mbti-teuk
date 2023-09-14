@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ResultView from "@/components/ResultView";
 import { CreatePost } from "@/model/post";
-import userUserClient from "@/hooks/useUserClient";
+import usePostClient from "@/hooks/usePostClient";
 
 export default function NewPage() {
   const [post, setPost] = useState<CreatePost>({
@@ -16,8 +16,8 @@ export default function NewPage() {
       { text: "", image: undefined },
     ],
   });
-  const { handleSignUp, isVailidForm, result } = userUserClient();
-  const mbtiList: string[] = require("/public/data/genre_list.json");
+  const { createPost, isVailidForm, result } = usePostClient();
+  const genreList: string[] = require("/public/data/genre_list.json");
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -59,11 +59,11 @@ export default function NewPage() {
 
     console.log(post);
 
-    // if (!isVailidForm(user)) {
-    //   return;
-    // }
+    if (!isVailidForm(post)) {
+      return;
+    }
 
-    // handleSignUp(user);
+    createPost(post);
   };
 
   const formClassName = "border border-black rounded p-2";
@@ -75,7 +75,7 @@ export default function NewPage() {
     >
       <select name="category" onChange={handleChange} className={formClassName}>
         <option value="default">카테고리 선택</option>
-        {mbtiList.map((mbti, index) => (
+        {genreList.map((mbti, index) => (
           <option key={index} value={mbti}>
             {mbti}
           </option>

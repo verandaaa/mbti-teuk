@@ -40,9 +40,16 @@ export default function usePostClient() {
     //쓴 글로 이동
   };
 
+  const deletePost = async (id: String) => {
+    const { error } = await supabase.from("posts").delete().eq("id", id);
+    console.log(error);
+
+    //error처리, storage 처리
+  };
+
   const isVailidForm = (post: CreatePost) => {
     return true;
   };
 
-  return { createPost, isVailidForm, result };
+  return { createPost, deletePost, isVailidForm, result };
 }

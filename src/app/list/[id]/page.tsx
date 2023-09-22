@@ -1,14 +1,17 @@
 import usePostServer from "@/hooks/usePostServer";
+import PostDeleteButton from "@/components/PostDeleteButton";
 
 export default async function DetailPage() {
+  const id = "3066a4b4-8908-4953-a078-d7bb950206cf";
+
   const { getPost } = usePostServer();
-  const data = await getPost("6f196d52-162b-4b0b-8a42-0e7b7a67ad99");
+  const data = await getPost(id);
 
   return (
     <>
       <div>{data.title}</div>
       <div>{data.description}</div>
-      {data.author && <button>삭제</button>}
+      {data.author && <PostDeleteButton id={id} />}
     </>
   );
 }

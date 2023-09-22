@@ -25,5 +25,8 @@ after insert on public.posts
 for each row
 execute function public.create_post_user_relationship();
 
--- delete policy 앞으로 설정 할 것...
--- findUser(post_id) == auth.uid()
+-- post-user 테이블에서 자신이 쓴 글만 조회 하는 정책
+create policy "User can read info of their own post"
+on between_post_and_user for select
+to authenticated 
+using (auth.uid() = user_id);

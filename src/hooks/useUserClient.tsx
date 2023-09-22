@@ -53,7 +53,10 @@ export default function userUserClient() {
   };
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      return;
+    }
     router.refresh();
   };
 

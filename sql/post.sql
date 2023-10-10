@@ -1,10 +1,40 @@
--- create post-user table 
-create table public.between_post_and_user(
-    post_id uuid not null references public.posts on delete cascade,
-    user_id uuid not null references auth.users on delete cascade,
+-- post 테이블 생성
+create table public.posts (
+    id uuid not null,
+    title character varying null,
+    description text null,
+    constraint posts_pkey primary key (id)
+  ) tablespace pg_default;
+alter table public.between_post_and_user enable row level security;
 
-    primary key(post_id)
-);
+-- post 테이블 정책 1
+create policy "Give insert access to authenticated users"
+on public.posts 
+for insert
+to authenticated 
+with check (true);
+-- post 테이블 정책 2
+create policy "Give select access to all users"
+on public.posts 
+for select
+to public 
+using (true);
+-- post 테이블 정책 3
+create policy "User can delete info of their own post"
+on public.posts 
+for delete
+to authenticated 
+using (auth.uid() = get_user_id_by_post_id(id));
+
+
+-- post-user 테이블 생성
+create table public.between_post_and_user (
+    post_id uuid not null,
+    user_id uuid not null,
+    constraint between_post_and_user_pkey primary key (post_id),
+    constraint between_post_and_user_post_id_fkey foreign key (post_id) references posts (id) on delete cascade,
+    constraint between_post_and_user_user_id_fkey foreign key (user_id) references auth.users (id) on delete cascade
+  ) tablespace pg_default;
 alter table public.between_post_and_user enable row level security;
 
 -- post-user 테이블에 insert

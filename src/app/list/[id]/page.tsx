@@ -1,17 +1,22 @@
 import usePostServer from "@/hooks/usePostServer";
 import PostDeleteButton from "@/components/PostDeleteButton";
 
-export default async function DetailPage() {
-  const id = "3066a4b4-8908-4953-a078-d7bb950206cf";
+type Props = { params: { id: string } };
 
+export default async function DetailPage({ params: { id } }: Props) {
   const { getPost } = usePostServer();
   const data = await getPost(id);
 
   return (
     <>
-      <div>{data.title}</div>
-      <div>{data.description}</div>
-      {data.author && <PostDeleteButton id={id} />}
+      {data && (
+        <>
+          <div>{data.title}</div>
+          <div>{data.description}</div>
+          {data.author && <PostDeleteButton id={id} />}
+        </>
+      )}
+      {!data && <div>존재하지 않은 게시글입니다.</div>}
     </>
   );
 }

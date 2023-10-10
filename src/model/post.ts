@@ -1,7 +1,10 @@
-export type getPost = {
+export type getPost = Omit<getDetailPost, "author">;
+
+export type getDetailPost = {
   id: string;
   title: string;
   description: string;
+  author: string;
 };
 
 export type CreatePost = {

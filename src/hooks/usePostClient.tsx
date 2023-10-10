@@ -2,13 +2,19 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { Result } from "@/model/result";
 import { useState } from "react";
-import { CreatePost } from "@/model/post";
+import { getPost, CreatePost } from "@/model/post";
 import { v4 as uuidv4 } from "uuid";
 
 export default function usePostClient() {
   const supabase = createClientComponentClient();
   const router = useRouter();
   const [result, setResult] = useState<Result>();
+
+  const getPostList = async (): Promise<getPost[] | null> => {
+    const { data, error } = await supabase.from("posts").select();
+
+    return data;
+  };
 
   const createPost = async (post: CreatePost) => {
     const uuid = uuidv4();
@@ -51,5 +57,5 @@ export default function usePostClient() {
     return true;
   };
 
-  return { createPost, deletePost, isVailidForm, result };
+  return { getPostList, createPost, deletePost, isVailidForm, result };
 }

@@ -1,3 +1,32 @@
+"use client";
+
+import usePostClient from "@/hooks/usePostClient";
+import { useEffect, useState } from "react";
+import { getPost } from "@/model/post";
+
 export default function ListPage() {
-  return <></>;
+  const { getPostList } = usePostClient();
+  const [posts, setPosts] = useState<getPost[]>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getPostList();
+      if (data) {
+        setPosts(data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <>
+      {posts?.map((post, index) => (
+        <div className="flex" key={index}>
+          <div>{post.id}</div>
+          <div>{post.title}</div>
+          <div>{post.description}</div>
+        </div>
+      ))}
+    </>
+  );
 }

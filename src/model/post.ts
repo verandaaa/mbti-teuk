@@ -1,3 +1,9 @@
+export type getPost = {
+  id: string;
+  title: string;
+  description: string;
+};
+
 export type CreatePost = {
   category: string;
   title: string;

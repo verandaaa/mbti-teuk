@@ -10,7 +10,6 @@ export default function NewPage() {
     category: "",
     title: "",
     description: "",
-    mainImage: undefined,
     options: [
       { text: "", image: undefined },
       { text: "", image: undefined },
@@ -20,18 +19,14 @@ export default function NewPage() {
   const genreList: string[] = require("/public/data/genre_list.json");
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     index?: number
   ) => {
     const { name, value } = e.target;
     if (name === "optionText") {
       setPost((post) => ({
         ...post,
-        options: post.options.map((option, i) =>
-          i === index ? { text: value, image: option.image } : option
-        ),
+        options: post.options.map((option, i) => (i === index ? { text: value, image: option.image } : option)),
       }));
     } //
     else {
@@ -39,17 +34,12 @@ export default function NewPage() {
     }
   };
 
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const files = e.target?.files;
     if (files && files[0]) {
       setPost((post) => ({
         ...post,
-        options: post.options.map((option, i) =>
-          i === index ? { text: option.text, image: files[0] } : option
-        ),
+        options: post.options.map((option, i) => (i === index ? { text: option.text, image: files[0] } : option)),
       }));
     }
   };
@@ -69,10 +59,7 @@ export default function NewPage() {
   const formClassName = "border border-black rounded p-2";
 
   return (
-    <form
-      className="max-w-4xl mx-auto flex flex-col gap-6 my-16"
-      onSubmit={handleSubmit}
-    >
+    <form className="max-w-4xl mx-auto flex flex-col gap-6 my-16" onSubmit={handleSubmit}>
       <select name="category" onChange={handleChange} className={formClassName}>
         <option value="default">카테고리 선택</option>
         {genreList.map((mbti, index) => (
@@ -107,16 +94,10 @@ export default function NewPage() {
             onChange={(e) => handleChange(e, index)}
             className={formClassName}
           />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, index)}
-          />
+          <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, index)} />
         </div>
       ))}
-      <button className={formClassName + ` bg-button text-white`}>
-        작성완료
-      </button>
+      <button className={formClassName + ` bg-button text-white`}>작성완료</button>
       <ResultView result={result} />
     </form>
   );

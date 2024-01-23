@@ -19,15 +19,18 @@ export default function useUserServer() {
 
     let post = data[0];
 
+    //임시
+    post = { ...post, options: [{ text: "옵션1" }, { text: "옵션2" }] };
+
     if (session) {
-      const { data: info } = await supabase
-        .from("between_post_and_user")
-        .select()
-        .eq("post_id", post_id);
+      const { data: info } = await supabase.from("between_post_and_user").select().eq("post_id", post_id);
       if (info && info.length) {
         post = { ...post, author: info[0].user_id };
       }
     }
+
+    console.log(post);
+
     return post;
   };
 

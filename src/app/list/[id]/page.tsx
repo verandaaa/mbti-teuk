@@ -14,6 +14,14 @@ export default async function DetailPage({ params: { id } }: Props) {
           <div>{data.title}</div>
           <div>{data.description}</div>
           {data.author && <PostDeleteButton id={id} />}
+          {data.options.map((option, index) => {
+            return (
+              <div>
+                <div>{option.text}</div>
+                <img src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/images/${id}/image${index}.jpg`}></img>
+              </div>
+            );
+          })}
         </>
       )}
       {!data && <div>존재하지 않은 게시글입니다.</div>}

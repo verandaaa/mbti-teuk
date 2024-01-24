@@ -23,12 +23,10 @@ export default function usePostClient() {
       if (!image) {
         continue;
       }
-      const { data, error } = await supabase.storage
-        .from("images")
-        .upload(`${uuid}/image${i}.jpg`, image, {
-          cacheControl: "3600",
-          upsert: false,
-        });
+      const { data, error } = await supabase.storage.from("images").upload(`${uuid}/image${i}.jpg`, image, {
+        cacheControl: "3600",
+        upsert: false,
+      });
       //error 발생시
       //setResult
       //등록한 이미지 삭제
@@ -37,7 +35,13 @@ export default function usePostClient() {
     //db에 보내기
     const { error } = await supabase
       .from("posts")
-      .insert({ id: uuid, title: post.title, description: post.description });
+      .insert({
+        id: uuid,
+        title: post.title,
+        description: post.description,
+        category: post.category,
+        options: post.options.map((option) => option.text),
+      });
     //error 발생시
     //setResult
     //등록한 이미지 삭제
@@ -54,6 +58,8 @@ export default function usePostClient() {
   };
 
   const isVailidForm = (post: CreatePost) => {
+    //추가
+
     return true;
   };
 

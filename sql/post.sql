@@ -1,11 +1,40 @@
 -- post 테이블 생성
 create table public.posts (
     id uuid not null,
-    title character varying null,
+    title text not null,
     description text null,
-    constraint posts_pkey primary key (id)
+    category integer not null,
+    options text[] not null,
+    constraint posts_pkey primary key (id),
+    constraint posts_options_check check (
+      (
+        (array_length(options, 1) >= 2)
+        and (array_length(options, 1) <= 15)
+      )
+    ),
+    constraint posts_title_check check (
+      (
+        (length(title) >= 1)
+        and (length(title) <= 50)
+      )
+    ),
+    constraint posts_options_element_check check (validate_options_element(options))
   ) tablespace pg_default;
 alter table public.between_post_and_user enable row level security;
+
+create or replace function public.validate_options_element(options text[])
+returns boolean
+language plpgsql
+as $$
+begin
+    return not exists (
+      select 1
+      from unnest(options) as element
+      where length(element) < 1 or length(element) > 20
+    );
+end;
+$$;
+
 
 -- post 테이블 정책 1
 create policy "Give insert access to authenticated users"

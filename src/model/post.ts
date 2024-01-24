@@ -1,9 +1,11 @@
-export type getPost = Omit<getDetailPost, "author">;
-
-export type getDetailPost = {
+export type getPost = {
+  category: string;
   id: string;
   title: string;
   description: string;
+};
+
+export type getDetailPost = getPost & {
   author?: string;
   options: Option[];
 };

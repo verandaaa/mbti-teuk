@@ -14,11 +14,15 @@ export default async function DetailPage({ params: { id } }: Props) {
           <div>{data.title}</div>
           <div>{data.description}</div>
           {data.author && <PostDeleteButton id={id} />}
+          <div>{data.category}</div>
           {data.options.map((option, index) => {
             return (
               <div>
                 <div>{option.text}</div>
-                <img src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/images/${id}/image${index}.jpg`}></img>
+                <img
+                  src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/images/${id}/image${index}.jpg`}
+                  alt="option-image"
+                />
               </div>
             );
           })}

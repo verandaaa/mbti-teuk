@@ -21,3 +21,8 @@ type Option = {
   text: string;
   image?: File;
 };
+
+export type getCategory = {
+  id: number;
+  name: string;
+};

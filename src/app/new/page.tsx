@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ResultView from "@/components/ResultView";
 import { CreatePost } from "@/model/post";
 import usePostClient from "@/hooks/usePostClient";
+import { getCategory } from "@/model/post";
 
 export default function NewPage() {
   const [post, setPost] = useState<CreatePost>({
@@ -15,8 +16,18 @@ export default function NewPage() {
       { text: "", image: undefined },
     ],
   });
-  const { createPost, isVailidForm, result } = usePostClient();
-  const genreList: string[] = require("/public/data/genre_list.json");
+  const { createPost, getCategoryList, isVailidForm, result } = usePostClient();
+  const [categories, setCategories] = useState<getCategory[]>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getCategoryList();
+      if (data) {
+        setCategories(data);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -62,9 +73,9 @@ export default function NewPage() {
     <form className="max-w-4xl mx-auto flex flex-col gap-6 my-16" onSubmit={handleSubmit}>
       <select name="category" onChange={handleChange} className={formClassName}>
         <option value="default">카테고리 선택</option>
-        {genreList.map((mbti, index) => (
-          <option key={index} value={mbti}>
-            {mbti}
+        {categories?.map(({ id, name }) => (
+          <option key={id} value={name}>
+            {name}
           </option>
         ))}
       </select>

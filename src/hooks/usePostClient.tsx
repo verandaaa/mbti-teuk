@@ -2,16 +2,21 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { Result } from "@/model/result";
 import { useState } from "react";
-import { getPost, CreatePost } from "@/model/post";
+import { getPost, CreatePost, getCategory } from "@/model/post";
 import { v4 as uuidv4 } from "uuid";
 
 export default function usePostClient() {
   const supabase = createClientComponentClient();
-  const router = useRouter();
   const [result, setResult] = useState<Result>();
 
   const getPostList = async (): Promise<getPost[] | null> => {
     const { data, error } = await supabase.from("posts").select();
+
+    return data;
+  };
+
+  const getCategoryList = async (): Promise<getCategory[] | null> => {
+    const { data, error } = await supabase.from("categories").select();
 
     return data;
   };
@@ -33,15 +38,13 @@ export default function usePostClient() {
       //return 시켜버림
     }
     //db에 보내기
-    const { error } = await supabase
-      .from("posts")
-      .insert({
-        id: uuid,
-        title: post.title,
-        description: post.description,
-        category: post.category,
-        options: post.options.map((option) => option.text),
-      });
+    const { error } = await supabase.from("posts").insert({
+      id: uuid,
+      title: post.title,
+      description: post.description,
+      category: post.category,
+      options: post.options.map((option) => option.text),
+    });
     //error 발생시
     //setResult
     //등록한 이미지 삭제
@@ -63,5 +66,5 @@ export default function usePostClient() {
     return true;
   };
 
-  return { getPostList, createPost, deletePost, isVailidForm, result };
+  return { getPostList, createPost, deletePost, getCategoryList, isVailidForm, result };
 }

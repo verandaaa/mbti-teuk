@@ -2,17 +2,11 @@ create table public.posts (
     id uuid not null,
     title text not null,
     description text null,
-    options text[] not null,
+    options jsonb[] not null,
     category text not null,
     constraint posts_pkey primary key (id),
     constraint posts_category_fkey foreign key (category) references categories (name) on update restrict on delete restrict,
-    constraint posts_options_check check (
-      (
-        (array_length(options, 1) >= 2)
-        and (array_length(options, 1) <= 15)
-      )
-    ),
-    constraint posts_options_element_check check (validate_options_element (options)),
+    constraint posts_options_check check (validate_options (options)),
     constraint posts_title_check check (
       (
         (length(title) >= 1)
@@ -22,16 +16,30 @@ create table public.posts (
   ) tablespace pg_default;
 alter table public.posts enable row level security;
 
-create or replace function public.validate_options_element(options text[])
+create or replace function public.validate_options(options jsonb[])
 returns boolean
 language plpgsql
 as $$
 begin
-    return not exists (
+
+    if array_length(options, 1) < 2 or array_length(options, 1) > 15 then
+      raise exception 'Options array length must be between 2 and 15';
+    end if;
+
+    if exists (
       select 1
       from unnest(options) as element
-      where length(element) < 1 or length(element) > 20
-    );
+      where element is null
+      or not element ? 'text' 
+      or (element ->> 'text') is null
+      or length(element ->> 'text') < 1 or length(element ->> 'text') > 20
+      or (select count(*) from jsonb_object_keys(element)) > 1
+    ) then
+      raise exception 'Options element has something wrong';
+    end if;
+
+    return true;
+
 end;
 $$;
 

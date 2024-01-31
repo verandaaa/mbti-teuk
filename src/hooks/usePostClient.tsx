@@ -43,7 +43,7 @@ export default function usePostClient() {
       title: post.title,
       description: post.description,
       category: post.category,
-      options: post.options.map((option) => option.text),
+      options: post.options.map((option) => ({ text: option.text })),
     });
     //error 발생시
     //setResult

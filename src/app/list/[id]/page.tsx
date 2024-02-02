@@ -13,7 +13,7 @@ export default async function DetailPage({ params: { id } }: Props) {
         <>
           <div>{data.title}</div>
           <div>{data.description}</div>
-          {data.author && <PostDeleteButton id={id} />}
+          {data.userId && <PostDeleteButton id={id} />}
           <div>{data.category}</div>
           {data.options.map((option, index) => {
             return (

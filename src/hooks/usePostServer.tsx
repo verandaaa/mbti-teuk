@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { getDetailPost } from "@/model/post";
+import camelcaseKeys from "camelcase-keys";
 
 export default function useUserServer() {
   const supabase = createServerComponentClient({ cookies });
@@ -9,24 +10,10 @@ export default function useUserServer() {
     const { data } = await supabase.from("posts").select().eq("id", post_id);
 
     if (data === null) {
-      return data;
+      return null;
     }
 
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession();
-
-    let post = data[0];
-
-    if (session) {
-      const { data: info } = await supabase.from("between_post_and_user").select().eq("post_id", post_id);
-      if (info && info.length) {
-        post = { ...post, author: info[0].user_id };
-      }
-    }
-
-    console.log(post);
+    const post = camelcaseKeys(data[0], { deep: true });
 
     return post;
   };

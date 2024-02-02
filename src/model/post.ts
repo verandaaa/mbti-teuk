@@ -6,7 +6,7 @@ export type getPost = {
 };
 
 export type getDetailPost = getPost & {
-  author?: string;
+  userId: string;
   options: Option[];
 };
 

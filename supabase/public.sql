@@ -125,7 +125,8 @@ CREATE TABLE IF NOT EXISTS "public"."options" (
     "id" bigint NOT NULL,
     "value" "text" NOT NULL,
     "postId" "uuid" NOT NULL,
-    "imageId" "uuid"
+    "imageId" "uuid",
+    "userId" "uuid" NOT NULL
 );
 
 ALTER TABLE "public"."options" OWNER TO "postgres";
@@ -210,6 +211,9 @@ ALTER TABLE ONLY "public"."comments"
 ALTER TABLE ONLY "public"."options"
     ADD CONSTRAINT "public_options_postId_fkey" FOREIGN KEY ("postId") REFERENCES "public"."posts"("id") ON UPDATE RESTRICT ON DELETE CASCADE;
 
+ALTER TABLE ONLY "public"."options"
+    ADD CONSTRAINT "public_options_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 ALTER TABLE ONLY "public"."participates"
     ADD CONSTRAINT "public_participates_optionId_fkey" FOREIGN KEY ("optionId") REFERENCES "public"."options"("id") ON UPDATE RESTRICT ON DELETE CASCADE;
 
@@ -222,11 +226,37 @@ ALTER TABLE ONLY "public"."posts"
 ALTER TABLE ONLY "public"."posts"
     ADD CONSTRAINT "public_posts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+CREATE POLICY "Enable delete for users based on userId" ON "public"."comments" FOR DELETE TO "authenticated" USING (("auth"."uid"() = "userId"));
+
+CREATE POLICY "Enable delete for users based on userId" ON "public"."options" FOR DELETE TO "authenticated" USING (("auth"."uid"() = "userId"));
+
+CREATE POLICY "Enable delete for users based on userId" ON "public"."posts" FOR DELETE TO "authenticated" USING (("auth"."uid"() = "userId"));
+
+CREATE POLICY "Enable insert for authenticated users only" ON "public"."comments" FOR INSERT TO "authenticated" WITH CHECK (true);
+
+CREATE POLICY "Enable insert for authenticated users only" ON "public"."options" FOR INSERT TO "authenticated" WITH CHECK (true);
+
+CREATE POLICY "Enable insert for authenticated users only" ON "public"."participates" FOR INSERT TO "authenticated" WITH CHECK (true);
+
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."posts" FOR INSERT TO "authenticated" WITH CHECK (true);
 
-CREATE POLICY "Enable select for users based on id" ON "public"."users" FOR SELECT USING (("auth"."uid"() = "id"));
+CREATE POLICY "Enable read access for all users" ON "public"."categories" FOR SELECT USING (true);
 
-CREATE POLICY "Give select access to all users" ON "public"."categories" FOR SELECT USING (true);
+CREATE POLICY "Enable read access for all users" ON "public"."comments" FOR SELECT USING (true);
+
+CREATE POLICY "Enable read access for all users" ON "public"."options" FOR SELECT USING (true);
+
+CREATE POLICY "Enable read access for all users" ON "public"."participates" FOR SELECT USING (true);
+
+CREATE POLICY "Enable read access for all users" ON "public"."posts" FOR SELECT USING (true);
+
+CREATE POLICY "Enable select for users based on id" ON "public"."users" FOR SELECT TO "authenticated" USING (("auth"."uid"() = "id"));
+
+CREATE POLICY "Enable update for users based on userId" ON "public"."comments" FOR UPDATE TO "authenticated" USING (("auth"."uid"() = "userId")) WITH CHECK (("auth"."uid"() = "userId"));
+
+CREATE POLICY "Enable update for users based on userId" ON "public"."options" FOR UPDATE TO "authenticated" USING (("auth"."uid"() = "userId")) WITH CHECK (("auth"."uid"() = "userId"));
+
+CREATE POLICY "Enable update for users based on userId" ON "public"."posts" FOR UPDATE TO "authenticated" USING (("auth"."uid"() = "userId")) WITH CHECK (("auth"."uid"() = "userId"));
 
 ALTER TABLE "public"."categories" ENABLE ROW LEVEL SECURITY;
 

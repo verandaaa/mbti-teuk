@@ -9,15 +9,14 @@ export default function SignupPage() {
   const [user, setUser] = useState<SignupUser>({
     email: "",
     mbti: "",
+    nickname: "랜덤닉네임",
     password: "",
     passwordCheck: "",
   });
   const { handleSignUp, isVailidForm, result } = userUserClient();
   const mbtiList: string[] = require("/public/data/mbti_list.json");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
   };
@@ -55,6 +54,14 @@ export default function SignupPage() {
           ))}
         </select>
         <input
+          type="nickname"
+          name="nickname"
+          value={user.nickname}
+          onChange={handleChange}
+          className={formClassName}
+          readOnly
+        />
+        <input
           type="password"
           name="password"
           value={user.password}
@@ -70,9 +77,7 @@ export default function SignupPage() {
           onChange={handleChange}
           className={formClassName}
         />
-        <button className={formClassName + ` bg-button text-white`}>
-          회원가입
-        </button>
+        <button className={formClassName + ` bg-button text-white`}>회원가입</button>
         <ResultView result={result} />
       </form>
     </div>

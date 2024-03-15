@@ -12,7 +12,7 @@ export default async function DetailPage({ params: { id } }: Props) {
       {data && (
         <div className="border border-black rounded p-6">
           <div>
-            <span>&gt; {data.category}</span>
+            <span>&gt; {data.categoryName}</span>
             <h1>{data.title}</h1>
             {<PostDeleteButton id={id} />}
           </div>
@@ -24,11 +24,11 @@ export default async function DetailPage({ params: { id } }: Props) {
                 return (
                   <div className="flex border border-gray-400 rounded my-2 h-32">
                     <img
-                      src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/images/${id}/image${index}.jpg`}
+                      src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/images/${id}/${option.imageId}.jpg`}
                       alt="option-image"
                       className="aspect-square object-cover"
                     />
-                    <div className="flex items-center mx-4">{option.text}</div>
+                    <div className="flex items-center mx-4">{option.value}</div>
                   </div>
                 );
               })}

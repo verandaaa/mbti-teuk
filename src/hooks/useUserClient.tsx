@@ -17,6 +17,7 @@ export default function userUserClient() {
       options: {
         data: {
           mbti: user.mbti,
+          nickname: user.nickname,
         },
       },
     });

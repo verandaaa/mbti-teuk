@@ -8,12 +8,12 @@ import { getCategory } from "@/model/post";
 
 export default function NewPage() {
   const [post, setPost] = useState<CreatePost>({
-    category: "",
+    categoryId: 0,
     title: "",
     description: "",
     options: [
-      { text: "", image: undefined },
-      { text: "", image: undefined },
+      { value: "", image: undefined },
+      { value: "", image: undefined },
     ],
   });
   const { createPost, getCategoryList, isVailidForm, result } = usePostClient();
@@ -34,15 +34,17 @@ export default function NewPage() {
     index?: number
   ) => {
     const { name, value } = e.target;
-    if (name === "optionText") {
+    if (name === "optionValue") {
       setPost((post) => ({
         ...post,
-        options: post.options.map((option, i) => (i === index ? { text: value, image: option.image } : option)),
+        options: post.options.map((option, i) => (i === index ? { value: value, image: option.image } : option)),
       }));
     } //
     else {
       setPost((post) => ({ ...post, [name]: value }));
     }
+
+    console.log(post);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -50,15 +52,13 @@ export default function NewPage() {
     if (files && files[0]) {
       setPost((post) => ({
         ...post,
-        options: post.options.map((option, i) => (i === index ? { text: option.text, image: files[0] } : option)),
+        options: post.options.map((option, i) => (i === index ? { value: option.value, image: files[0] } : option)),
       }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(post);
 
     if (!isVailidForm(post)) {
       return;
@@ -71,10 +71,10 @@ export default function NewPage() {
 
   return (
     <form className="max-w-4xl mx-auto flex flex-col gap-6" onSubmit={handleSubmit}>
-      <select name="category" onChange={handleChange} className={formClassName}>
+      <select name="categoryId" onChange={handleChange} className={formClassName}>
         <option value="default">카테고리 선택</option>
         {categories?.map(({ id, name }) => (
-          <option key={id} value={name}>
+          <option key={id} value={id}>
             {name}
           </option>
         ))}
@@ -99,8 +99,8 @@ export default function NewPage() {
         <div key={index}>
           <input
             type="text"
-            name="optionText"
-            value={option.text}
+            name="optionValue"
+            value={option.value}
             placeholder={"보기 " + (index + 1)}
             onChange={(e) => handleChange(e, index)}
             className={formClassName}

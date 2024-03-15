@@ -22,47 +22,38 @@ export default function usePostClient() {
   };
 
   const createPost = async (post: CreatePost) => {
-    const uuid = uuidv4();
+    const postId = uuidv4();
+
+    const {} = await supabase.from("posts").insert({
+      id: postId,
+      title: post.title,
+      description: post.description,
+      categoryId: post.categoryId,
+    });
+
     for (let i = 0; i < post.options.length; i++) {
+      const optionId = uuidv4();
+
+      const {} = await supabase
+        .from("options")
+        .insert({ value: post.options[i].value, postId: postId, imageId: optionId });
+
       const image = post.options[i].image;
       if (!image) {
         continue;
       }
-      const { data, error } = await supabase.storage.from("images").upload(`${uuid}/image${i}.jpg`, image, {
+      const {} = await supabase.storage.from("images").upload(`${postId}/${optionId}.jpg`, image, {
         cacheControl: "3600",
         upsert: false,
       });
-      //error 발생시
-      //setResult
-      //등록한 이미지 삭제
-      //return 시켜버림
     }
-    //db에 보내기
-    const { error } = await supabase.from("posts").insert({
-      id: uuid,
-      title: post.title,
-      description: post.description,
-      category: post.category,
-      options: post.options.map((option) => ({ text: option.text })),
-    });
-    //error 발생시
-    //setResult
-    //등록한 이미지 삭제
-    //return 시켜버림
-
-    //쓴 글로 이동
   };
 
   const deletePost = async (id: String) => {
     const { error } = await supabase.from("posts").delete().eq("id", id);
-    console.log(error);
-
-    //error처리, storage 처리
   };
 
   const isVailidForm = (post: CreatePost) => {
-    //추가
-
     return true;
   };
 

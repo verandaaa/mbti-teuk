@@ -1,5 +1,5 @@
 export type getPost = {
-  category: string;
+  categoryName: string;
   id: string;
   title: string;
   description: string;
@@ -11,15 +11,16 @@ export type getDetailPost = getPost & {
 };
 
 export type CreatePost = {
-  category: string;
+  categoryId: number;
   title: string;
   description: string;
   options: Option[];
 };
 
-type Option = {
-  text: string;
+export type Option = {
+  value: string;
   image?: File;
+  imageId?: string;
 };
 
 export type getCategory = {

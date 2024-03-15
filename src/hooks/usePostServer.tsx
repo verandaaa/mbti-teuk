@@ -1,19 +1,24 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { getDetailPost } from "@/model/post";
-import camelcaseKeys from "camelcase-keys";
 
 export default function useUserServer() {
   const supabase = createServerComponentClient({ cookies });
 
-  const getPost = async (post_id: string): Promise<getDetailPost | null> => {
-    const { data } = await supabase.from("posts").select().eq("id", post_id);
+  const getPost = async (postId: string): Promise<getDetailPost | null> => {
+    const { data } = await supabase
+      .from("posts")
+      .select("*,options(value,imageId),...categories(categoryName:name)")
+      .eq("id", postId)
+      .returns<any[]>();
 
     if (data === null) {
       return null;
     }
 
-    const post = camelcaseKeys(data[0], { deep: true });
+    const post = data[0];
+
+    console.log(post);
 
     return post;
   };

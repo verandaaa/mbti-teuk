@@ -1,5 +1,7 @@
 import usePostServer from "@/hooks/usePostServer";
 import PostDeleteButton from "@/components/PostDeleteButton";
+import Options from "@/components/Options";
+import Graph from "@/components/Graph";
 
 type Props = { params: { id: string } };
 
@@ -19,21 +21,9 @@ export default async function DetailPage({ params: { id } }: Props) {
           <div className="border-b border-black my-4"></div>
           <div>
             <div>{data.description}</div>
-            <div>
-              {data.options.map((option, index) => {
-                return (
-                  <div className="flex border border-gray-400 rounded my-2 h-32">
-                    <img
-                      src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/images/${id}/${option.imageId}.jpg`}
-                      alt="option-image"
-                      className="aspect-square object-cover"
-                    />
-                    <div className="flex items-center mx-4">{option.value}</div>
-                  </div>
-                );
-              })}
-            </div>
+            {<Options options={data.options} postId={id} selectedOptionId={data.selectedOptionId} />}
           </div>
+          {data.selectedOptionId !== null && <Graph postId={id} options={data.options} />}
         </div>
       )}
       {!data && <div>존재하지 않은 게시글입니다.</div>}

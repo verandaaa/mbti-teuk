@@ -6,11 +6,13 @@ export default function useUserServer() {
   const supabase = createServerComponentClient({ cookies });
 
   const getPost = async (postId: string): Promise<getDetailPost | null> => {
-    const { data } = await supabase
-      .from("posts")
-      .select("*,options(value,imageId),...categories(categoryName:name)")
+    const { data, error } = await supabase
+      .from("postView")
+      .select("*,options(id,value,imageId)")
       .eq("id", postId)
       .returns<any[]>();
+
+    console.log(error);
 
     if (data === null) {
       return null;

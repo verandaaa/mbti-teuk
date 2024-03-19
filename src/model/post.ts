@@ -7,23 +7,41 @@ export type getPost = {
 
 export type getDetailPost = getPost & {
   userId: string;
-  options: Option[];
+  options: GetOption[];
+  createdAt: string;
+  viewCount: number;
+  userNickname: string;
+  userMbti: string;
+  categoryId: number;
+  selectedOptionId: number | null;
 };
 
 export type CreatePost = {
   categoryId: number;
   title: string;
   description: string;
-  options: Option[];
+  options: CreateOption[];
 };
 
-export type Option = {
+export type CreateOption = {
   value: string;
   image?: File;
-  imageId?: string;
+};
+
+export type GetOption = {
+  id: number;
+  value: string;
+  imageId: string | null;
+  postId: string;
 };
 
 export type getCategory = {
   id: number;
   name: string;
+};
+
+export type getParticipateResult = {
+  optionId: number;
+  mbti: string;
+  count: number;
 };

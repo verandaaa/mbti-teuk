@@ -2,7 +2,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { Result } from "@/model/result";
 import { useState } from "react";
-import { getPost, CreatePost, getCategory } from "@/model/post";
+import { getPost, CreatePost, getCategory, getParticipateResult } from "@/model/post";
 import { v4 as uuidv4 } from "uuid";
 
 export default function usePostClient() {
@@ -49,7 +49,7 @@ export default function usePostClient() {
     }
   };
 
-  const deletePost = async (id: String) => {
+  const deletePost = async (id: string) => {
     const { error } = await supabase.from("posts").delete().eq("id", id);
   };
 
@@ -57,5 +57,27 @@ export default function usePostClient() {
     return true;
   };
 
-  return { getPostList, createPost, deletePost, getCategoryList, isVailidForm, result };
+  const createParticipate = async (id: number, postId: string) => {
+    const {} = await supabase.from("participates").insert({
+      optionId: id,
+      postId,
+    });
+  };
+
+  const getParticipateResult = async (postId: string): Promise<getParticipateResult[] | null> => {
+    const { data } = await supabase.from("participateView").select("optionId,mbti,count").eq("postId", postId);
+
+    return data;
+  };
+
+  return {
+    getPostList,
+    createPost,
+    deletePost,
+    getCategoryList,
+    isVailidForm,
+    createParticipate,
+    getParticipateResult,
+    result,
+  };
 }

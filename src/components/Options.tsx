@@ -1,7 +1,7 @@
 "use client";
 
+import useCreateParticipate from "@/hooks/useCreateParticipate";
 import { GetOption } from "@/model/post";
-import usePostClient from "@/hooks/usePostClient";
 
 type Props = {
   options: GetOption[];
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function Options({ options, postId, selectedOptionId }: Props) {
-  const { createParticipate } = usePostClient();
+  const { mutation } = useCreateParticipate();
 
   return (
     <div>
@@ -21,7 +21,11 @@ export default function Options({ options, postId, selectedOptionId }: Props) {
               "flex border rounded my-2 h-32" +
               (selectedOptionId === option.id ? " border-blue-700" : " border-gray-400")
             }
-            onClick={() => selectedOptionId === null && createParticipate(option.id, postId)}
+            onClick={() => {
+              if (selectedOptionId === null) {
+                mutation.mutate({ optionId: option.id, postId });
+              }
+            }}
             key={index}
           >
             <img

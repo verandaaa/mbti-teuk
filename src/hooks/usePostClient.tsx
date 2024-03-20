@@ -2,12 +2,13 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { Result } from "@/model/result";
 import { useState } from "react";
-import { getPost, CreatePost, getCategory, getParticipateResult } from "@/model/post";
+import { getPost, CreatePost, getCategory, getParticipateResult, getDetailPost } from "@/model/post";
 import { v4 as uuidv4 } from "uuid";
 
 export default function usePostClient() {
   const supabase = createClientComponentClient();
   const [result, setResult] = useState<Result>();
+  const router = useRouter();
 
   const getPostList = async (): Promise<getPost[] | null> => {
     const { data, error } = await supabase.from("posts").select();
@@ -47,6 +48,7 @@ export default function usePostClient() {
         upsert: false,
       });
     }
+    router.push("/list");
   };
 
   const deletePost = async (id: string) => {
@@ -70,6 +72,22 @@ export default function usePostClient() {
     return data;
   };
 
+  const getPost = async (postId: string): Promise<getDetailPost | null> => {
+    const { data, error } = await supabase
+      .from("postView")
+      .select("*,options(id,value,imageId)")
+      .eq("id", postId)
+      .returns<any[]>();
+
+    if (data === null) {
+      return null;
+    }
+
+    const post = data[0];
+
+    return post;
+  };
+
   return {
     getPostList,
     createPost,
@@ -78,6 +96,7 @@ export default function usePostClient() {
     isVailidForm,
     createParticipate,
     getParticipateResult,
+    getPost,
     result,
   };
 }

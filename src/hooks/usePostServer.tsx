@@ -12,15 +12,11 @@ export default function useUserServer() {
       .eq("id", postId)
       .returns<any[]>();
 
-    console.log(error);
-
     if (data === null) {
       return null;
     }
 
     const post = data[0];
-
-    console.log(post);
 
     return post;
   };

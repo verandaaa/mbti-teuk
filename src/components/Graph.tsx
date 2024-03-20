@@ -7,11 +7,12 @@ import { getParticipateResult, GetOption } from "@/model/post";
 type Props = {
   postId: string;
   options: GetOption[];
+  isShow: boolean;
 };
 
 type Option = "optionId" | "mbti";
 
-export default function Graph({ postId, options }: Props) {
+export default function Graph({ postId, options, isShow }: Props) {
   const { getParticipateResult } = usePostClient();
   const [allResults, setAllResults] = useState<getParticipateResult[]>();
   const [specificResults, setSpecificResults] = useState<getParticipateResult[]>();
@@ -40,42 +41,44 @@ export default function Graph({ postId, options }: Props) {
   };
 
   return (
-    <div>
-      <div>투표결과</div>
-      <div onClick={() => setOption1("optionId")}>선택지별</div>
-      <div onClick={() => setOption1("mbti")}>MBTI별</div>
-      {specificResults?.map((specificResult, index) => {
-        return (
-          <div key={index}>
-            <span>{specificResult.optionId}</span>
-            &nbsp;
-            <span>{specificResult.mbti}</span>
-            &nbsp;
-            <span>{specificResult.count}</span>
-          </div>
-        );
-      })}
-      {option1 === "optionId" && (
-        <select onChange={handleChange}>
-          <option value="default">나의 선택</option>
-          {options.map((option, index) => (
-            <option key={index} value={option.id}>
-              {option.value}
-            </option>
-          ))}
-        </select>
-      )}
-      {option1 === "mbti" && (
-        <select onChange={handleChange}>
-          <option value="default">mbti 선택</option>
-          {mbtiList.map((mbti, index) => (
-            <option key={index} value={mbti}>
-              {mbti}
-            </option>
-          ))}
-        </select>
-      )}
-      {option2}
-    </div>
+    isShow && (
+      <div>
+        <div>투표결과</div>
+        <div onClick={() => setOption1("optionId")}>선택지별</div>
+        <div onClick={() => setOption1("mbti")}>MBTI별</div>
+        {specificResults?.map((specificResult, index) => {
+          return (
+            <div key={index}>
+              <span>{specificResult.optionId}</span>
+              &nbsp;
+              <span>{specificResult.mbti}</span>
+              &nbsp;
+              <span>{specificResult.count}</span>
+            </div>
+          );
+        })}
+        {option1 === "optionId" && (
+          <select onChange={handleChange}>
+            <option value="default">나의 선택</option>
+            {options.map((option, index) => (
+              <option key={index} value={option.id}>
+                {option.value}
+              </option>
+            ))}
+          </select>
+        )}
+        {option1 === "mbti" && (
+          <select onChange={handleChange}>
+            <option value="default">mbti 선택</option>
+            {mbtiList.map((mbti, index) => (
+              <option key={index} value={mbti}>
+                {mbti}
+              </option>
+            ))}
+          </select>
+        )}
+        {option2}
+      </div>
+    )
   );
 }

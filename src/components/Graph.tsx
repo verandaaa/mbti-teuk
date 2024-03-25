@@ -3,6 +3,7 @@
 import usePostClient from "@/hooks/usePostClient";
 import { useEffect, useState } from "react";
 import { getParticipateResult, GetOption } from "@/model/post";
+import Chart from "@/components/Chart";
 
 type Props = {
   postId: string;
@@ -46,17 +47,7 @@ export default function Graph({ postId, options, isShow }: Props) {
         <div>투표결과</div>
         <div onClick={() => setOption1("optionId")}>선택지별</div>
         <div onClick={() => setOption1("mbti")}>MBTI별</div>
-        {specificResults?.map((specificResult, index) => {
-          return (
-            <div key={index}>
-              <span>{specificResult.optionId}</span>
-              &nbsp;
-              <span>{specificResult.mbti}</span>
-              &nbsp;
-              <span>{specificResult.count}</span>
-            </div>
-          );
-        })}
+
         {option1 === "optionId" && (
           <select onChange={handleChange}>
             <option value="default">나의 선택</option>
@@ -77,7 +68,7 @@ export default function Graph({ postId, options, isShow }: Props) {
             ))}
           </select>
         )}
-        {option2}
+        {specificResults && <Chart data={specificResults} type={option1 === "mbti" ? "optionId" : "mbti"} />}
       </div>
     )
   );

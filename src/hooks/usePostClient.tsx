@@ -67,7 +67,11 @@ export default function usePostClient() {
   };
 
   const getParticipateResult = async (postId: string): Promise<getParticipateResult[] | null> => {
-    const { data } = await supabase.from("participateView").select("optionId,mbti,count").eq("postId", postId);
+    const { data } = await supabase
+      .from("participateView")
+      .select("optionId,mbti,count")
+      .eq("postId", postId)
+      .order("count", { ascending: false });
 
     return data;
   };

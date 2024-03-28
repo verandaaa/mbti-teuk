@@ -1,23 +1,22 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { Result } from "@/model/result";
+import { Status } from "@/model/status";
 
 type Props = {
-  result: Result | undefined;
+  status: Status | undefined;
 };
 
-export default function ResultView({ result }: Props) {
+export default function StatusView({ status }: Props) {
   return (
-    result && (
+    status && (
       <>
-        {result.type === "success" ? (
+        {status.type === "success" ? (
           <div className="border border-[#32CD32] rounded p-2 text-center bg-[#e6ffe6] text-[#32CD32]">
-            {result.message}
+            {status.message}
           </div>
         ) : (
           <div className="border border-[#FF1E1E] rounded p-2 text-center bg-[#ffebef] text-[#FF1E1E]">
-            {result.message}
+            {status.message}
           </div>
         )}
       </>

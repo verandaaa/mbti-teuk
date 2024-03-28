@@ -1,13 +1,13 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { Result } from "@/model/result";
+import { Status } from "@/model/status";
 import { useState } from "react";
 import { getPost, CreatePost, getCategory, getParticipateResult, getDetailPost } from "@/model/post";
 import { v4 as uuidv4 } from "uuid";
 
 export default function usePostClient() {
   const supabase = createClientComponentClient();
-  const [result, setResult] = useState<Result>();
+  const [status, setStatus] = useState<Status>();
   const router = useRouter();
 
   const getPostList = async (): Promise<getPost[] | null> => {
@@ -101,6 +101,6 @@ export default function usePostClient() {
     createParticipate,
     getParticipateResult,
     getPost,
-    result,
+    status,
   };
 }

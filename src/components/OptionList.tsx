@@ -9,7 +9,7 @@ type Props = {
   selectedOptionId: number | null;
 };
 
-export default function Options({ options, postId, selectedOptionId }: Props) {
+export default function OptionList({ options, postId, selectedOptionId }: Props) {
   const { mutation } = useCreateParticipate();
 
   return (

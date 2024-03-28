@@ -6,14 +6,16 @@ import { SigninUser } from "@/model/user";
 import Link from "next/link";
 import userUserClient from "@/hooks/useUserClient";
 import useFormControl from "@/hooks/useFormControl";
+import { useStatusContext } from "@/context/StatusContext";
 
 export default function Signin() {
   const [user, setUser] = useState<SigninUser>({
     email: "",
     password: "",
   });
-  const { handleSignIn, isVailidForm, status } = userUserClient();
-  const { handleSigninChange } = useFormControl();
+  const { handleSignIn } = userUserClient();
+  const { handleSigninChange, isValidUserForm } = useFormControl();
+  const { status, setStatus } = useStatusContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleSigninChange(e, setUser);
@@ -22,7 +24,7 @@ export default function Signin() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isVailidForm(user)) {
+    if (isValidUserForm(user)) {
       handleSignIn(user);
     }
   };

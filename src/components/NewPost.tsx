@@ -6,6 +6,7 @@ import { CreatePost } from "@/model/post";
 import usePostClient from "@/hooks/usePostClient";
 import { getCategory } from "@/model/post";
 import useFormControl from "@/hooks/useFormControl";
+import { useStatusContext } from "@/context/StatusContext";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
@@ -17,9 +18,10 @@ export default function NewPost() {
       { value: "", image: undefined },
     ],
   });
-  const { createPost, getCategoryList, isVailidForm, status } = usePostClient();
+  const { createPost, getCategoryList } = usePostClient();
   const [categories, setCategories] = useState<getCategory[]>();
-  const { handlePostChange } = useFormControl();
+  const { handlePostChange, isValidPostForm } = useFormControl();
+  const { status, setStatus } = useStatusContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +43,7 @@ export default function NewPost() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isVailidForm(post)) {
+    if (isValidPostForm(post)) {
       createPost(post);
     }
   };

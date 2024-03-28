@@ -1,8 +1,11 @@
 import { CreatePost } from "@/model/post";
 import { SigninUser, SignupUser } from "@/model/user";
 import { Dispatch, SetStateAction } from "react";
+import { useStatusContext } from "@/context/StatusContext";
 
 export default function useFormControl() {
+  const { status, setStatus } = useStatusContext();
+
   const handlePostChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     setPost: Dispatch<SetStateAction<CreatePost>>,
@@ -49,5 +52,35 @@ export default function useFormControl() {
     setUser((user) => ({ ...user, [name]: value }));
   };
 
-  return { handlePostChange, handleSigninChange, handleSignupChange };
+  const isValidPostForm = (post: CreatePost) => {
+    return true;
+  };
+
+  const isValidUserForm = (user: SignupUser | SigninUser) => {
+    const mbtiList: string[] = require("/public/data/mbti_list.json");
+
+    if (!user.email.match(/^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
+      setStatus({ type: "error", message: "올바른 이메일 형식을 입력하세요." });
+      return false;
+    }
+    if ("mbti" in user && !mbtiList.includes(user.mbti)) {
+      setStatus({ type: "error", message: "MBTI를 선택해주세요." });
+      return false;
+    }
+    if (user.password.length < 6) {
+      setStatus({
+        type: "error",
+        message: "비밀번호는 최소 6글자 이상입니다.",
+      });
+      return false;
+    }
+    if ("passwordCheck" in user && user.password !== user.passwordCheck) {
+      setStatus({ type: "error", message: "비밀번호가 일치하지 않습니다." });
+      return false;
+    }
+    setStatus(undefined);
+    return true;
+  };
+
+  return { handlePostChange, handleSigninChange, handleSignupChange, isValidPostForm, isValidUserForm };
 }

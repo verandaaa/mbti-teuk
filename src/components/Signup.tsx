@@ -5,6 +5,7 @@ import StatusView from "@/components/StatusView";
 import { SignupUser } from "@/model/user";
 import userUserClient from "@/hooks/useUserClient";
 import useFormControl from "@/hooks/useFormControl";
+import { useStatusContext } from "@/context/StatusContext";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({
@@ -14,9 +15,10 @@ export default function Signup() {
     password: "",
     passwordCheck: "",
   });
-  const { handleSignUp, isVailidForm, status } = userUserClient();
+  const { handleSignUp } = userUserClient();
   const mbtiList: string[] = require("/public/data/mbti_list.json");
-  const { handleSignupChange } = useFormControl();
+  const { handleSignupChange, isValidUserForm } = useFormControl();
+  const { status, setStatus } = useStatusContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     handleSignupChange(e, setUser);
@@ -25,7 +27,7 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isVailidForm(user)) {
+    if (isValidUserForm(user)) {
       handleSignUp(user);
     }
   };

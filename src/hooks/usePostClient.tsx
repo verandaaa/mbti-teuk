@@ -1,14 +1,13 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { Status } from "@/model/status";
-import { useState } from "react";
 import { getPost, CreatePost, getCategory, getParticipateResult, getDetailPost } from "@/model/post";
 import { v4 as uuidv4 } from "uuid";
+import { useStatusContext } from "@/context/StatusContext";
 
 export default function usePostClient() {
   const supabase = createClientComponentClient();
-  const [status, setStatus] = useState<Status>();
   const router = useRouter();
+  const { status, setStatus } = useStatusContext();
 
   const getPostList = async (): Promise<getPost[] | null> => {
     const { data, error } = await supabase.from("posts").select();
@@ -55,10 +54,6 @@ export default function usePostClient() {
     const { error } = await supabase.from("posts").delete().eq("id", id);
   };
 
-  const isVailidForm = (post: CreatePost) => {
-    return true;
-  };
-
   const createParticipate = async (id: number, postId: string) => {
     const {} = await supabase.from("participates").insert({
       optionId: id,
@@ -97,10 +92,8 @@ export default function usePostClient() {
     createPost,
     deletePost,
     getCategoryList,
-    isVailidForm,
     createParticipate,
     getParticipateResult,
     getPost,
-    status,
   };
 }

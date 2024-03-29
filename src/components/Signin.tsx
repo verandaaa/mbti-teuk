@@ -7,6 +7,7 @@ import Link from "next/link";
 import userUserClient from "@/hooks/useUserClient";
 import useFormControl from "@/hooks/useFormControl";
 import { useStatusContext } from "@/context/StatusContext";
+import Button from "@/components/Button";
 
 export default function Signin() {
   const [user, setUser] = useState<SigninUser>({
@@ -29,8 +30,6 @@ export default function Signin() {
     }
   };
 
-  const formClassName = "border border-black rounded p-2";
-
   return (
     <div className="max-w-2xl mx-auto border border-black rounded flex flex-col items-center gap-10 py-16 my-16">
       <h1 className="text-3xl font-bold">로그인</h1>
@@ -41,7 +40,7 @@ export default function Signin() {
           value={user.email}
           placeholder="이메일"
           onChange={handleChange}
-          className={formClassName}
+          className="el-primary"
         />
         <input
           type="password"
@@ -49,9 +48,9 @@ export default function Signin() {
           value={user.password}
           placeholder="비밀번호"
           onChange={handleChange}
-          className={formClassName}
+          className="el-primary"
         />
-        <button className={formClassName + ` bg-button text-white`}>로그인</button>
+        <Button style="default">로그인</Button>
         <div className="text-sm text-center text-neutral-700 underline">
           <Link href="/signup" aria-label="회원가입">
             회원가입

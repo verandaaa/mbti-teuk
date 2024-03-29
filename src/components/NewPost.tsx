@@ -7,6 +7,7 @@ import usePostClient from "@/hooks/usePostClient";
 import { getCategory } from "@/model/post";
 import useFormControl from "@/hooks/useFormControl";
 import { useStatusContext } from "@/context/StatusContext";
+import Button from "@/components/Button";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
@@ -48,11 +49,9 @@ export default function NewPost() {
     }
   };
 
-  const formClassName = "border border-black rounded p-2";
-
   return (
     <form className="max-w-4xl mx-auto flex flex-col gap-6" onSubmit={handleSubmit}>
-      <select name="categoryId" onChange={handleChange} className={formClassName}>
+      <select name="categoryId" onChange={handleChange} className="el-primary">
         <option value="default">카테고리 선택</option>
         {categories?.map(({ id, name }) => (
           <option key={id} value={id}>
@@ -66,14 +65,14 @@ export default function NewPost() {
         value={post.title}
         placeholder="투표 제목을 입력하세요."
         onChange={handleChange}
-        className={formClassName}
+        className="el-primary"
       />
       <textarea
         name="description"
         value={post.description}
         placeholder="추가 설명을 입력하세요."
         onChange={handleChange}
-        className={formClassName}
+        className="el-primary"
         rows={5}
       />
       {post.options.map((option, index) => (
@@ -84,12 +83,12 @@ export default function NewPost() {
             value={option.value}
             placeholder={"보기 " + (index + 1)}
             onChange={(e) => handleChange(e, index)}
-            className={formClassName}
+            className="el-primary"
           />
           <input type="file" name="optionFile" accept="image/*" onChange={(e) => handleChange(e, index)} />
         </div>
       ))}
-      <button className={formClassName + ` bg-button text-white`}>작성완료</button>
+      <Button style="default">작성완료</Button>
       <StatusView status={status} />
     </form>
   );

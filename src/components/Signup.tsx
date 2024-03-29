@@ -6,6 +6,7 @@ import { SignupUser } from "@/model/user";
 import userUserClient from "@/hooks/useUserClient";
 import useFormControl from "@/hooks/useFormControl";
 import { useStatusContext } from "@/context/StatusContext";
+import Button from "@/components/Button";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({
@@ -32,8 +33,6 @@ export default function Signup() {
     }
   };
 
-  const formClassName = "border border-black rounded p-2";
-
   return (
     <div className="max-w-2xl mx-auto border border-black rounded flex flex-col items-center gap-10 py-16 my-16">
       <h1 className="text-3xl font-bold">회원가입</h1>
@@ -44,9 +43,9 @@ export default function Signup() {
           value={user.email}
           placeholder="이메일"
           onChange={handleChange}
-          className={formClassName}
+          className="el-primary"
         />
-        <select name="mbti" onChange={handleChange} className={formClassName}>
+        <select name="mbti" onChange={handleChange} className="el-primary">
           <option value="default">mbti 선택</option>
           {mbtiList.map((mbti, index) => (
             <option key={index} value={mbti}>
@@ -59,7 +58,7 @@ export default function Signup() {
           name="nickname"
           value={user.nickname}
           onChange={handleChange}
-          className={formClassName}
+          className="el-primary"
           readOnly
         />
         <input
@@ -68,7 +67,7 @@ export default function Signup() {
           value={user.password}
           placeholder="비밀번호"
           onChange={handleChange}
-          className={formClassName}
+          className="el-primary"
         />
         <input
           type="password"
@@ -76,9 +75,9 @@ export default function Signup() {
           value={user.passwordCheck}
           placeholder="비밀번호확인"
           onChange={handleChange}
-          className={formClassName}
+          className="el-primary"
         />
-        <button className={formClassName + ` bg-button text-white`}>회원가입</button>
+        <Button style="default">회원가입</Button>
         <StatusView status={status} />
       </form>
     </div>

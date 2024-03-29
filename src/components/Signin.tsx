@@ -31,8 +31,8 @@ export default function Signin() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto border border-black rounded flex flex-col items-center gap-10 py-16 my-16">
-      <h1 className="text-3xl font-bold">로그인</h1>
+    <div className="flex flex-col items-center gap-10 mx-auto my-16 py-16 border border-black rounded max-w-2xl">
+      <h1 className="font-bold text-3xl">로그인</h1>
       <form className="flex flex-col gap-6 w-2/3" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -51,7 +51,7 @@ export default function Signin() {
           className="el-primary"
         />
         <Button style="default">로그인</Button>
-        <div className="text-sm text-center text-neutral-700 underline">
+        <div className="text-center text-neutral-700 text-sm underline">
           <Link href="/signup" aria-label="회원가입">
             회원가입
           </Link>

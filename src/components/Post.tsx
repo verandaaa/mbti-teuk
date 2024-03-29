@@ -13,13 +13,13 @@ export default function Post({ id }: Props) {
   return (
     <>
       {data && (
-        <div className="border border-black rounded p-6">
+        <div className="p-6 border border-black rounded">
           <div>
             <span>&gt; {data.categoryName}</span>
             <h1>{data.title}</h1>
             {<PostDeleteButton id={id} />}
           </div>
-          <div className="border-b border-black my-4"></div>
+          <div className="my-4 border-b border-black"></div>
           <div>
             <div>{data.description}</div>
             {<OptionList options={data.options} postId={id} selectedOptionId={data.selectedOptionId} />}

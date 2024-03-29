@@ -9,6 +9,6 @@ body {
 
 @layer components {
   .el-primary {
-    @apply border border-black rounded p-2;
+    @apply p-2 border border-black rounded;
   }
 }

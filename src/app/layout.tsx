@@ -20,11 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StatusContextProvider>
           <AuthContextProvider>
             <header className="border-b">
-              <div className="max-w-screen-xl mx-auto px-6 ">
+              <div className="mx-auto px-6 max-w-screen-xl">
                 <Navbar />
               </div>
             </header>
-            <main className="max-w-screen-lg mx-auto px-6 py-16">
+            <main className="mx-auto px-6 py-16 max-w-screen-lg">
               <ReactQueryContextProvider>{children}</ReactQueryContextProvider>
             </main>
           </AuthContextProvider>

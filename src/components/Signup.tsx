@@ -34,8 +34,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto border border-black rounded flex flex-col items-center gap-10 py-16 my-16">
-      <h1 className="text-3xl font-bold">회원가입</h1>
+    <div className="flex flex-col items-center gap-10 mx-auto my-16 py-16 border border-black rounded max-w-2xl">
+      <h1 className="font-bold text-3xl">회원가입</h1>
       <form className="flex flex-col gap-6 w-2/3" onSubmit={handleSubmit}>
         <input
           type="text"

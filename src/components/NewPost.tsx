@@ -50,7 +50,7 @@ export default function NewPost() {
   };
 
   return (
-    <form className="max-w-4xl mx-auto flex flex-col gap-6" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-6 mx-auto max-w-4xl" onSubmit={handleSubmit}>
       <select name="categoryId" onChange={handleChange} className="el-primary">
         <option value="default">카테고리 선택</option>
         {categories?.map(({ id, name }) => (

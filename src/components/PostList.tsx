@@ -20,10 +20,14 @@ export default function PostList() {
     fetchData();
   }, []);
 
+  const handlePostClick = (postId: string) => {
+    router.push(`/list/${postId}`);
+  };
+
   return (
     <>
       {posts?.map((post, index) => (
-        <div className="flex" key={index} onClick={() => router.push(`/list/${post.id}`)}>
+        <div className="flex" key={index} onClick={() => handlePostClick(post.id)}>
           <div>{post.id}</div>
           <div>{post.title}</div>
           <div>{post.description}</div>

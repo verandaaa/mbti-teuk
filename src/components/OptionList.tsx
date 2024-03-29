@@ -12,6 +12,12 @@ type Props = {
 export default function OptionList({ options, postId, selectedOptionId }: Props) {
   const { mutation } = useCreateParticipate();
 
+  const hanldeOptionClick = (optionId: number) => {
+    if (selectedOptionId === null) {
+      mutation.mutate({ optionId, postId });
+    }
+  };
+
   return (
     <div>
       {options.map((option, index) => {
@@ -21,11 +27,7 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
               "flex border rounded my-2 h-32" +
               (selectedOptionId === option.id ? " border-blue-700" : " border-gray-400")
             }
-            onClick={() => {
-              if (selectedOptionId === null) {
-                mutation.mutate({ optionId: option.id, postId });
-              }
-            }}
+            onClick={() => hanldeOptionClick(option.id)}
             key={index}
           >
             <img

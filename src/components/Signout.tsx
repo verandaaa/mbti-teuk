@@ -3,7 +3,11 @@
 import userUserClient from "@/hooks/useUserClient";
 
 export default function Signout() {
-  const { handleSignOut } = userUserClient();
+  const { signout } = userUserClient();
 
-  return <span onClick={handleSignOut}>로그아웃</span>;
+  const handleSignoutButtonClick = () => {
+    signout();
+  };
+
+  return <span onClick={handleSignoutButtonClick}>로그아웃</span>;
 }

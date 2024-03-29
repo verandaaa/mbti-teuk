@@ -9,5 +9,9 @@ type Props = {
 export default function PostDeleteButton({ id }: Props) {
   const { deletePost } = usePostClient();
 
-  return <button onClick={() => deletePost(id)}>{id} 삭제</button>;
+  const handleDeletePostButtonClick = () => {
+    deletePost(id);
+  };
+
+  return <button onClick={handleDeletePostButtonClick}>{id} 삭제</button>;
 }

@@ -15,7 +15,7 @@ export default function Signup() {
     password: "",
     passwordCheck: "",
   });
-  const { handleSignUp } = userUserClient();
+  const { signup } = userUserClient();
   const mbtiList: string[] = require("/public/data/mbti_list.json");
   const { handleSignupChange, isValidUserForm } = useFormControl();
   const { status, setStatus } = useStatusContext();
@@ -28,7 +28,7 @@ export default function Signup() {
     e.preventDefault();
 
     if (isValidUserForm(user)) {
-      handleSignUp(user);
+      signup(user);
     }
   };
 

@@ -39,12 +39,16 @@ export default function Result({ postId, options, isShow }: Props) {
     setSubClass(value);
   };
 
+  const handleMainClassClick = (mainClass: MainClass) => {
+    setMainClass(mainClass);
+  };
+
   return (
     isShow && (
       <div>
         <div>투표결과</div>
-        <div onClick={() => setMainClass("optionId")}>선택지별</div>
-        <div onClick={() => setMainClass("mbti")}>MBTI별</div>
+        <div onClick={() => handleMainClassClick("optionId")}>선택지별</div>
+        <div onClick={() => handleMainClassClick("mbti")}>MBTI별</div>
 
         {mainClass === "optionId" && (
           <select onChange={handleChange}>

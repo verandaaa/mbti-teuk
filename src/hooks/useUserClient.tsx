@@ -8,7 +8,7 @@ export default function userUserClient() {
   const router = useRouter();
   const { status, setStatus } = useStatusContext();
 
-  const handleSignUp = async (user: SignupUser) => {
+  const signup = async (user: SignupUser) => {
     const { error } = await supabase.auth.signUp({
       email: user.email,
       password: user.password,
@@ -31,7 +31,7 @@ export default function userUserClient() {
     router.refresh();
   };
 
-  const handleSignIn = async (user: SigninUser) => {
+  const signin = async (user: SigninUser) => {
     const { error } = await supabase.auth.signInWithPassword({
       email: user.email,
       password: user.password,
@@ -51,7 +51,7 @@ export default function userUserClient() {
     router.refresh();
   };
 
-  const handleSignOut = async () => {
+  const signout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
       return;
@@ -59,5 +59,5 @@ export default function userUserClient() {
     router.refresh();
   };
 
-  return { handleSignUp, handleSignIn, handleSignOut };
+  return { signup, signin, signout };
 }

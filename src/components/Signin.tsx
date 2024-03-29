@@ -13,7 +13,7 @@ export default function Signin() {
     email: "",
     password: "",
   });
-  const { handleSignIn } = userUserClient();
+  const { signin } = userUserClient();
   const { handleSigninChange, isValidUserForm } = useFormControl();
   const { status, setStatus } = useStatusContext();
 
@@ -25,7 +25,7 @@ export default function Signin() {
     e.preventDefault();
 
     if (isValidUserForm(user)) {
-      handleSignIn(user);
+      signin(user);
     }
   };
 

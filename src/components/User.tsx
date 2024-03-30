@@ -2,29 +2,18 @@
 
 import Link from "next/link";
 import Signout from "@/components/Signout";
-import { useEffect, useState } from "react";
-import useUserClient from "@/hooks/useUserClient";
-import { getUser } from "@/model/user";
+import { useAuthContext } from "@/context/AuthContext";
 
 export default function User() {
-  const { getUser } = useUserClient();
-  const [user, setUser] = useState<getUser>();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getUser();
-      if (data) {
-        setUser(data);
-      }
-    };
-    fetchData();
-  }, []);
+  const { user } = useAuthContext();
 
   return (
     <>
       {user ? (
         <div>
-          <span>{user.mbti}</span>
+          <span>
+            {user.mbti} {user.nickname}
+          </span>
           <Signout />
         </div>
       ) : (

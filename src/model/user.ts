@@ -11,7 +11,7 @@ export type SigninUser = {
   password: string;
 };
 
-export type getUser = {
+export type GetUser = {
   mbti: string;
   nickname: string;
 };

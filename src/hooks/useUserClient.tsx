@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { SigninUser, SignupUser, getUser } from "@/model/user";
+import { SigninUser, SignupUser, GetUser } from "@/model/user";
 import { useStatusContext } from "@/context/StatusContext";
 import { createClient } from "@/lib/supabase/client";
 
@@ -28,7 +28,6 @@ export default function userUserClient() {
       return;
     }
     router.push("/");
-    router.refresh();
   };
 
   const signin = async (user: SigninUser) => {
@@ -48,7 +47,6 @@ export default function userUserClient() {
       return;
     }
     router.push("/");
-    router.refresh();
   };
 
   const signout = async () => {
@@ -56,10 +54,10 @@ export default function userUserClient() {
     if (error) {
       return;
     }
-    router.refresh();
+    router.push("/");
   };
 
-  const getUser = async (): Promise<getUser | null> => {
+  const getUser = async (): Promise<GetUser | null> => {
     const {
       data: { user },
       error,

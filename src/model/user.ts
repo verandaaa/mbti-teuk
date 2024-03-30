@@ -10,3 +10,8 @@ export type SigninUser = {
   email: string;
   password: string;
 };
+
+export type getUser = {
+  mbti: string;
+  nickname: string;
+};

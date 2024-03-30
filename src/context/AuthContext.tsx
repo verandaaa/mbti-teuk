@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  PropsWithChildren,
-} from "react";
-import { supabase } from "@/lib/supabase/supabase-client";
+import { createContext, useContext, useEffect, useState, PropsWithChildren } from "react";
+// import { supabase } from "@/lib/supabase/supabase-client";
 
 type AuthContextType = {
   user: UserInfo | undefined;
@@ -22,20 +16,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthContextProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<UserInfo>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      setUser({
-        email: data.session?.user.email!,
-        mbti: data.session?.user.user_metadata.mbti,
-      });
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { data, error } = await supabase.auth.getSession();
+  //     setUser({
+  //       email: data.session?.user.email!,
+  //       mbti: data.session?.user.user_metadata.mbti,
+  //     });
+  //   };
+  //   fetchData();
+  // }, []);
 
-  return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuthContext() {

@@ -1,11 +1,11 @@
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { getPost, CreatePost, getCategory, getParticipateResult, getDetailPost } from "@/model/post";
 import { v4 as uuidv4 } from "uuid";
 import { useStatusContext } from "@/context/StatusContext";
 
 export default function usePostClient() {
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const router = useRouter();
   const { status, setStatus } = useStatusContext();
 

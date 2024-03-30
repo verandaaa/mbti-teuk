@@ -1,10 +1,10 @@
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { SigninUser, SignupUser } from "@/model/user";
+import { SigninUser, SignupUser, getUser } from "@/model/user";
 import { useStatusContext } from "@/context/StatusContext";
+import { createClient } from "@/lib/supabase/client";
 
 export default function userUserClient() {
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const router = useRouter();
   const { status, setStatus } = useStatusContext();
 
@@ -59,5 +59,23 @@ export default function userUserClient() {
     router.refresh();
   };
 
-  return { signup, signin, signout };
+  const getUser = async (): Promise<getUser | null> => {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return null;
+    }
+
+    const userInfo = {
+      mbti: user.user_metadata.mbti,
+      nickname: user.user_metadata.nickname,
+    };
+
+    return userInfo;
+  };
+
+  return { signup, signin, signout, getUser };
 }

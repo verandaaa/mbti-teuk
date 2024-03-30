@@ -1,8 +1,8 @@
 "use client";
 
-import usePostClient from "@/hooks/usePostClient";
+import { getParticipateResult } from "@/service/postClient";
 import { useEffect, useState } from "react";
-import { getParticipateResult, GetOption, MainClass } from "@/model/post";
+import { GetParticipateResult, GetOption, MainClass } from "@/model/post";
 import Chart from "@/components/Chart";
 
 type Props = {
@@ -12,9 +12,8 @@ type Props = {
 };
 
 export default function Result({ postId, options, isShow }: Props) {
-  const { getParticipateResult } = usePostClient();
-  const [allResults, setAllResults] = useState<getParticipateResult[]>();
-  const [specificResults, setSpecificResults] = useState<getParticipateResult[]>();
+  const [allResults, setAllResults] = useState<GetParticipateResult[]>();
+  const [specificResults, setSpecificResults] = useState<GetParticipateResult[]>();
   const [mainClass, setMainClass] = useState<MainClass>("optionId");
   const [subClass, setSubClass] = useState<string>();
   const mbtiList: string[] = require("/public/data/mbti_list.json");

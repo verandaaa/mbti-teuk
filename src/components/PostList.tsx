@@ -1,13 +1,12 @@
 "use client";
 
-import usePostClient from "@/hooks/usePostClient";
+import { getPostList } from "@/service/postClient";
 import { useEffect, useState } from "react";
-import { getPost } from "@/model/post";
+import { GetPost } from "@/model/post";
 import { useRouter } from "next/navigation";
 
 export default function PostList() {
-  const { getPostList } = usePostClient();
-  const [posts, setPosts] = useState<getPost[]>();
+  const [posts, setPosts] = useState<GetPost[]>();
   const router = useRouter();
 
   useEffect(() => {

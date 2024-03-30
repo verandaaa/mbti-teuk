@@ -1,11 +1,11 @@
-export type getPost = {
+export type GetPost = {
   categoryName: string;
   id: string;
   title: string;
   description: string;
 };
 
-export type getDetailPost = getPost & {
+export type GetDetailPost = GetPost & {
   userId: string;
   options: GetOption[];
   createdAt: string;
@@ -35,12 +35,12 @@ export type GetOption = {
   postId: string;
 };
 
-export type getCategory = {
+export type GetCategory = {
   id: number;
   name: string;
 };
 
-export type getParticipateResult = {
+export type GetParticipateResult = {
   optionId: number;
   mbti: string;
   count: number;

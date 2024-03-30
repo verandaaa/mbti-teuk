@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import StatusView from "@/components/StatusView";
 import { CreatePost } from "@/model/post";
-import usePostClient from "@/hooks/usePostClient";
-import { getCategory } from "@/model/post";
-import useFormControl from "@/hooks/useFormControl";
-import { useStatusContext } from "@/context/StatusContext";
+import { createPost, getCategoryList } from "@/service/postClient";
+import { GetCategory } from "@/model/post";
+import { handlePostChange, isValidPostForm } from "@/util/formControl";
 import Button from "@/components/Button";
+import { Status } from "@/model/status";
+import { useRouter } from "next/navigation";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
@@ -19,10 +20,9 @@ export default function NewPost() {
       { value: "", image: undefined },
     ],
   });
-  const { createPost, getCategoryList } = usePostClient();
-  const [categories, setCategories] = useState<getCategory[]>();
-  const { handlePostChange, isValidPostForm } = useFormControl();
-  const { status, setStatus } = useStatusContext();
+  const [categories, setCategories] = useState<GetCategory[]>();
+  const [status, setStatus] = useState<Status>();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +45,11 @@ export default function NewPost() {
     e.preventDefault();
 
     if (isValidPostForm(post)) {
-      createPost(post);
+      createPost(post).then((res) => {
+        if (res.type === "success") {
+          router.push("/list");
+        }
+      });
     }
   };
 

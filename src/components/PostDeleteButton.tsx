@@ -1,14 +1,12 @@
 "use client";
 
-import usePostClient from "@/hooks/usePostClient";
+import { deletePost } from "@/service/postClient";
 
 type Props = {
   id: string;
 };
 
 export default function PostDeleteButton({ id }: Props) {
-  const { deletePost } = usePostClient();
-
   const handleDeletePostButtonClick = () => {
     deletePost(id);
   };

@@ -4,19 +4,19 @@ import { useState } from "react";
 import StatusView from "@/components/StatusView";
 import { SigninUser } from "@/model/user";
 import Link from "next/link";
-import userUserClient from "@/hooks/useUserClient";
-import useFormControl from "@/hooks/useFormControl";
-import { useStatusContext } from "@/context/StatusContext";
+import { signin } from "@/service/userClient";
+import { handleSigninChange, isValidUserForm } from "@/util/formControl";
 import Button from "@/components/Button";
+import { Status } from "@/model/status";
+import { useRouter } from "next/navigation";
 
 export default function Signin() {
   const [user, setUser] = useState<SigninUser>({
     email: "",
     password: "",
   });
-  const { signin } = userUserClient();
-  const { handleSigninChange, isValidUserForm } = useFormControl();
-  const { status, setStatus } = useStatusContext();
+  const [status, setStatus] = useState<Status>();
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleSigninChange(e, setUser);
@@ -25,8 +25,13 @@ export default function Signin() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isValidUserForm(user)) {
-      signin(user);
+    if (isValidUserForm(user, setStatus)) {
+      signin(user).then((res) => {
+        setStatus(res);
+        if (res.type === "success") {
+          router.push("/list");
+        }
+      });
     }
   };
 

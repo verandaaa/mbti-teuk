@@ -1,8 +1,8 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { getParticipateResult, MainClass } from "@/model/post";
+import { GetParticipateResult, MainClass } from "@/model/post";
 
 type Props = {
-  data: getParticipateResult[];
+  data: GetParticipateResult[];
   mainClass: MainClass;
 };
 

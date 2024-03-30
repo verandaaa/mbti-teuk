@@ -1,12 +1,17 @@
 "use client";
 
-import userUserClient from "@/hooks/useUserClient";
+import { signout } from "@/service/userClient";
+import { useRouter } from "next/navigation";
 
 export default function Signout() {
-  const { signout } = userUserClient();
+  const router = useRouter();
 
   const handleSignoutButtonClick = () => {
-    signout();
+    signout().then((res) => {
+      if (res.type === "success") {
+        router.push("/list");
+      }
+    });
   };
 
   return <span onClick={handleSignoutButtonClick}>로그아웃</span>;

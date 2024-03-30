@@ -3,10 +3,11 @@
 import { useState } from "react";
 import StatusView from "@/components/StatusView";
 import { SignupUser } from "@/model/user";
-import userUserClient from "@/hooks/useUserClient";
-import useFormControl from "@/hooks/useFormControl";
-import { useStatusContext } from "@/context/StatusContext";
+import { signup } from "@/service/userClient";
+import { handleSignupChange, isValidUserForm } from "@/util/formControl";
 import Button from "@/components/Button";
+import { Status } from "@/model/status";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({
@@ -16,10 +17,9 @@ export default function Signup() {
     password: "",
     passwordCheck: "",
   });
-  const { signup } = userUserClient();
   const mbtiList: string[] = require("/public/data/mbti_list.json");
-  const { handleSignupChange, isValidUserForm } = useFormControl();
-  const { status, setStatus } = useStatusContext();
+  const [status, setStatus] = useState<Status>();
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     handleSignupChange(e, setUser);
@@ -28,8 +28,13 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isValidUserForm(user)) {
-      signup(user);
+    if (isValidUserForm(user, setStatus)) {
+      signup(user).then((res) => {
+        setStatus(res);
+        if (res.type === "success") {
+          router.push("/list");
+        }
+      });
     }
   };
 

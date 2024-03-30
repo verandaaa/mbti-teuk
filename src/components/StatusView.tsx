@@ -10,7 +10,11 @@ export default function StatusView({ status }: Props) {
   if (!status) {
     return <></>;
   }
-  const style = `border border-status-${status.type}-default rounded p-2 text-center bg-status-${status.type}-background text-status-${status.type}-default`;
+  const variants = {
+    success:
+      "el-primary text-center border-status-success-default bg-status-success-background text-status-success-default",
+    error: "el-primary text-center border-status-error-default bg-status-error-background text-status-error-default",
+  };
 
-  return <div className={style}>{status.message}</div>;
+  return <div className={variants[status.type]}>{status.message}</div>;
 }

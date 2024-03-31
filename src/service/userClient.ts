@@ -1,10 +1,7 @@
-"use client";
-
 import { SigninUser, SignupUser, GetUser } from "@/model/user";
 import { createClient } from "@/lib/supabase/client";
-import { Status } from "@/model/status";
 
-export async function signup(user: SignupUser): Promise<Status> {
+export async function signup(user: SignupUser) {
   const supabase = createClient();
   const { error } = await supabase.auth.signUp({
     email: user.email,
@@ -16,42 +13,25 @@ export async function signup(user: SignupUser): Promise<Status> {
       },
     },
   });
-  if (error) {
-    if (error.message === "User already registered") {
-      return { type: "error", message: "이미 가입한 이메일 입니다." };
-    } else {
-      return { type: "error", message: error.message };
-    }
-  }
-  return { type: "success", message: "성공" };
+
+  return { error };
 }
 
-export async function signin(user: SigninUser): Promise<Status> {
+export async function signin(user: SigninUser) {
   const supabase = createClient();
   const { error } = await supabase.auth.signInWithPassword({
     email: user.email,
     password: user.password,
   });
-  if (error) {
-    if (error.message === "Invalid login credentials") {
-      return {
-        type: "error",
-        message: "이메일 혹은 비밀번호를 확인해주세요.",
-      };
-    } else {
-      return { type: "error", message: error.message };
-    }
-  }
-  return { type: "success", message: "성공" };
+
+  return { error };
 }
 
-export async function signout(): Promise<Status> {
+export async function signout() {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();
-  if (error) {
-    return { type: "error", message: error.message };
-  }
-  return { type: "success", message: "성공" };
+
+  return { error };
 }
 
 export async function getUser(): Promise<GetUser | null> {

@@ -8,6 +8,7 @@ import { handleSignupChange, isValidUserForm } from "@/util/formControl";
 import Button from "@/components/Button";
 import { Status } from "@/model/status";
 import { useRouter } from "next/navigation";
+import { handleSignupError } from "@/util/userControl";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({
@@ -28,14 +29,15 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isValidUserForm(user, setStatus)) {
-      signup(user).then((res) => {
-        setStatus(res);
-        if (res.type === "success") {
-          router.push("/list");
-        }
-      });
+    if (!isValidUserForm(user, setStatus)) {
+      return;
     }
+    const { error } = await signup(user);
+    if (error) {
+      handleSignupError(error, setStatus);
+      return;
+    }
+    router.push("/list");
   };
 
   return (

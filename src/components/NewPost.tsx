@@ -44,13 +44,8 @@ export default function NewPost() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isValidPostForm(post)) {
-      createPost(post).then((res) => {
-        if (res.type === "success") {
-          router.push("/list");
-        }
-      });
-    }
+    await createPost(post);
+    router.push("/list");
   };
 
   return (

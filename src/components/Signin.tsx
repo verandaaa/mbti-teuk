@@ -9,7 +9,7 @@ import { handleSigninChange, isValidUserForm } from "@/util/formControl";
 import Button from "@/components/Button";
 import { Status } from "@/model/status";
 import { useRouter } from "next/navigation";
-import { handelSigninError } from "@/util/userControl";
+import { handleSigninError } from "@/util/userControl";
 
 export default function Signin() {
   const [user, setUser] = useState<SigninUser>({
@@ -31,7 +31,7 @@ export default function Signin() {
     }
     const { error } = await signin(user);
     if (error) {
-      handelSigninError(error, setStatus);
+      handleSigninError(error, setStatus);
       return;
     }
     router.push("/list");

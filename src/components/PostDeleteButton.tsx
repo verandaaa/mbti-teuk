@@ -3,13 +3,14 @@
 import { deletePost } from "@/service/postClient";
 
 type Props = {
+  isShow: boolean;
   id: string;
 };
 
-export default function PostDeleteButton({ id }: Props) {
+export default function PostDeleteButton({ isShow, id }: Props) {
   const handleDeletePostButtonClick = () => {
     deletePost(id);
   };
 
-  return <button onClick={handleDeletePostButtonClick}>{id} 삭제</button>;
+  return isShow && <button onClick={handleDeletePostButtonClick}>삭제</button>;
 }

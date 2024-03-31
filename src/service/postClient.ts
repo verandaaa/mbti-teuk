@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
 import { GetPost, CreatePost, GetCategory, GetParticipateResult, GetDetailPost } from "@/model/post";
-import { Status } from "@/model/status";
 import { v4 as uuidv4 } from "uuid";
 
 export async function getPostList(): Promise<GetPost[] | null> {
@@ -17,7 +16,7 @@ export async function getCategoryList(): Promise<GetCategory[] | null> {
   return data;
 }
 
-export async function createPost(post: CreatePost): Promise<Status> {
+export async function createPost(post: CreatePost) {
   const supabase = createClient();
   const postId = uuidv4();
 
@@ -44,7 +43,6 @@ export async function createPost(post: CreatePost): Promise<Status> {
       upsert: false,
     });
   }
-  return { type: "success", message: "성공" };
 }
 
 export async function deletePost(id: string) {

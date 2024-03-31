@@ -33,22 +33,3 @@ export async function signout() {
 
   return { error };
 }
-
-export async function getUser(): Promise<GetUser | null> {
-  const supabase = createClient();
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return null;
-  }
-
-  const userInfo = {
-    mbti: user.user_metadata.mbti,
-    nickname: user.user_metadata.nickname,
-  };
-
-  return userInfo;
-}

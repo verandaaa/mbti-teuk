@@ -16,13 +16,22 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const subscription = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(session);
       if (event === "INITIAL_SESSION") {
         if (session) {
-          setUser({ mbti: session.user.user_metadata.mbti, nickname: session.user.user_metadata.nickname });
+          setUser({
+            userId: session.user.id,
+            mbti: session.user.user_metadata.mbti,
+            nickname: session.user.user_metadata.nickname,
+          });
         }
       } else if (event === "SIGNED_IN") {
         if (session) {
-          setUser({ mbti: session.user.user_metadata.mbti, nickname: session.user.user_metadata.nickname });
+          setUser({
+            userId: session.user.id,
+            mbti: session.user.user_metadata.mbti,
+            nickname: session.user.user_metadata.nickname,
+          });
         }
       } else if (event === "SIGNED_OUT") {
         setUser(undefined);
@@ -39,16 +48,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
       subscription.data.subscription.unsubscribe();
     };
   }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await getUser();
-  //     if (data) {
-  //       setUser(data);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
   return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>;
 }

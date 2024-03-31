@@ -12,6 +12,7 @@ export type SigninUser = {
 };
 
 export type GetUser = {
+  userId: string;
   mbti: string;
   nickname: string;
 };

@@ -53,30 +53,20 @@ export function isValidPostForm(post: CreatePost) {
   return true;
 }
 
-export function isValidUserForm(
-  user: SignupUser | SigninUser,
-  setStatus: Dispatch<SetStateAction<Status | undefined>>
-) {
+export function isValidUserForm(user: SignupUser | SigninUser) {
   const mbtiList: string[] = require("/public/data/mbti_list.json");
 
   if (!user.email.match(/^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
-    setStatus({ type: "error", message: "올바른 이메일 형식을 입력하세요." });
-    return false;
+    return new Error("올바른 이메일 형식을 입력하세요.");
   }
   if ("mbti" in user && !mbtiList.includes(user.mbti)) {
-    setStatus({ type: "error", message: "MBTI를 선택해주세요." });
-    return false;
+    return new Error("MBTI를 선택해주세요.");
   }
   if (user.password.length < 6) {
-    setStatus({
-      type: "error",
-      message: "비밀번호는 최소 6글자 이상입니다.",
-    });
-    return false;
+    return new Error("비밀번호는 최소 6글자 이상입니다.");
   }
   if ("passwordCheck" in user && user.password !== user.passwordCheck) {
-    setStatus({ type: "error", message: "비밀번호가 일치하지 않습니다." });
-    return false;
+    return new Error("비밀번호가 일치하지 않습니다.");
   }
-  return true;
+  return null;
 }

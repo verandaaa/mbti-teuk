@@ -6,9 +6,8 @@ import { SignupUser } from "@/model/user";
 import { signup } from "@/service/userClient";
 import { handleSignupChange, isValidUserForm } from "@/util/formControl";
 import Button from "@/components/Button";
-import { Status } from "@/model/status";
 import { useRouter } from "next/navigation";
-import { handleSignupError } from "@/util/userControl";
+import useStatus from "@/hooks/useStatus";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({
@@ -19,7 +18,7 @@ export default function Signup() {
     passwordCheck: "",
   });
   const mbtiList: string[] = require("/public/data/mbti_list.json");
-  const [status, setStatus] = useState<Status>();
+  const { status, handleSignupError, handleFormError } = useStatus();
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -29,14 +28,17 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isValidUserForm(user, setStatus)) {
+    const formError = isValidUserForm(user);
+    if (formError) {
+      handleFormError(formError);
       return;
     }
     const { error } = await signup(user);
     if (error) {
-      handleSignupError(error, setStatus);
+      handleSignupError(error);
       return;
     }
+
     router.push("/list");
   };
 

@@ -7,17 +7,16 @@ import Link from "next/link";
 import { signin } from "@/service/userClient";
 import { handleSigninChange, isValidUserForm } from "@/util/formControl";
 import Button from "@/components/Button";
-import { Status } from "@/model/status";
 import { useRouter } from "next/navigation";
-import { handleSigninError } from "@/util/userControl";
+import useStatus from "@/hooks/useStatus";
 
 export default function Signin() {
   const [user, setUser] = useState<SigninUser>({
     email: "",
     password: "",
   });
-  const [status, setStatus] = useState<Status>();
   const router = useRouter();
+  const { status, handleSigninError, handleFormError } = useStatus();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleSigninChange(e, setUser);
@@ -26,14 +25,17 @@ export default function Signin() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isValidUserForm(user, setStatus)) {
+    const formError = isValidUserForm(user);
+    if (formError) {
+      handleFormError(formError);
       return;
     }
     const { error } = await signin(user);
     if (error) {
-      handleSigninError(error, setStatus);
+      handleSigninError(error);
       return;
     }
+
     router.push("/list");
   };
 

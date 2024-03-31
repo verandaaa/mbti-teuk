@@ -1,9 +1,9 @@
 "use client";
 
-import { getParticipateResult } from "@/service/postClient";
 import { useEffect, useState } from "react";
 import { GetParticipateResult, GetOption, MainClass } from "@/model/post";
 import Chart from "@/components/Chart";
+import { queryGetParticipateResult } from "@/util/postQuery";
 
 type Props = {
   postId: string;
@@ -12,21 +12,11 @@ type Props = {
 };
 
 export default function Result({ postId, options, isShow }: Props) {
-  const [allResults, setAllResults] = useState<GetParticipateResult[]>();
   const [specificResults, setSpecificResults] = useState<GetParticipateResult[]>();
   const [mainClass, setMainClass] = useState<MainClass>("optionId");
   const [subClass, setSubClass] = useState<string>();
   const mbtiList: string[] = require("/public/data/mbti_list.json");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getParticipateResult(postId);
-      if (data) {
-        setAllResults(data);
-      }
-    };
-    fetchData();
-  }, []);
+  const { data: allResults } = queryGetParticipateResult(postId);
 
   useEffect(() => {
     setSpecificResults(allResults?.filter((result) => result[mainClass] == subClass));

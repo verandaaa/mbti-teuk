@@ -8,6 +8,7 @@ export default function useCreateParticipate() {
     mutationFn: ({ optionId, postId }) => createParticipate(optionId, postId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["post"] });
+      queryClient.invalidateQueries({ queryKey: ["result"] });
     },
   });
 

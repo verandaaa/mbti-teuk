@@ -3,12 +3,12 @@
 import PostDeleteButton from "@/components/PostDeleteButton";
 import OptionList from "@/components/OptionList";
 import Result from "@/components/Result";
-import useGetPost from "@/hooks/useGetPost";
+import { queryGetPost } from "@/util/postQuery";
 
 type Props = { id: string };
 
 export default function Post({ id }: Props) {
-  const { data } = useGetPost(id);
+  const { data } = queryGetPost(id);
 
   return (
     <>

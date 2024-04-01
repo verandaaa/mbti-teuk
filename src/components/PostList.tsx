@@ -27,9 +27,9 @@ export default function PostList() {
     <>
       {posts?.map((post, index) => (
         <div className="flex" key={index} onClick={() => handlePostClick(post.id)}>
-          <div>{post.id}</div>
+          <div>{post.categoryName}</div>
           <div>{post.title}</div>
-          <div>{post.description}</div>
+          <div>{post.participateCount}</div>
         </div>
       ))}
     </>

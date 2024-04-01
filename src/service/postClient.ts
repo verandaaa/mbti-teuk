@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function getPostList(): Promise<GetPost[] | null> {
   const supabase = createClient();
-  const { data, error } = await supabase.from("posts").select();
+  const { data, error } = await supabase.from("postView").select();
 
   return data;
 }

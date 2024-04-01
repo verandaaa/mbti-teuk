@@ -249,7 +249,10 @@ CREATE OR REPLACE VIEW "public"."postView" AS
           WHERE ("categories"."id" = "posts"."categoryId")) AS "categoryName",
     ( SELECT "participates"."optionId"
            FROM "public"."participates"
-          WHERE (("participates"."userId" = "auth"."uid"()) AND ("participates"."postId" = "posts"."id"))) AS "selectedOptionId"
+          WHERE (("participates"."userId" = "auth"."uid"()) AND ("participates"."postId" = "posts"."id"))) AS "selectedOptionId",
+    ( SELECT "count"(*) AS "count"
+           FROM "public"."participates"
+          WHERE ("participates"."postId" = "posts"."id")) AS "participateCount"
    FROM "public"."posts";
 
 ALTER TABLE "public"."postView" OWNER TO "postgres";

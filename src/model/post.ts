@@ -2,10 +2,11 @@ export type GetPost = {
   categoryName: string;
   id: string;
   title: string;
-  description: string;
+  participateCount: number;
 };
 
 export type GetDetailPost = GetPost & {
+  description: string;
   userId: string;
   options: GetOption[];
   createdAt: string;

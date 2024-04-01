@@ -90,6 +90,20 @@ $$;
 
 ALTER FUNCTION "public"."handle_new_user"() OWNER TO "postgres";
 
+CREATE OR REPLACE FUNCTION "public"."increment_participateCount_by_optionId"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+BEGIN
+    UPDATE "options"
+    SET "participateCount" = "participateCount" + 1
+    WHERE "id" = NEW."optionId";
+    
+    RETURN NEW;
+END;
+$$;
+
+ALTER FUNCTION "public"."increment_participateCount_by_optionId"() OWNER TO "postgres";
+
 CREATE OR REPLACE FUNCTION "public"."is_valid_mbti"("object_value" "text") RETURNS boolean
     LANGUAGE "plpgsql"
     AS $$
@@ -160,7 +174,8 @@ CREATE TABLE IF NOT EXISTS "public"."options" (
     "value" "text" NOT NULL,
     "postId" "uuid" NOT NULL,
     "imageId" "uuid",
-    "userId" "uuid" DEFAULT "auth"."uid"() NOT NULL
+    "userId" "uuid" DEFAULT "auth"."uid"() NOT NULL,
+    "participateCount" integer DEFAULT 0 NOT NULL
 );
 
 ALTER TABLE "public"."options" OWNER TO "postgres";
@@ -300,6 +315,8 @@ ALTER TABLE ONLY "public"."posts"
 ALTER TABLE ONLY "public"."users"
     ADD CONSTRAINT "users_pkey" PRIMARY KEY ("id");
 
+CREATE OR REPLACE TRIGGER "participate_insert_trigger" AFTER INSERT ON "public"."participates" FOR EACH ROW EXECUTE FUNCTION "public"."increment_participateCount_by_optionId"();
+
 ALTER TABLE ONLY "public"."comments"
     ADD CONSTRAINT "public_comments_postId_fkey" FOREIGN KEY ("postId") REFERENCES "public"."posts"("id") ON UPDATE RESTRICT ON DELETE CASCADE;
 
@@ -401,6 +418,10 @@ GRANT ALL ON FUNCTION "public"."get_user_nickname"() TO "service_role";
 GRANT ALL ON FUNCTION "public"."handle_new_user"() TO "anon";
 GRANT ALL ON FUNCTION "public"."handle_new_user"() TO "authenticated";
 GRANT ALL ON FUNCTION "public"."handle_new_user"() TO "service_role";
+
+GRANT ALL ON FUNCTION "public"."increment_participateCount_by_optionId"() TO "anon";
+GRANT ALL ON FUNCTION "public"."increment_participateCount_by_optionId"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."increment_participateCount_by_optionId"() TO "service_role";
 
 GRANT ALL ON FUNCTION "public"."is_valid_mbti"("object_value" "text") TO "anon";
 GRANT ALL ON FUNCTION "public"."is_valid_mbti"("object_value" "text") TO "authenticated";

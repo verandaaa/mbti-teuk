@@ -34,7 +34,9 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
               alt="option-image"
               className="aspect-square object-cover"
             />
-            <div className="flex items-center mx-4">{option.value}</div>
+            <div className="flex items-center mx-4">
+              {option.value} 투표수:{option.participateCount}
+            </div>
           </div>
         );
       })}

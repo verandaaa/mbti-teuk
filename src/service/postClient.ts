@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { GetPost, CreatePost, GetCategory, GetParticipateResult, GetDetailPost } from "@/model/post";
+import { parseDate } from "@/util/date";
 import { v4 as uuidv4 } from "uuid";
 
 export async function getPostList(): Promise<GetPost[] | null> {
@@ -73,15 +74,17 @@ export async function getPost(postId: string): Promise<GetDetailPost | null> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("postView")
-    .select("*,options(id,value,imageId)")
+    .select("*,options(id,value,imageId,participateCount)")
     .eq("id", postId)
-    .returns<any[]>();
+    .order("id", { referencedTable: "options" })
+    .limit(1)
+    .single();
 
   if (data === null) {
     return null;
   }
 
-  const post = data[0];
+  const post = { ...data, createdAt: parseDate(data.createdAt) };
 
   return post;
 }

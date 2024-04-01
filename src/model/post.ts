@@ -34,6 +34,7 @@ export type GetOption = {
   value: string;
   imageId: string | null;
   postId: string;
+  participateCount: number;
 };
 
 export type GetCategory = {

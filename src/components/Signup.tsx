@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StatusView from "@/components/StatusView";
 import { SignupUser } from "@/model/user";
 import { signup } from "@/service/userClient";
@@ -8,18 +8,29 @@ import { handleSignupChange, isValidUserForm } from "@/util/formControl";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import useStatus from "@/hooks/useStatus";
+import { getNewNickname } from "@/service/userClient";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({
     email: "",
     mbti: "",
-    nickname: "랜덤닉네임",
+    nickname: "",
     password: "",
     passwordCheck: "",
   });
   const mbtiList: string[] = require("/public/data/mbti_list.json");
   const { status, handleSignupError, handleFormError } = useStatus();
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await getNewNickname();
+      if (data) {
+        setUser({ ...user, nickname: data });
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     handleSignupChange(e, setUser);
@@ -66,8 +77,9 @@ export default function Signup() {
           type="nickname"
           name="nickname"
           value={user.nickname}
+          placeholder="닉네임"
           onChange={handleChange}
-          className="el-primary"
+          className="bg-gray-100 el-primary"
           readOnly
         />
         <input

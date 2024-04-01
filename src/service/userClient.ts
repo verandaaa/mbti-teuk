@@ -33,3 +33,13 @@ export async function signout() {
 
   return { error };
 }
+
+export async function getNewNickname() {
+  const supabase = createClient();
+  const { data, error } = await supabase.from("uniqueRandomNickname").select().limit(1).single();
+  const nickname = data.nickname;
+
+  console.log(data);
+
+  return { data: nickname };
+}

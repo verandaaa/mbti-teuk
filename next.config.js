@@ -12,6 +12,7 @@ const nextConfig = {
   images: {
     domains: [process.env.NEXT_PUBLIC_STORAGE_DOMAIN],
   },
+  // reactStrictMode: false,
 };
 
 module.exports = nextConfig;

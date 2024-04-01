@@ -16,7 +16,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const subscription = supabase.auth.onAuthStateChange((event, session) => {
-      console.log(session);
       if (event === "INITIAL_SESSION") {
         if (session) {
           setUser({

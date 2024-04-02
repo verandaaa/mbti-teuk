@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Status } from "@/model/status";
-import { AuthError } from "@supabase/supabase-js";
+import { AuthError, PostgrestError } from "@supabase/supabase-js";
 
 export default function useStatus() {
   const [status, setStatus] = useState<Status>();
 
-  const handleSignupError = (error: AuthError | null) => {
+  const handleSignupError = (error: AuthError) => {
     if (error) {
       if (error.message === "User already registered") {
         setStatus({ type: "error", message: "이미 가입한 이메일 입니다." });
@@ -15,7 +15,7 @@ export default function useStatus() {
     }
   };
 
-  const handleSigninError = (error: AuthError | null) => {
+  const handleSigninError = (error: AuthError) => {
     if (error) {
       if (error.message === "Invalid login credentials") {
         setStatus({ type: "error", message: "이메일 혹은 비밀번호를 확인해주세요." });
@@ -25,11 +25,17 @@ export default function useStatus() {
     }
   };
 
-  const handleFormError = (error: Error | null) => {
+  const handleCreatePostError = (error: PostgrestError) => {
     if (error) {
       setStatus({ type: "error", message: error.message });
     }
   };
 
-  return { status, handleSignupError, handleSigninError, handleFormError };
+  const handleFormError = (error: Error) => {
+    if (error) {
+      setStatus({ type: "error", message: error.message });
+    }
+  };
+
+  return { status, handleSignupError, handleSigninError, handleCreatePostError, handleFormError };
 }

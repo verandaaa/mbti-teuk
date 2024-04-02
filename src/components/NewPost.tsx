@@ -7,8 +7,8 @@ import { createPost, getCategoryList } from "@/service/postClient";
 import { GetCategory } from "@/model/post";
 import { handlePostChange, isValidPostForm } from "@/util/formControl";
 import Button from "@/components/Button";
-import { Status } from "@/model/status";
 import { useRouter } from "next/navigation";
+import useStatus from "@/hooks/useStatus";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
@@ -21,8 +21,8 @@ export default function NewPost() {
     ],
   });
   const [categories, setCategories] = useState<GetCategory[]>();
-  const [status, setStatus] = useState<Status>();
   const router = useRouter();
+  const { status, handleCreatePostError, handleFormError } = useStatus();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,14 +44,24 @@ export default function NewPost() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await createPost(post);
+    const formError = isValidPostForm(post);
+    if (formError) {
+      handleFormError(formError);
+      return;
+    }
+    const { error } = await createPost(post);
+    if (error) {
+      handleCreatePostError(error);
+      return;
+    }
+
     router.push("/list");
   };
 
   return (
     <form className="flex flex-col gap-6 mx-auto max-w-4xl" onSubmit={handleSubmit}>
       <select name="categoryId" onChange={handleChange} className="el-primary">
-        <option value="default">카테고리 선택</option>
+        <option value="">카테고리 선택</option>
         {categories?.map(({ id, name }) => (
           <option key={id} value={id}>
             {name}

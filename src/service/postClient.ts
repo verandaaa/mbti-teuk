@@ -21,7 +21,7 @@ export async function createPost(post: CreatePost) {
   const supabase = createClient();
   const postId = uuidv4();
 
-  const {} = await supabase.from("posts").insert({
+  const { data, error } = await supabase.from("posts").insert({
     id: postId,
     title: post.title,
     description: post.description,
@@ -44,6 +44,7 @@ export async function createPost(post: CreatePost) {
       upsert: false,
     });
   }
+  return { error };
 }
 
 export async function deletePost(id: string) {

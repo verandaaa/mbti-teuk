@@ -50,7 +50,21 @@ export function handleSignupChange(
 }
 
 export function isValidPostForm(post: CreatePost) {
-  return true;
+  if (post.categoryId === 0) {
+    return new Error("카테고리를 선택해주세요.");
+  }
+  if (post.title.length === 0 || post.title.length > 30) {
+    return new Error("제목은 1자 이상 30자 이하여야 합니다.");
+  }
+  if (post.options.length < 2 || post.options.length > 10) {
+    return new Error("보기는 2개 이상 10개 이하여야 합니다.");
+  }
+  for (let i = 0; i < post.options.length; i++) {
+    const value = post.options[i].value;
+    if (value.length === 0 || value.length > 20) {
+      return new Error(i + 1 + "번째 보기는 1자 이상 20자 이하여야 합니다.");
+    }
+  }
 }
 
 export function isValidUserForm(user: SignupUser | SigninUser) {

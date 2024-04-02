@@ -54,12 +54,10 @@ export function isValidPostForm(post: CreatePost) {
 }
 
 export function isValidUserForm(user: SignupUser | SigninUser) {
-  const mbtiList: string[] = require("/public/data/mbti_list.json");
-
   if (!user.email.match(/^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
     return new Error("올바른 이메일 형식을 입력하세요.");
   }
-  if ("mbti" in user && !mbtiList.includes(user.mbti)) {
+  if ("mbti" in user && user.mbti.length === 0) {
     return new Error("MBTI를 선택해주세요.");
   }
   if (user.password.length < 6) {

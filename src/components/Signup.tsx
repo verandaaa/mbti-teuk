@@ -66,7 +66,7 @@ export default function Signup() {
           className="el-primary"
         />
         <select name="mbti" onChange={handleChange} className="el-primary">
-          <option value="default">mbti 선택</option>
+          <option value="">mbti 선택</option>
           {mbtiList.map((mbti, index) => (
             <option key={index} value={mbti}>
               {mbti}

@@ -58,6 +58,18 @@ export default function NewPost() {
     router.push("/list");
   };
 
+  const handleAddButtonClick = () => {
+    setPost((post) => ({ ...post, options: [...post.options, { value: "", image: undefined }] }));
+  };
+
+  const handleSubtractButtonClick = (index: number) => {
+    const newOptions = [...post.options.slice(0, index), ...post.options.slice(index + 1)];
+    setPost((post) => ({
+      ...post,
+      options: newOptions,
+    }));
+  };
+
   return (
     <form className="flex flex-col gap-6 mx-auto max-w-4xl" onSubmit={handleSubmit}>
       <select name="categoryId" onChange={handleChange} className="el-primary">
@@ -95,8 +107,14 @@ export default function NewPost() {
             className="el-primary"
           />
           <input type="file" name="optionFile" accept="image/*" onChange={(e) => handleChange(e, index)} />
+          <Button type="button" style="fit" onClick={() => handleSubtractButtonClick(index)}>
+            -
+          </Button>
         </div>
       ))}
+      <Button type="button" style="fit" onClick={handleAddButtonClick}>
+        +
+      </Button>
       <Button style="default">작성완료</Button>
       <StatusView status={status} />
     </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import StatusView from "@/components/StatusView";
 import { CreatePost } from "@/model/post";
 import { createPost, getCategoryList } from "@/service/postClient";
@@ -23,6 +23,8 @@ export default function NewPost() {
   const [categories, setCategories] = useState<GetCategory[]>();
   const router = useRouter();
   const { status, handleCreatePostError, handleFormError } = useStatus();
+  const fileRefs = useRef<null[] | HTMLInputElement[]>([]);
+  const [imageSrcs, setImageSrcs] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +40,7 @@ export default function NewPost() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     index?: number
   ) => {
-    handlePostChange(e, setPost, index);
+    handlePostChange(e, setPost, setImageSrcs, index);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,6 +70,10 @@ export default function NewPost() {
       ...post,
       options: newOptions,
     }));
+  };
+
+  const handlePreviewImageClick = (index: number) => {
+    fileRefs.current[index]?.click();
   };
 
   return (
@@ -106,7 +112,23 @@ export default function NewPost() {
             onChange={(e) => handleChange(e, index)}
             className="el-primary"
           />
-          <input type="file" name="optionFile" accept="image/*" onChange={(e) => handleChange(e, index)} />
+
+          <img
+            src={imageSrcs[index]}
+            className="w-16 h-16 aspect-square object-cover"
+            alt="보기 이미지"
+            onClick={() => handlePreviewImageClick(index)}
+          />
+          <input
+            ref={(el) => {
+              fileRefs.current[index] = el;
+            }}
+            className="hidden"
+            type="file"
+            name="optionFile"
+            accept="image/*"
+            onChange={(e) => handleChange(e, index)}
+          />
           <Button type="button" style="fit" onClick={() => handleSubtractButtonClick(index)}>
             -
           </Button>

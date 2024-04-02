@@ -6,11 +6,10 @@ import { Dispatch, SetStateAction } from "react";
 export function handlePostChange(
   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   setPost: Dispatch<SetStateAction<CreatePost>>,
+  setImageSrcs: Dispatch<SetStateAction<string[]>>,
   index?: number
 ) {
   const { name, value } = e.target;
-  const files = (e.target as HTMLInputElement).files;
-  const file = files ? files[0] : undefined;
 
   switch (name) {
     case "optionValue": {
@@ -21,16 +20,33 @@ export function handlePostChange(
       break;
     }
     case "optionFile": {
+      const files = (e.target as HTMLInputElement).files;
+      const file = files ? files[0] : undefined;
       setPost((post) => ({
         ...post,
         options: post.options.map((option, i) => (i === index ? { ...option, image: file } : option)),
       }));
+      if (file && typeof index === "number") {
+        handleFileChange(file, setImageSrcs, index);
+      }
       break;
     }
     default: {
       setPost((post) => ({ ...post, [name]: value }));
     }
   }
+}
+
+export function handleFileChange(file: File, setImageSrcs: Dispatch<SetStateAction<string[]>>, index: number) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    setImageSrcs((prevState) => {
+      const newImageSrcs = [...prevState];
+      newImageSrcs[index] = reader.result as string;
+      return newImageSrcs;
+    });
+  };
+  reader.readAsDataURL(file);
 }
 
 export function handleSigninChange(

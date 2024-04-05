@@ -1,5 +1,6 @@
 export type GetPost = {
   categoryName: string;
+  categoryId: number;
   id: string;
   title: string;
   participateCount: number;

@@ -4,7 +4,8 @@ const buttonVariants = cva("", {
   variants: {
     style: {
       default: "el-primary bg-defaultButton text-white",
-      fit: "el-primary",
+      plus: "el-primary w-11 mx-auto",
+      minus: "top-1/2 right-14 absolute transform -translate-y-1/2",
     },
   },
 });

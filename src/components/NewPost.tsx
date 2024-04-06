@@ -103,20 +103,19 @@ export default function NewPost() {
         rows={5}
       />
       {post.options.map((option, index) => (
-        <div key={index}>
+        <div className="relative" key={index}>
           <input
             type="text"
             name="optionValue"
             value={option.value}
             placeholder={"보기 " + (index + 1)}
             onChange={(e) => handleChange(e, index)}
-            className="el-primary"
+            className="w-full el-primary"
           />
 
           <img
-            src={imageSrcs[index]}
-            className="w-16 h-16 aspect-square object-cover"
-            alt="보기 이미지"
+            src={imageSrcs[index] || "/icon/image.png"}
+            className="top-1/2 right-2 absolute w-8 h-8 transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
             onClick={() => handlePreviewImageClick(index)}
           />
           <input
@@ -129,12 +128,12 @@ export default function NewPost() {
             accept="image/*"
             onChange={(e) => handleChange(e, index)}
           />
-          <Button type="button" style="fit" onClick={() => handleSubtractButtonClick(index)}>
-            -
+          <Button type="button" style="minus" onClick={() => handleSubtractButtonClick(index)}>
+            −
           </Button>
         </div>
       ))}
-      <Button type="button" style="fit" onClick={handleAddButtonClick}>
+      <Button type="button" style="plus" onClick={handleAddButtonClick}>
         +
       </Button>
       <Button style="default">작성완료</Button>

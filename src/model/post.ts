@@ -46,6 +46,7 @@ export type GetParticipateResult = {
   optionId: number;
   mbti: string;
   count: number;
+  value?: string;
 };
 
 export type MainClass = "optionId" | "mbti";

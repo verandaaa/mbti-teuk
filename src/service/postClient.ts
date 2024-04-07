@@ -66,7 +66,7 @@ export async function getParticipateResult(postId: string): Promise<GetParticipa
     .from("participateView")
     .select("optionId,mbti,count")
     .eq("postId", postId)
-    .order("count", { ascending: false });
+    .order("optionId");
 
   return data;
 }

@@ -5,11 +5,13 @@ import OptionList from "@/components/OptionList";
 import Result from "@/components/Result";
 import { queryGetPost } from "@/util/postQuery";
 import User from "@/components/User";
+import { useAuthContext } from "@/context/AuthContext";
 
 type Props = { id: string };
 
 export default function Post({ id }: Props) {
   const { data } = queryGetPost(id);
+  const { user } = useAuthContext();
 
   return (
     <>
@@ -41,7 +43,15 @@ export default function Post({ id }: Props) {
             <img src="/icon/vote.png" className="w-4 object-contain"></img>
             <span>{data.participateCount}명 참여</span>
           </div>
-          {<Result postId={id} options={data.options} isShow={data.selectedOptionId !== null ? true : false} />}
+          <div className="m-10"></div>
+          {data.selectedOptionId && user && (
+            <Result
+              postId={id}
+              options={data.options}
+              selectedOptionId={data.selectedOptionId.toString()}
+              userMbti={user.mbti}
+            />
+          )}
         </div>
       )}
       {!data && <div>존재하지 않은 게시글입니다.</div>}

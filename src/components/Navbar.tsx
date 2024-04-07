@@ -1,5 +1,5 @@
 import Link from "next/link";
-import User from "@/components/User";
+import Auth from "@/components/Auth";
 
 const menu = [
   {
@@ -31,7 +31,7 @@ export default async function Navbar() {
           </li>
         ))}
       </ul>
-      <User />
+      <Auth />
     </div>
   );
 }

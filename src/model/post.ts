@@ -11,7 +11,6 @@ export type GetDetailPost = GetPost & {
   userId: string;
   options: GetOption[];
   createdAt: string;
-  viewCount: number;
   userNickname: string;
   userMbti: string;
   categoryId: number;

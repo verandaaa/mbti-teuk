@@ -17,5 +17,11 @@ export default function PostDeleteButton({ userId, id }: Props) {
 
   const isShow = userId === user?.userId;
 
-  return isShow && <button onClick={handleDeletePostButtonClick}>삭제</button>;
+  return (
+    isShow && (
+      <button className="text-gray-500 text-sm" onClick={handleDeletePostButtonClick}>
+        삭제
+      </button>
+    )
+  );
 }

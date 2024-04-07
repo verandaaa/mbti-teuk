@@ -1,26 +1,17 @@
-"use client";
+type Props = {
+  user: {
+    mbti: string;
+    nickname: string;
+  };
+};
 
-import Link from "next/link";
-import Signout from "@/components/Signout";
-import { useAuthContext } from "@/context/AuthContext";
-
-export default function User() {
-  const { user } = useAuthContext();
+export default function User({ user }: Props) {
+  const mbtiColors = require("/public/data/mbti_colors.json");
 
   return (
-    <>
-      {user ? (
-        <div>
-          <span>
-            {user.mbti} {user.nickname}
-          </span>
-          <Signout />
-        </div>
-      ) : (
-        <Link href="/signin" aria-label="로그인">
-          로그인
-        </Link>
-      )}
-    </>
+    <div className="flex items-center gap-x-1.5">
+      <span className={`${mbtiColors[user.mbti]} px-2 py-0.5 text-sm`}>{user.mbti} </span>
+      <span>{user.nickname}</span>
+    </div>
   );
 }

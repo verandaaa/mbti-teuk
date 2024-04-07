@@ -4,6 +4,7 @@ import PostDeleteButton from "@/components/PostDeleteButton";
 import OptionList from "@/components/OptionList";
 import Result from "@/components/Result";
 import { queryGetPost } from "@/util/postQuery";
+import User from "@/components/User";
 
 type Props = { id: string };
 
@@ -14,21 +15,32 @@ export default function Post({ id }: Props) {
     <>
       {data && (
         <div className="p-6 border border-black rounded">
-          <div>
-            <span>&gt; {data.categoryName}</span>
-            <h1>{data.title}</h1>
-            <span>{data.userMbti}</span>
-            <span>{data.userNickname}</span>
-            <span>{data.createdAt}</span>
-            <span>조회 : {data.viewCount}</span>
-            {<PostDeleteButton userId={data.userId} id={id} />}
+          <div className="flex flex-col gap-y-1.5">
+            <div>
+              <span>&gt; {data.categoryName}</span>
+            </div>
+            <div>
+              <span className="text-2xl">{data.title}</span>
+            </div>
+            <div className="flex justify-between">
+              <div className="flex gap-x-3">
+                <User user={{ mbti: data.userMbti, nickname: data.userNickname }} />
+                <div>
+                  <span className="text-gray-500 text-xs">{data.createdAt}</span>
+                </div>
+              </div>
+              <div> {<PostDeleteButton userId={data.userId} id={id} />}</div>
+            </div>
           </div>
           <div className="my-4 border-b border-black"></div>
           <div>
             <div>{data.description}</div>
             {<OptionList options={data.options} postId={id} selectedOptionId={data.selectedOptionId} />}
           </div>
-          <span>{data.participateCount}명 참여</span>
+          <div className="flex gap-x-2">
+            <img src="/icon/vote.png" className="w-4 object-contain"></img>
+            <span>{data.participateCount}명 참여</span>
+          </div>
           {<Result postId={id} options={data.options} isShow={data.selectedOptionId !== null ? true : false} />}
         </div>
       )}

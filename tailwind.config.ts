@@ -21,6 +21,10 @@ const config: Config = {
             background: "#FFEBEF",
           },
         },
+        option: {
+          blue: "#2100A6",
+          sky: "#B5E4FF",
+        },
       },
     },
   },

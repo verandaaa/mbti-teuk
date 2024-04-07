@@ -30,12 +30,12 @@ export async function createPost(post: CreatePost) {
 
   for (let i = 0; i < post.options.length; i++) {
     const optionId = uuidv4();
+    const image = post.options[i].image;
 
     const {} = await supabase
       .from("options")
-      .insert({ value: post.options[i].value, postId: postId, imageId: optionId });
+      .insert({ value: post.options[i].value, postId: postId, imageId: image ? optionId : null });
 
-    const image = post.options[i].image;
     if (!image) {
       continue;
     }

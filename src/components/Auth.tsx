@@ -11,7 +11,7 @@ export default function Auth() {
   return (
     <>
       {user ? (
-        <User user={user} />
+        <User user={user} componentType="navbar" />
       ) : (
         <Link href="/signin" aria-label="로그인">
           로그인

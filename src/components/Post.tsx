@@ -27,7 +27,7 @@ export default function Post({ id }: Props) {
             </div>
             <div className="flex justify-between">
               <div className="flex gap-x-3">
-                <User user={{ mbti: data.userMbti, nickname: data.userNickname }} />
+                <User user={{ mbti: data.userMbti, nickname: data.userNickname }} componentType="post" />
                 <div>
                   <span className="text-gray-500 text-xs">{data.createdAt}</span>
                 </div>

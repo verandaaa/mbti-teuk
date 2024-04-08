@@ -16,3 +16,5 @@ export type GetUser = {
   mbti: string;
   nickname: string;
 };
+
+export type UserComponentType = "navbar" | "post";

@@ -1,8 +1,17 @@
-import { type NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  const response = await updateSession(request);
+
+  const cookie = response.headers.get("x-middleware-request-cookie");
+  if (!cookie) {
+    if (request.nextUrl.pathname === "/new") {
+      return NextResponse.redirect(new URL("/signin", request.nextUrl.origin));
+    }
+  }
+
+  return response;
 }
 
 export const config = {

@@ -40,7 +40,7 @@ export default function PostList() {
             <span>{post.title}</span>
           </div>
           <div className="flex items-center gap-x-4">
-            <MdOutlineHowToVote size={18} />
+            <MdOutlineHowToVote className={post.selectedOptionId ? "black" : "text-green-500"} size={18} />
             <span>{post.participateCount}</span>
           </div>
         </div>

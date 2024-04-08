@@ -4,6 +4,7 @@ export type GetPost = {
   id: string;
   title: string;
   participateCount: number;
+  selectedOptionId: number | null;
 };
 
 export type GetDetailPost = GetPost & {
@@ -14,7 +15,6 @@ export type GetDetailPost = GetPost & {
   userNickname: string;
   userMbti: string;
   categoryId: number;
-  selectedOptionId: number | null;
 };
 
 export type CreatePost = {

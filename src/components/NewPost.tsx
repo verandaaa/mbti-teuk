@@ -62,10 +62,20 @@ export default function NewPost() {
   };
 
   const handleAddButtonClick = () => {
+    const formError = isValidPostForm(post, "add");
+    if (formError) {
+      handleFormError(formError);
+      return;
+    }
     setPost((post) => ({ ...post, options: [...post.options, { value: "", image: undefined }] }));
   };
 
   const handleSubtractButtonClick = (index: number) => {
+    const formError = isValidPostForm(post, "subtract");
+    if (formError) {
+      handleFormError(formError);
+      return;
+    }
     const newOptions = [...post.options.slice(0, index), ...post.options.slice(index + 1)];
     setPost((post) => ({
       ...post,

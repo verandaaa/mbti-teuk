@@ -65,15 +65,21 @@ export function handleSignupChange(
   setUser((user) => ({ ...user, [name]: value }));
 }
 
-export function isValidPostForm(post: CreatePost) {
+export function isValidPostForm(post: CreatePost, optionButtonParam?: string) {
+  if (post.options.length === 2 && optionButtonParam === "subtract") {
+    return new Error("보기는 2개 이상 10개 이하여야 합니다.");
+  }
+  if (post.options.length === 10 && optionButtonParam === "add") {
+    return new Error("보기는 2개 이상 10개 이하여야 합니다.");
+  }
+  if (optionButtonParam) {
+    return null;
+  }
   if (post.categoryId === 0) {
     return new Error("카테고리를 선택해주세요.");
   }
   if (post.title.length === 0 || post.title.length > 30) {
     return new Error("제목은 1자 이상 30자 이하여야 합니다.");
-  }
-  if (post.options.length < 2 || post.options.length > 10) {
-    return new Error("보기는 2개 이상 10개 이하여야 합니다.");
   }
   for (let i = 0; i < post.options.length; i++) {
     const value = post.options[i].value;
@@ -81,6 +87,7 @@ export function isValidPostForm(post: CreatePost) {
       return new Error(i + 1 + "번째 보기는 1자 이상 20자 이하여야 합니다.");
     }
   }
+  return null;
 }
 
 export function isValidUserForm(user: SignupUser | SigninUser) {

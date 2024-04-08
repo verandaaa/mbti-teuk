@@ -3,10 +3,15 @@
 import { signout } from "@/service/userClient";
 import { useRouter } from "next/navigation";
 
-export default function Signout() {
+type Props = {
+  closeModal: () => void;
+};
+
+export default function Signout({ closeModal }: Props) {
   const router = useRouter();
 
   const handleSignoutButtonClick = async () => {
+    closeModal();
     const { error } = await signout();
     if (error) {
       return;
@@ -14,5 +19,9 @@ export default function Signout() {
     router.push("/list");
   };
 
-  return <span onClick={handleSignoutButtonClick}>로그아웃</span>;
+  return (
+    <span className="hover:bg-gray-200 p-2 rounded-lg w-full cursor-pointer" onClick={handleSignoutButtonClick}>
+      로그아웃
+    </span>
+  );
 }

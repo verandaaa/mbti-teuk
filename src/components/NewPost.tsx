@@ -9,6 +9,7 @@ import { handlePostChange, isValidPostForm } from "@/util/formControl";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import useStatus from "@/hooks/useStatus";
+import { CiImageOn } from "react-icons/ci";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
@@ -113,11 +114,18 @@ export default function NewPost() {
             className="w-full el-primary"
           />
 
-          <img
-            src={imageSrcs[index] || "/icon/image.png"}
-            className="top-1/2 right-2 absolute w-8 h-8 transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
-            onClick={() => handlePreviewImageClick(index)}
-          />
+          {imageSrcs[index] ? (
+            <img
+              src={imageSrcs[index]}
+              className="top-1/2 right-2 absolute w-8 h-8 transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
+              onClick={() => handlePreviewImageClick(index)}
+            />
+          ) : (
+            <CiImageOn
+              className="top-1/2 right-2 absolute w-8 h-8 transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
+              onClick={() => handlePreviewImageClick(index)}
+            />
+          )}
           <input
             ref={(el) => {
               fileRefs.current[index] = el;

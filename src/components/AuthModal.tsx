@@ -12,7 +12,7 @@ export default function AuthModal({ setIsModalOpen }: Props) {
   return (
     <>
       <div className="top-0 left-0 fixed w-screen h-screen" onClick={closeModal}></div>
-      <div className="top-[2.5rem] left-0 absolute flex flex-col gap-y-1 border-gray-300 bg-white shadow-md p-1 border rounded-xl w-full">
+      <div className="top-[2.5rem] right-0 absolute flex flex-col gap-y-1 border-gray-300 bg-white shadow-md p-1 border rounded-xl w-48">
         <div onClick={closeModal} className="hover:bg-gray-200 p-2 rounded-lg w-full cursor-pointer">
           <MyPage />
         </div>

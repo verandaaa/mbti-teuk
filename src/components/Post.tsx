@@ -6,6 +6,7 @@ import Result from "@/components/Result";
 import { queryGetPost } from "@/util/postQuery";
 import User from "@/components/User";
 import { useAuthContext } from "@/context/AuthContext";
+import { MdOutlineHowToVote } from "react-icons/md";
 
 type Props = { id: string };
 
@@ -39,8 +40,8 @@ export default function Post({ id }: Props) {
             <div>{data.description}</div>
             {<OptionList options={data.options} postId={id} selectedOptionId={data.selectedOptionId} />}
           </div>
-          <div className="flex gap-x-2">
-            <img src="/icon/vote.png" className="w-4 object-contain"></img>
+          <div className="flex items-center gap-x-2">
+            <MdOutlineHowToVote size={18} />
             <span>{data.participateCount}명 참여</span>
           </div>
           <div className="m-10"></div>

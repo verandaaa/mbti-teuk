@@ -4,6 +4,7 @@ import { getPostList } from "@/service/postClient";
 import { useEffect, useState } from "react";
 import { GetPost } from "@/model/post";
 import { useRouter } from "next/navigation";
+import { MdOutlineHowToVote } from "react-icons/md";
 
 export default function PostList() {
   const [posts, setPosts] = useState<GetPost[]>();
@@ -39,7 +40,7 @@ export default function PostList() {
             <span>{post.title}</span>
           </div>
           <div className="flex items-center gap-x-4">
-            <img src="/icon/vote.png" className="w-4"></img>
+            <MdOutlineHowToVote size={18} />
             <span>{post.participateCount}</span>
           </div>
         </div>

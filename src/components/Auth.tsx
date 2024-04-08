@@ -11,10 +11,7 @@ export default function Auth() {
   return (
     <>
       {user ? (
-        <div className="flex gap-x-2">
-          <User user={user} />
-          <Signout />
-        </div>
+        <User user={user} />
       ) : (
         <Link href="/signin" aria-label="로그인">
           로그인

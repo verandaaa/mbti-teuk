@@ -19,19 +19,26 @@ const menu = [
 export default async function Navbar() {
   return (
     <div className="flex justify-between py-4">
-      <Link href="/" aria-label="홈">
-        <h1>MBTI특</h1>
-      </Link>
-      <ul className="flex gap-20">
-        {menu.map(({ href, title }) => (
-          <li key={href}>
-            <Link href={href} aria-label={title}>
-              {title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <Auth />
+      <div className="w-1/5">
+        <Link href="/" aria-label="홈" className="flex gap-x-2">
+          <img src="/icon/logo.png" className="w-6 object-contain"></img>
+          <span className="sm:block hidden">MBTI특</span>
+        </Link>
+      </div>
+      <div className="w-3/5">
+        <ul className="flex justify-center gap-4 sm:gap-20">
+          {menu.map(({ href, title }) => (
+            <li key={href}>
+              <Link href={href} aria-label={title}>
+                {title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="flex justify-end w-1/5">
+        <Auth />
+      </div>
     </div>
   );
 }

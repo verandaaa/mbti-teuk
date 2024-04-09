@@ -6,7 +6,7 @@ export default function useCreateParticipate() {
 
   const mutation = useMutation<void, Error, { optionId: number; postId: string }>({
     mutationFn: ({ optionId, postId }) => createParticipate(optionId, postId),
-    onSuccess: (postId) => {
+    onSuccess: (data, { postId }) => {
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
       queryClient.invalidateQueries({ queryKey: ["result", postId] });
     },

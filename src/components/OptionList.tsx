@@ -4,6 +4,8 @@ import useCreateParticipate from "@/hooks/useCreateParticipate";
 import { GetOption } from "@/model/post";
 import { calculatePercentage } from "@/util/percent";
 import { useEffect, useState } from "react";
+import { useAuthContext } from "@/context/AuthContext";
+import AnonymousSignin from "@/components/AnonymousSignin";
 
 type Props = {
   options: GetOption[];
@@ -15,6 +17,8 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
   const { mutation } = useCreateParticipate();
   const [percentages, setPercentages] = useState<number[]>([]);
   const percentageWidths = require("/public/data/percentage_widths.json");
+  const { user } = useAuthContext();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(user ? false : true);
 
   useEffect(() => {
     const percentages = calculatePercentage(options);
@@ -74,6 +78,7 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
           </div>
         );
       })}
+      {isModalOpen && <AnonymousSignin setIsModalOpen={setIsModalOpen} />}
     </div>
   );
 }

@@ -27,6 +27,21 @@ export async function signin(user: SigninUser) {
   return { error };
 }
 
+export async function signinAnonymously(mbti: String) {
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.signInAnonymously({
+    options: {
+      data: {
+        mbti,
+        nickname: "비로그인 유저",
+      },
+    },
+  });
+
+  return { error };
+}
+
 export async function signout() {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();

@@ -2,12 +2,18 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
-  const response = await updateSession(request);
+  const { response, user } = await updateSession(request);
+  const pathname = request.nextUrl.pathname;
+  const baseUrl = request.nextUrl.origin;
 
-  const cookie = response.headers.get("x-middleware-request-cookie");
-  if (!cookie) {
-    if (request.nextUrl.pathname === "/new") {
-      return NextResponse.redirect(new URL("/signin", request.nextUrl.origin));
+  if (!user) {
+    if (["/new"].includes(pathname)) {
+      return NextResponse.redirect(new URL("/signin", baseUrl));
+    }
+  }
+  if (user) {
+    if (["/signin", "signup"].includes(pathname)) {
+      return NextResponse.redirect(new URL("/list", baseUrl));
     }
   }
 

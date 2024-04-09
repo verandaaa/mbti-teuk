@@ -8,7 +8,7 @@ type Props = {
 
 export default async function PostRoute({ id }: Props) {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({ queryKey: ["post"], queryFn: () => getPost(id) });
+  await queryClient.prefetchQuery({ queryKey: ["post", id], queryFn: () => getPost(id) });
   const dehydratedState = dehydrate(queryClient);
 
   return (

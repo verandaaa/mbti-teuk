@@ -18,7 +18,7 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
   const [percentages, setPercentages] = useState<number[]>([]);
   const percentageWidths = require("/public/data/percentage_widths.json");
   const { user } = useAuthContext();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(user ? false : true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const percentages = calculatePercentage(options);
@@ -26,6 +26,10 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
   }, [options]);
 
   const hanldeOptionClick = (optionId: number) => {
+    if (!user) {
+      setIsModalOpen(true);
+      return;
+    }
     if (selectedOptionId === null) {
       mutation.mutate({ optionId, postId });
     }

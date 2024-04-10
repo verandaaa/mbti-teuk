@@ -34,10 +34,11 @@ export async function signinAnonymously(mbti: String) {
     options: {
       data: {
         mbti,
-        nickname: "비로그인 유저",
+        nickname: "익명 로그인 유저",
       },
     },
   });
+  console.log(error);
 
   return { error };
 }

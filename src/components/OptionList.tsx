@@ -5,7 +5,7 @@ import { GetOption } from "@/model/post";
 import { calculatePercentage } from "@/util/percent";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
-import AnonymousSignin from "@/components/AnonymousSignin";
+import SelectSigninModal from "@/components/SelectSigninModal";
 
 type Props = {
   options: GetOption[];
@@ -82,7 +82,7 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
           </div>
         );
       })}
-      {isModalOpen && <AnonymousSignin setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && <SelectSigninModal setIsModalOpen={setIsModalOpen} />}
     </div>
   );
 }

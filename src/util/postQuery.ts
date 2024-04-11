@@ -1,5 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPost, getParticipateResult } from "@/service/postClient";
+import { getPostList, getPost, getParticipateResult } from "@/service/postClient";
+
+export function queryGetPostList() {
+  const { data } = useQuery({ queryKey: ["posts"], queryFn: () => getPostList() });
+
+  return { data };
+}
 
 export function queryGetPost(id: string) {
   const { data } = useQuery({ queryKey: ["post", id], queryFn: () => getPost(id) });

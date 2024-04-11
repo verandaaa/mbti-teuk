@@ -1,5 +1,5 @@
-import PostList from "@/components/PostList";
+import PostListRoute from "@/components/PostListRoute";
 
 export default function ListPage() {
-  return <PostList />;
+  return <PostListRoute />;
 }

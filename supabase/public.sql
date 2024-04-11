@@ -18,10 +18,6 @@ CREATE SCHEMA IF NOT EXISTS "private";
 
 ALTER SCHEMA "private" OWNER TO "postgres";
 
-CREATE SCHEMA IF NOT EXISTS "public";
-
-ALTER SCHEMA "public" OWNER TO "pg_database_owner";
-
 COMMENT ON SCHEMA "public" IS 'standard public schema';
 
 CREATE EXTENSION IF NOT EXISTS "pg_graphql" WITH SCHEMA "graphql";
@@ -240,7 +236,6 @@ CREATE TABLE IF NOT EXISTS "public"."posts" (
     "title" "text" NOT NULL,
     "description" "text",
     "createdAt" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "viewCount" integer DEFAULT 1 NOT NULL,
     "userNickname" "text" DEFAULT "public"."get_user_nickname"() NOT NULL,
     "userMbti" "text" DEFAULT "public"."get_user_mbti"() NOT NULL,
     "categoryId" integer NOT NULL,
@@ -254,7 +249,6 @@ CREATE OR REPLACE VIEW "public"."postView" AS
     "posts"."title",
     "posts"."description",
     "posts"."createdAt",
-    "posts"."viewCount",
     "posts"."userNickname",
     "posts"."userMbti",
     "posts"."categoryId",
@@ -350,13 +344,13 @@ CREATE POLICY "Enable delete for users based on userId" ON "public"."options" FO
 
 CREATE POLICY "Enable delete for users based on userId" ON "public"."posts" FOR DELETE TO "authenticated" USING (("auth"."uid"() = "userId"));
 
+CREATE POLICY "Enable insert for authenticated and permanent users only" ON "public"."options" AS RESTRICTIVE FOR INSERT TO "authenticated" WITH CHECK (((("auth"."jwt"() ->> 'is_anonymous'::"text"))::boolean IS FALSE));
+
+CREATE POLICY "Enable insert for authenticated and permanent users only" ON "public"."posts" AS RESTRICTIVE FOR INSERT TO "authenticated" WITH CHECK (((("auth"."jwt"() ->> 'is_anonymous'::"text"))::boolean IS FALSE));
+
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."comments" FOR INSERT TO "authenticated" WITH CHECK (true);
 
-CREATE POLICY "Enable insert for authenticated users only" ON "public"."options" FOR INSERT TO "authenticated" WITH CHECK (true);
-
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."participates" FOR INSERT TO "authenticated" WITH CHECK (true);
-
-CREATE POLICY "Enable insert for authenticated users only" ON "public"."posts" FOR INSERT TO "authenticated" WITH CHECK (true);
 
 CREATE POLICY "Enable read access for all users" ON "public"."adjectives" FOR SELECT USING (true);
 
@@ -397,6 +391,8 @@ ALTER TABLE "public"."participates" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."posts" ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE "public"."users" ENABLE ROW LEVEL SECURITY;
+
+ALTER PUBLICATION "supabase_realtime" OWNER TO "postgres";
 
 GRANT USAGE ON SCHEMA "public" TO "postgres";
 GRANT USAGE ON SCHEMA "public" TO "anon";

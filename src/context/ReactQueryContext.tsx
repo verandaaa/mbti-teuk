@@ -11,6 +11,7 @@ export function ReactQueryContextProvider({ children }: PropsWithChildren) {
         defaultOptions: {
           queries: {
             retry: false,
+            staleTime: 60 * 1000,
           },
         },
       })

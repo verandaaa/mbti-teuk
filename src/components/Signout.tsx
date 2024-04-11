@@ -16,7 +16,7 @@ export default function Signout({ closeModal }: Props) {
     if (error) {
       return;
     }
-    router.push("/list");
+    router.refresh();
   };
 
   return (

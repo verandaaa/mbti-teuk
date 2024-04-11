@@ -49,8 +49,8 @@ export default function Signup() {
       handleSignupError(error);
       return;
     }
-
-    router.push("/list");
+    router.refresh();
+    router.back();
   };
 
   return (

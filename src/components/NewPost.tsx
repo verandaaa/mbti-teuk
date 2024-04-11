@@ -52,13 +52,12 @@ export default function NewPost() {
       handleFormError(formError);
       return;
     }
-    const { error } = await createPost(post);
+    const { postId, error } = await createPost(post);
     if (error) {
       handleCreatePostError(error);
       return;
     }
-
-    router.push("/list");
+    router.push(`/list/${postId}`);
   };
 
   const handleAddButtonClick = () => {

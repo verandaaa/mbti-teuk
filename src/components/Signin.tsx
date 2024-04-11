@@ -35,8 +35,8 @@ export default function Signin() {
       handleSigninError(error);
       return;
     }
-
-    router.push("/list");
+    router.refresh();
+    router.back();
   };
 
   return (

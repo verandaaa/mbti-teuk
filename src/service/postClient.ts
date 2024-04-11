@@ -44,7 +44,7 @@ export async function createPost(post: CreatePost) {
       upsert: false,
     });
   }
-  return { error };
+  return { postId, error };
 }
 
 export async function deletePost(id: string) {

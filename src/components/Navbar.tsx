@@ -21,7 +21,7 @@ export default async function Navbar() {
     <div className="flex justify-between py-4">
       <div className="w-1/5">
         <Link href="/" aria-label="홈" className="flex gap-x-2">
-          <img src="/icon/logo.png" className="w-6 object-contain"></img>
+          <img src="/icon/logo.png" className="w-6 object-contain" alt="logo"></img>
           <span className="sm:block hidden">MBTI특</span>
         </Link>
       </div>

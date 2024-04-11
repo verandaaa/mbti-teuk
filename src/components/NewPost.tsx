@@ -129,6 +129,7 @@ export default function NewPost() {
               src={imageSrcs[index]}
               className="top-1/2 right-2 absolute w-8 h-8 transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
               onClick={() => handlePreviewImageClick(index)}
+              alt="option-image"
             />
           ) : (
             <CiImageOn

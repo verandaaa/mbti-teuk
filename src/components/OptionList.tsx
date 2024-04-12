@@ -1,6 +1,6 @@
 "use client";
 
-import useCreateParticipate from "@/hooks/useCreateParticipate";
+import { useMutationCreateParticipate } from "@/hooks/usePostMutation";
 import { GetOption } from "@/model/post";
 import { calculatePercentage } from "@/util/percent";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function OptionList({ options, postId, selectedOptionId }: Props) {
-  const { mutation } = useCreateParticipate();
+  const { mutation } = useMutationCreateParticipate();
   const [percentages, setPercentages] = useState<number[]>([]);
   const percentageWidths = require("/public/data/percentage_widths.json");
   const { user } = useAuthContext();

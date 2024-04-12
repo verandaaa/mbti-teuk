@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createParticipate } from "@/service/postClient";
 
-export default function useCreateParticipate() {
+export function useMutationCreateParticipate() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<void, Error, { optionId: number; postId: string }>({

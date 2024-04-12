@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { GetParticipateResult, GetOption, MainClass } from "@/model/post";
 import Chart from "@/components/Chart";
-import { queryGetParticipateResult } from "@/hooks/usePostQuery";
+import { useQueryGetParticipateResult } from "@/hooks/usePostQuery";
 import { convertResult } from "@/util/result";
 
 type Props = {
@@ -18,7 +18,7 @@ export default function Result({ postId, options, selectedOptionId, userMbti }: 
   const [mainClass, setMainClass] = useState<MainClass>("optionId");
   const [subClass, setSubClass] = useState<string>(selectedOptionId);
   const mbtiList: string[] = require("/public/data/mbti_list.json");
-  const { data: allResults, isLoading } = queryGetParticipateResult(postId);
+  const { data: allResults, isLoading } = useQueryGetParticipateResult(postId);
 
   useEffect(() => {
     if (!isLoading && allResults) {

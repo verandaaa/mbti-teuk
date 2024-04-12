@@ -1,11 +1,11 @@
 "use client";
 
 import { MdOutlineHowToVote } from "react-icons/md";
-import { queryGetPostList } from "@/hooks/usePostQuery";
+import { useQueryGetPostList } from "@/hooks/usePostQuery";
 import Link from "next/link";
 
 export default function PostList() {
-  const { data: posts } = queryGetPostList();
+  const { data: posts } = useQueryGetPostList();
   const categoryColors = require("/public/data/category_colors.json");
 
   return (

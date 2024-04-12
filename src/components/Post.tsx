@@ -3,7 +3,7 @@
 import PostDeleteButton from "@/components/PostDeleteButton";
 import OptionList from "@/components/OptionList";
 import Result from "@/components/Result";
-import { queryGetPost } from "@/hooks/usePostQuery";
+import { useQueryGetPost } from "@/hooks/usePostQuery";
 import User from "@/components/User";
 import { useAuthContext } from "@/context/AuthContext";
 import { MdOutlineHowToVote } from "react-icons/md";
@@ -11,7 +11,7 @@ import { MdOutlineHowToVote } from "react-icons/md";
 type Props = { id: string };
 
 export default function Post({ id }: Props) {
-  const { data } = queryGetPost(id);
+  const { data } = useQueryGetPost(id);
   const { user } = useAuthContext();
 
   return (

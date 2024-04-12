@@ -344,13 +344,17 @@ CREATE POLICY "Enable delete for users based on userId" ON "public"."options" FO
 
 CREATE POLICY "Enable delete for users based on userId" ON "public"."posts" FOR DELETE TO "authenticated" USING (("auth"."uid"() = "userId"));
 
-CREATE POLICY "Enable insert for authenticated and permanent users only" ON "public"."options" AS RESTRICTIVE FOR INSERT TO "authenticated" WITH CHECK (((("auth"."jwt"() ->> 'is_anonymous'::"text"))::boolean IS FALSE));
-
-CREATE POLICY "Enable insert for authenticated and permanent users only" ON "public"."posts" AS RESTRICTIVE FOR INSERT TO "authenticated" WITH CHECK (((("auth"."jwt"() ->> 'is_anonymous'::"text"))::boolean IS FALSE));
-
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."comments" FOR INSERT TO "authenticated" WITH CHECK (true);
 
+CREATE POLICY "Enable insert for authenticated users only" ON "public"."options" FOR INSERT TO "authenticated" WITH CHECK (true);
+
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."participates" FOR INSERT TO "authenticated" WITH CHECK (true);
+
+CREATE POLICY "Enable insert for authenticated users only" ON "public"."posts" FOR INSERT TO "authenticated" WITH CHECK (true);
+
+CREATE POLICY "Enable insert for permanent users only" ON "public"."options" AS RESTRICTIVE FOR INSERT TO "authenticated" WITH CHECK ((( SELECT (("auth"."jwt"() ->> 'is_anonymous'::"text"))::boolean AS "bool") IS FALSE));
+
+CREATE POLICY "Enable insert for permanent users only" ON "public"."posts" AS RESTRICTIVE FOR INSERT TO "authenticated" WITH CHECK ((( SELECT (("auth"."jwt"() ->> 'is_anonymous'::"text"))::boolean AS "bool") IS FALSE));
 
 CREATE POLICY "Enable read access for all users" ON "public"."adjectives" FOR SELECT USING (true);
 

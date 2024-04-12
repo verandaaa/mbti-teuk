@@ -18,6 +18,7 @@ export type GetDetailPost = GetPost & {
 };
 
 export type CreatePost = {
+  id: string;
   categoryId: number;
   title: string;
   description: string;

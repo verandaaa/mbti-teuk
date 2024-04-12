@@ -19,10 +19,9 @@ export async function getCategoryList(): Promise<GetCategory[] | null> {
 
 export async function createPost(post: CreatePost) {
   const supabase = createClient();
-  const postId = uuidv4();
 
   const { data, error } = await supabase.from("posts").insert({
-    id: postId,
+    id: post.id,
     title: post.title,
     description: post.description,
     categoryId: post.categoryId,
@@ -34,17 +33,20 @@ export async function createPost(post: CreatePost) {
 
     const {} = await supabase
       .from("options")
-      .insert({ value: post.options[i].value, postId: postId, imageId: image ? optionId : null });
+      .insert({ value: post.options[i].value, postId: post.id, imageId: image ? optionId : null });
 
     if (!image) {
       continue;
     }
-    const {} = await supabase.storage.from("images").upload(`${postId}/${optionId}.jpg`, image, {
+    const {} = await supabase.storage.from("images").upload(`${post.id}/${optionId}.jpg`, image, {
       cacheControl: "3600",
       upsert: false,
     });
   }
-  return { postId, error };
+
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function deletePost(id: string) {

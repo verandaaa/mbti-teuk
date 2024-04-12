@@ -25,16 +25,12 @@ export default function useStatus() {
     }
   };
 
-  const handleCreatePostError = (error: PostgrestError) => {
-    if (error) {
-      setStatus({ type: "error", message: error.message });
-    }
+  const handleCreatePostError = (error: Error): Status => {
+    return { type: "error", message: error.message };
   };
 
-  const handleFormError = (error: Error) => {
-    if (error) {
-      setStatus({ type: "error", message: error.message });
-    }
+  const handleFormError = (error: Error): Status => {
+    return { type: "error", message: error.message };
   };
 
   return { status, handleSignupError, handleSigninError, handleCreatePostError, handleFormError };

@@ -3,17 +3,20 @@
 import { useState, useEffect, useRef } from "react";
 import StatusView from "@/components/StatusView";
 import { CreatePost } from "@/model/post";
-import { createPost, getCategoryList } from "@/service/postClient";
+import { getCategoryList } from "@/service/postClient";
 import { GetCategory } from "@/model/post";
 import { handlePostChange, isValidPostForm } from "@/util/formControl";
 import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
-import useStatus from "@/hooks/useStatus";
 import { CiImageOn } from "react-icons/ci";
 import Image from "next/image";
+import { useMutationCreatePost } from "@/hooks/usePostMutation";
+import { v4 as uuidv4 } from "uuid";
+import { Status } from "@/model/status";
+import { useValidPostForm } from "@/hooks/useValidForm";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
+    id: uuidv4(),
     categoryId: 0,
     title: "",
     description: "",
@@ -23,10 +26,11 @@ export default function NewPost() {
     ],
   });
   const [categories, setCategories] = useState<GetCategory[]>();
-  const router = useRouter();
-  const { status, handleCreatePostError, handleFormError } = useStatus();
   const fileRefs = useRef<null[] | HTMLInputElement[]>([]);
   const [imageSrcs, setImageSrcs] = useState<string[]>([]);
+  const [status, setStatus] = useState<Status>();
+  const { mutation } = useMutationCreatePost(setStatus);
+  const { vaildPostForm } = useValidPostForm(setStatus);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,34 +52,19 @@ export default function NewPost() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formError = isValidPostForm(post);
-    if (formError) {
-      handleFormError(formError);
-      return;
-    }
-    const { postId, error } = await createPost(post);
-    if (error) {
-      handleCreatePostError(error);
-      return;
-    }
-    router.push(`/list/${postId}`);
+    if (!vaildPostForm(post)) return;
+    mutation.mutate({ post });
   };
 
   const handleAddButtonClick = () => {
-    const formError = isValidPostForm(post, "add");
-    if (formError) {
-      handleFormError(formError);
-      return;
-    }
+    if (!vaildPostForm(post, "add")) return;
+
     setPost((post) => ({ ...post, options: [...post.options, { value: "", image: undefined }] }));
   };
 
   const handleSubtractButtonClick = (index: number) => {
-    const formError = isValidPostForm(post, "subtract");
-    if (formError) {
-      handleFormError(formError);
-      return;
-    }
+    if (!vaildPostForm(post, "subtract")) return;
+
     const newOptions = [...post.options.slice(0, index), ...post.options.slice(index + 1)];
     setPost((post) => ({
       ...post,

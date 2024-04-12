@@ -3,7 +3,7 @@
 import PostDeleteButton from "@/components/PostDeleteButton";
 import OptionList from "@/components/OptionList";
 import Result from "@/components/Result";
-import { queryGetPost } from "@/util/postQuery";
+import { queryGetPost } from "@/hooks/usePostQuery";
 import User from "@/components/User";
 import { useAuthContext } from "@/context/AuthContext";
 import { MdOutlineHowToVote } from "react-icons/md";

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Auth from "@/components/Auth";
+import Image from "next/image";
 
 const menu = [
   {
@@ -21,7 +22,7 @@ export default async function Navbar() {
     <div className="flex justify-between py-4">
       <div className="w-1/5">
         <Link href="/" aria-label="홈" className="flex gap-x-2">
-          <img src="/icon/logo.png" className="w-6 object-contain" alt="logo"></img>
+          <Image src="/icon/logo.png" width={24} height={24} alt="logo" />
           <span className="sm:block hidden">MBTI특</span>
         </Link>
       </div>

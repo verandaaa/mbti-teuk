@@ -1,7 +1,7 @@
 "use client";
 
 import { MdOutlineHowToVote } from "react-icons/md";
-import { queryGetPostList } from "@/util/postQuery";
+import { queryGetPostList } from "@/hooks/usePostQuery";
 import Link from "next/link";
 
 export default function PostList() {

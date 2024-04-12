@@ -6,6 +6,7 @@ import { calculatePercentage } from "@/util/percent";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
 import SelectSigninModal from "@/components/SelectSigninModal";
+import Image from "next/image";
 
 type Props = {
   options: GetOption[];
@@ -55,16 +56,19 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
           <div
             className={`${option.imageId ? optionImageVariants["withImage"] : optionImageVariants["withoutImage"]} ${
               selectedOptionId === option.id ? optionBorderVariants["selected"] : optionBorderVariants["default"]
-            } cursor-pointer`}
+            } cursor-pointer overflow-hidden`}
             onClick={() => hanldeOptionClick(option.id)}
             key={index}
           >
             {option.imageId && (
-              <img
-                src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/images/${postId}/${option.imageId}.jpg`}
-                alt="option-image"
-                className="aspect-square object-cover"
-              />
+              <div className="relative h-full aspect-square">
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/images/${postId}/${option.imageId}.jpg`}
+                  alt="option-image"
+                  objectFit="cover"
+                  fill={true}
+                />
+              </div>
             )}
             <div
               className={`relative flex items-center w-full ${

@@ -31,12 +31,14 @@ export default function SelectSigninModal({ setIsModalOpen }: Props) {
   const menus = [
     {
       icon: MdAlternateEmail,
+      key: "이메일",
       name: "이메일로 로그인",
       description: "글쓰기, 투표, 댓글, 마이페이지 가능",
       onclick: handleEmailSigninClick,
     },
     {
       icon: FaQuestion,
+      key: "익명",
       name: "익명으로 로그인",
       description: "투표, 댓글 가능",
       onclick: handleAnonymousSigninClick,
@@ -54,6 +56,7 @@ export default function SelectSigninModal({ setIsModalOpen }: Props) {
                 <div
                   className="flex items-center gap-x-5 hover:border-option-blue p-5 border border-black rounded-md cursor-pointer"
                   onClick={menu.onclick}
+                  key={menu.key}
                 >
                   <menu.icon className="p-1 border border-black rounded-md" size={28} />
                   <div className="flex flex-col gap-1">

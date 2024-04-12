@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { GetParticipateResult, GetOption, MainClass } from "@/model/post";
 import Chart from "@/components/Chart";
-import { queryGetParticipateResult } from "@/util/postQuery";
+import { queryGetParticipateResult } from "@/hooks/usePostQuery";
 import { convertResult } from "@/util/result";
 
 type Props = {

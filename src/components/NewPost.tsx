@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import useStatus from "@/hooks/useStatus";
 import { CiImageOn } from "react-icons/ci";
+import Image from "next/image";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
@@ -124,11 +125,13 @@ export default function NewPost() {
           />
 
           {imageSrcs[index] ? (
-            <img
+            <Image
               src={imageSrcs[index]}
-              className="top-1/2 right-2 absolute w-8 h-8 transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
+              className="top-1/2 right-2 absolute transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
               onClick={() => handlePreviewImageClick(index)}
               alt="option-image"
+              width={32}
+              height={32}
             />
           ) : (
             <CiImageOn

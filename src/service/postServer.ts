@@ -4,7 +4,7 @@ import { parseDate } from "@/util/date";
 
 export async function getPostList(): Promise<GetPost[] | null> {
   const supabase = createClient();
-  const { data, error } = await supabase.from("postView").select();
+  const { data, error } = await supabase.from("postView").select().order("createdAt");
 
   return data;
 }

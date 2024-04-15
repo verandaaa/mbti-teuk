@@ -8,7 +8,7 @@ import Button from "@/components/Button";
 import { getNewNickname } from "@/service/userClient";
 import { Status } from "@/model/status";
 import { useValidUserForm } from "@/hooks/useValidForm";
-import { useMutationSignin } from "@/hooks/useUserMutation";
+import { useMutationSignup } from "@/hooks/useUserMutation";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({
@@ -22,7 +22,7 @@ export default function Signup() {
   const [status, setStatus] = useState<Status>();
   const { vaildUserForm } = useValidUserForm(setStatus);
   const { handleSignupChange } = useChangeUserForm();
-  const { mutation } = useMutationSignin(setStatus);
+  const { mutation } = useMutationSignup(setStatus);
 
   useEffect(() => {
     const fetchData = async () => {

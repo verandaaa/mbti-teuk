@@ -13,6 +13,7 @@ import { useMutationCreatePost } from "@/hooks/usePostMutation";
 import { v4 as uuidv4 } from "uuid";
 import { Status } from "@/model/status";
 import { useValidPostForm } from "@/hooks/useValidForm";
+import LoadingModal from "@/components/LoadingModal";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
@@ -78,77 +79,80 @@ export default function NewPost() {
   };
 
   return (
-    <form className="flex flex-col gap-6 mx-auto max-w-4xl" onSubmit={handleSubmit}>
-      <select name="categoryId" onChange={handleChange} className="el-primary">
-        <option value="">카테고리 선택</option>
-        {categories?.map(({ id, name }) => (
-          <option key={id} value={id}>
-            {name}
-          </option>
-        ))}
-      </select>
-      <input
-        type="text"
-        name="title"
-        value={post.title}
-        placeholder="투표 제목을 입력하세요."
-        onChange={handleChange}
-        className="el-primary"
-      />
-      <textarea
-        name="description"
-        value={post.description}
-        placeholder="추가 설명을 입력하세요."
-        onChange={handleChange}
-        className="el-primary"
-        rows={5}
-      />
-      {post.options.map((option, index) => (
-        <div className="relative" key={index}>
-          <input
-            type="text"
-            name="optionValue"
-            value={option.value}
-            placeholder={"보기 " + (index + 1)}
-            onChange={(e) => handleChange(e, index)}
-            className="w-full el-primary"
-          />
+    <>
+      <form className="flex flex-col gap-6 mx-auto max-w-4xl" onSubmit={handleSubmit}>
+        <select name="categoryId" onChange={handleChange} className="el-primary">
+          <option value="">카테고리 선택</option>
+          {categories?.map(({ id, name }) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          name="title"
+          value={post.title}
+          placeholder="투표 제목을 입력하세요."
+          onChange={handleChange}
+          className="el-primary"
+        />
+        <textarea
+          name="description"
+          value={post.description}
+          placeholder="추가 설명을 입력하세요."
+          onChange={handleChange}
+          className="el-primary"
+          rows={5}
+        />
+        {post.options.map((option, index) => (
+          <div className="relative" key={index}>
+            <input
+              type="text"
+              name="optionValue"
+              value={option.value}
+              placeholder={"보기 " + (index + 1)}
+              onChange={(e) => handleChange(e, index)}
+              className="w-full el-primary"
+            />
 
-          {imageSrcs[index] ? (
-            <Image
-              src={imageSrcs[index]}
-              className="top-1/2 right-2 absolute transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
-              onClick={() => handlePreviewImageClick(index)}
-              alt="option-image"
-              width={32}
-              height={32}
+            {imageSrcs[index] ? (
+              <Image
+                src={imageSrcs[index]}
+                className="top-1/2 right-2 absolute transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
+                onClick={() => handlePreviewImageClick(index)}
+                alt="option-image"
+                width={32}
+                height={32}
+              />
+            ) : (
+              <CiImageOn
+                className="top-1/2 right-2 absolute w-8 h-8 transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
+                onClick={() => handlePreviewImageClick(index)}
+              />
+            )}
+            <input
+              ref={(el) => {
+                fileRefs.current[index] = el;
+              }}
+              className="hidden"
+              type="file"
+              name="optionFile"
+              accept="image/*"
+              onChange={(e) => handleChange(e, index)}
             />
-          ) : (
-            <CiImageOn
-              className="top-1/2 right-2 absolute w-8 h-8 transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
-              onClick={() => handlePreviewImageClick(index)}
-            />
-          )}
-          <input
-            ref={(el) => {
-              fileRefs.current[index] = el;
-            }}
-            className="hidden"
-            type="file"
-            name="optionFile"
-            accept="image/*"
-            onChange={(e) => handleChange(e, index)}
-          />
-          <Button type="button" style="minus" onClick={() => handleSubtractButtonClick(index)}>
-            −
-          </Button>
-        </div>
-      ))}
-      <Button type="button" style="plus" onClick={handleAddButtonClick}>
-        +
-      </Button>
-      <Button style="default">작성완료</Button>
-      <StatusView status={status} />
-    </form>
+            <Button type="button" style="minus" onClick={() => handleSubtractButtonClick(index)}>
+              −
+            </Button>
+          </div>
+        ))}
+        <Button type="button" style="plus" onClick={handleAddButtonClick}>
+          +
+        </Button>
+        <Button style="default">작성완료</Button>
+        <StatusView status={status} />
+      </form>
+      {mutation.isPending && <LoadingModal />}
+    </>
   );
 }

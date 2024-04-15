@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createPost, createParticipate } from "@/service/postClient";
+import { createPost, createParticipate, deletePost } from "@/service/postClient";
 import { CreatePost } from "@/model/post";
 import { useRouter } from "next/navigation";
 import { handleCreatePostError } from "@/util/error";
@@ -30,6 +30,21 @@ export function useMutationCreatePost(setStatus: Dispatch<SetStateAction<Status 
     },
     onError: (error) => {
       setStatus(handleCreatePostError(error));
+    },
+  });
+
+  return { mutation };
+}
+
+export function useMutationDeletePost() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const mutation = useMutation<void, Error, { id: string }>({
+    mutationFn: ({ id }) => deletePost(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      router.push(`/list`);
     },
   });
 

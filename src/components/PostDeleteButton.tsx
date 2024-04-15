@@ -3,6 +3,7 @@
 import { deletePost } from "@/service/postClient";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useMutationDeletePost } from "@/hooks/usePostMutation";
 
 type Props = {
   userId: string;
@@ -12,10 +13,10 @@ type Props = {
 export default function PostDeleteButton({ userId, id }: Props) {
   const { user } = useAuthContext();
   const router = useRouter();
+  const { mutation } = useMutationDeletePost();
 
   const handleDeletePostButtonClick = () => {
-    deletePost(id);
-    router.push(`/list`);
+    mutation.mutate({ id });
   };
 
   const isShow = userId === user?.userId;

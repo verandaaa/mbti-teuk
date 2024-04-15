@@ -14,7 +14,9 @@ export async function signup(user: SignupUser) {
     },
   });
 
-  return { error };
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function signin(user: SigninUser) {
@@ -24,7 +26,9 @@ export async function signin(user: SigninUser) {
     password: user.password,
   });
 
-  return { error };
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function signinAnonymously(mbti: String) {
@@ -38,16 +42,11 @@ export async function signinAnonymously(mbti: String) {
       },
     },
   });
-  console.log(error);
-
-  return { error };
 }
 
 export async function signout() {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();
-
-  return { error };
 }
 
 export async function getNewNickname() {

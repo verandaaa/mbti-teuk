@@ -5,7 +5,7 @@ import StatusView from "@/components/StatusView";
 import { CreatePost } from "@/model/post";
 import { getCategoryList } from "@/service/postClient";
 import { GetCategory } from "@/model/post";
-import { handlePostChange, isValidPostForm } from "@/util/formControl";
+import { useChangePostForm } from "@/hooks/useChangeForm";
 import Button from "@/components/Button";
 import { CiImageOn } from "react-icons/ci";
 import Image from "next/image";
@@ -31,6 +31,7 @@ export default function NewPost() {
   const [status, setStatus] = useState<Status>();
   const { mutation } = useMutationCreatePost(setStatus);
   const { vaildPostForm } = useValidPostForm(setStatus);
+  const { handlePostChange } = useChangePostForm();
 
   useEffect(() => {
     const fetchData = async () => {

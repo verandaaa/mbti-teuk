@@ -4,19 +4,21 @@ import { useState } from "react";
 import StatusView from "@/components/StatusView";
 import { SigninUser } from "@/model/user";
 import Link from "next/link";
-import { signin } from "@/service/userClient";
-import { handleSigninChange, isValidUserForm } from "@/util/formControl";
+import { useChangeUserForm } from "@/hooks/useChangeForm";
 import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
-import useStatus from "@/hooks/useStatus";
+import { Status } from "@/model/status";
+import { useValidUserForm } from "@/hooks/useValidForm";
+import { useMutationSignin } from "@/hooks/useUserMutation";
 
 export default function Signin() {
   const [user, setUser] = useState<SigninUser>({
     email: "",
     password: "",
   });
-  const router = useRouter();
-  const { status, handleSigninError, handleFormError } = useStatus();
+  const [status, setStatus] = useState<Status>();
+  const { vaildUserForm } = useValidUserForm(setStatus);
+  const { handleSigninChange } = useChangeUserForm();
+  const { mutation } = useMutationSignin(setStatus);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleSigninChange(e, setUser);
@@ -25,18 +27,8 @@ export default function Signin() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formError = isValidUserForm(user);
-    if (formError) {
-      handleFormError(formError);
-      return;
-    }
-    const { error } = await signin(user);
-    if (error) {
-      handleSigninError(error);
-      return;
-    }
-    router.refresh();
-    router.back();
+    if (!vaildUserForm(user)) return;
+    mutation.mutate({ user });
   };
 
   return (

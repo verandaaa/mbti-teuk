@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import StatusView from "@/components/StatusView";
 import { SignupUser } from "@/model/user";
-import { signup } from "@/service/userClient";
-import { handleSignupChange, isValidUserForm } from "@/util/formControl";
+import { useChangeUserForm } from "@/hooks/useChangeForm";
 import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
-import useStatus from "@/hooks/useStatus";
 import { getNewNickname } from "@/service/userClient";
+import { Status } from "@/model/status";
+import { useValidUserForm } from "@/hooks/useValidForm";
+import { useMutationSignin } from "@/hooks/useUserMutation";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({
@@ -19,8 +19,10 @@ export default function Signup() {
     passwordCheck: "",
   });
   const mbtiList: string[] = require("/public/data/mbti_list.json");
-  const { status, handleSignupError, handleFormError } = useStatus();
-  const router = useRouter();
+  const [status, setStatus] = useState<Status>();
+  const { vaildUserForm } = useValidUserForm(setStatus);
+  const { handleSignupChange } = useChangeUserForm();
+  const { mutation } = useMutationSignin(setStatus);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,18 +41,8 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formError = isValidUserForm(user);
-    if (formError) {
-      handleFormError(formError);
-      return;
-    }
-    const { error } = await signup(user);
-    if (error) {
-      handleSignupError(error);
-      return;
-    }
-    router.refresh();
-    router.back();
+    if (!vaildUserForm(user)) return;
+    mutation.mutate({ user });
   };
 
   return (

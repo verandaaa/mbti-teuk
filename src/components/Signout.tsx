@@ -1,22 +1,17 @@
 "use client";
 
-import { signout } from "@/service/userClient";
-import { useRouter } from "next/navigation";
+import { useMutationSignout } from "@/hooks/useUserMutation";
 
 type Props = {
   closeModal: () => void;
 };
 
 export default function Signout({ closeModal }: Props) {
-  const router = useRouter();
+  const { mutation } = useMutationSignout();
 
   const handleSignoutButtonClick = async () => {
     closeModal();
-    const { error } = await signout();
-    if (error) {
-      return;
-    }
-    router.refresh();
+    mutation.mutate();
   };
 
   return (

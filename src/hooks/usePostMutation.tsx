@@ -2,9 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost, createParticipate } from "@/service/postClient";
 import { CreatePost } from "@/model/post";
 import { useRouter } from "next/navigation";
-import { PostgrestError } from "@supabase/supabase-js";
-import useStatus from "@/hooks/useStatus";
-import { Dispatch, SetStateAction, useState } from "react";
+import { handleCreatePostError } from "@/util/error";
+import { Dispatch, SetStateAction } from "react";
 import { Status } from "@/model/status";
 
 export function useMutationCreateParticipate() {
@@ -23,7 +22,6 @@ export function useMutationCreateParticipate() {
 
 export function useMutationCreatePost(setStatus: Dispatch<SetStateAction<Status | undefined>>) {
   const router = useRouter();
-  const { handleCreatePostError } = useStatus();
 
   const mutation = useMutation<void, Error, { post: CreatePost }>({
     mutationFn: ({ post }) => createPost(post),

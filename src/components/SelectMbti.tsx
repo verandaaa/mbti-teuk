@@ -1,7 +1,7 @@
 "use client";
 
-import { signinAnonymously } from "@/service/userClient";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { useMutationSigninAnonymously } from "@/hooks/useUserMutation";
 
 type Props = {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -9,13 +9,14 @@ type Props = {
 export default function SelectMbti({ setIsModalOpen }: Props) {
   const mbtiList: string[] = require("/public/data/mbti_list.json");
   const mbtiColors = require("/public/data/mbti_colors.json");
+  const { mutation } = useMutationSigninAnonymously();
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
   const handleMbtiButtonClick = async (mbti: string) => {
-    const { error } = await signinAnonymously(mbti);
+    mutation.mutate({ mbti });
     closeModal();
   };
 

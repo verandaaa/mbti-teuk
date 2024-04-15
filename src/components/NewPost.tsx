@@ -72,6 +72,8 @@ export default function NewPost() {
       ...post,
       options: newOptions,
     }));
+    fileRefs.current.splice(index, 1);
+    setImageSrcs((prevSrcs) => prevSrcs.filter((_, idx) => idx !== index));
   };
 
   const handlePreviewImageClick = (index: number) => {

@@ -3,9 +3,9 @@ import { GetPost, CreatePost, GetCategory, GetParticipateResult, GetDetailPost }
 import { parseDate } from "@/util/date";
 import { v4 as uuidv4 } from "uuid";
 
-export async function getPostList(): Promise<GetPost[] | null> {
+export async function getPostList(start: number, end: number): Promise<GetPost[] | null> {
   const supabase = createClient();
-  const { data, error } = await supabase.from("postView").select().order("createdAt");
+  const { data, error } = await supabase.from("postView").select().order("createdAt").range(start, end);
 
   return data;
 }

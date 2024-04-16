@@ -5,7 +5,7 @@ import { GetOption } from "@/model/post";
 import { calculatePercentage } from "@/util/percent";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
-import SelectSigninModal from "@/components/SelectSigninModal";
+import SelectSigninModal from "@/components/modal/SelectSigninModal";
 import Image from "next/image";
 
 type Props = {

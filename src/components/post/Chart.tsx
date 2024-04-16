@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { GetParticipateResult, MainClass } from "@/model/post";
-import CustomTooltip from "@/components/CustomTooltip";
+import CustomTooltip from "@/components/post/CustomTooltip";
 
 type Props = {
   data: GetParticipateResult[];

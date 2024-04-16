@@ -1,4 +1,4 @@
-import PostRoute from "@/components/PostRoute";
+import PostRoute from "@/components/post/PostRoute";
 
 type Props = { params: { id: string } };
 

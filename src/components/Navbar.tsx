@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Auth from "@/components/Auth";
+import Auth from "@/components/user/Auth";
 import Image from "next/image";
 
 const menu = [

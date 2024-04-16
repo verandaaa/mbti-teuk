@@ -1,19 +1,19 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import StatusView from "@/components/StatusView";
+import StatusView from "@/components/common/StatusView";
 import { CreatePost } from "@/model/post";
 import { getCategoryList } from "@/service/postClient";
 import { GetCategory } from "@/model/post";
 import { useChangePostForm } from "@/hooks/useChangeForm";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import { CiImageOn } from "react-icons/ci";
 import Image from "next/image";
 import { useMutationCreatePost } from "@/hooks/usePostMutation";
 import { v4 as uuidv4 } from "uuid";
 import { Status } from "@/model/status";
 import { useValidPostForm } from "@/hooks/useValidForm";
-import LoadingModal from "@/components/LoadingModal";
+import LoadingModal from "@/components/modal/LoadingModal";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({

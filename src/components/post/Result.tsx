@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GetParticipateResult, GetOption, MainClass } from "@/model/post";
-import Chart from "@/components/Chart";
+import Chart from "@/components/post/Chart";
 import { useQueryGetParticipateResult } from "@/hooks/usePostQuery";
 import { convertResult } from "@/util/result";
 

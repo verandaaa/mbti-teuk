@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FaQuestion } from "react-icons/fa6";
 import { MdAlternateEmail } from "react-icons/md";
-import SelectMbti from "@/components/SelectMbti";
+import SelectMbti from "@/components/post/SelectMbti";
 
 type Props = {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;

@@ -1,4 +1,4 @@
-import Signout from "@/components/Signout";
+import Signout from "@/components/user/Signout";
 import { Dispatch, SetStateAction } from "react";
 
 type Props = {

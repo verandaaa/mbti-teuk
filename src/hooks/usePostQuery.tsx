@@ -1,10 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getPostList, getPost, getParticipateResult } from "@/service/postClient";
 
 export function useQueryGetPostList() {
-  const { data } = useQuery({ queryKey: ["posts"], queryFn: () => getPostList() });
+  const rowsPerPage = 15;
+  const { data, fetchNextPage } = useInfiniteQuery({
+    queryKey: ["posts"],
+    queryFn: ({ pageParam }) => getPostList(pageParam * rowsPerPage, (pageParam + 1) * rowsPerPage - 1),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = allPages.length;
+      return lastPage?.length === 0 || (lastPage?.length ?? 0) < rowsPerPage ? undefined : nextPage;
+    },
+  });
 
-  return { data };
+  const posts = data?.pages ?? [];
+
+  return { posts, fetchNextPage };
 }
 
 export function useQueryGetPost(id: string) {

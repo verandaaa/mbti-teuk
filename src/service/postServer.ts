@@ -2,13 +2,6 @@ import { createClient } from "@/lib/supabase/server";
 import { GetDetailPost, GetPost } from "@/model/post";
 import { parseDate } from "@/util/date";
 
-export async function getPostList(): Promise<GetPost[] | null> {
-  const supabase = createClient();
-  const { data, error } = await supabase.from("postView").select().order("createdAt");
-
-  return data;
-}
-
 export async function getPost(postId: string): Promise<GetDetailPost | null> {
   const supabase = createClient();
   const { data, error } = await supabase

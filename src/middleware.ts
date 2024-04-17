@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
     }
   }
   if (user) {
-    if (["/signin", "signup"].includes(pathname)) {
+    if (["/signin", "/signup"].includes(pathname)) {
       return NextResponse.redirect(new URL("/list", baseUrl));
     }
   }

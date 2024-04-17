@@ -2,7 +2,6 @@ import { CreatePost } from "@/model/post";
 import { SigninUser, SignupUser } from "@/model/user";
 
 export function isValidPostForm(post: CreatePost, optionButtonParam?: string) {
-  console.log(optionButtonParam);
   if (post.options.length === 2 && optionButtonParam === "subtract") {
     throw new Error("보기는 2개 이상 10개 이하여야 합니다.");
   }

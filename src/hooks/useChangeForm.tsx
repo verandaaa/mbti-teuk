@@ -4,12 +4,14 @@ import { Dispatch, SetStateAction } from "react";
 
 export function useChangePostForm() {
   const handlePostChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+      | React.MouseEvent<HTMLButtonElement>,
     setPost: Dispatch<SetStateAction<CreatePost>>,
     setImageSrcs: Dispatch<SetStateAction<string[]>>,
     index?: number
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement;
 
     switch (name) {
       case "optionValue": {
@@ -29,6 +31,18 @@ export function useChangePostForm() {
         if (file && typeof index === "number") {
           handleFileChange(file, setImageSrcs, index);
         }
+        break;
+      }
+      case "add": {
+        setPost((post) => ({ ...post, options: [...post.options, { value: "", image: undefined }] }));
+        break;
+      }
+      case "subtract": {
+        setPost((post) => ({
+          ...post,
+          options: post.options.filter((_, i) => i !== index),
+        }));
+        setImageSrcs((prevSrcs) => prevSrcs.filter((_, idx) => idx !== index));
         break;
       }
       default: {

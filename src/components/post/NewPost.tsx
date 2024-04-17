@@ -58,22 +58,17 @@ export default function NewPost() {
     mutation.mutate({ post });
   };
 
-  const handleAddButtonClick = () => {
+  const handleAddButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!vaildPostForm(post, "add")) return;
 
-    setPost((post) => ({ ...post, options: [...post.options, { value: "", image: undefined }] }));
+    handlePostChange(e, setPost, setImageSrcs);
   };
 
-  const handleSubtractButtonClick = (index: number) => {
+  const handleSubtractButtonClick = (e: React.MouseEvent<HTMLButtonElement>, index: number) => {
     if (!vaildPostForm(post, "subtract")) return;
 
-    const newOptions = [...post.options.slice(0, index), ...post.options.slice(index + 1)];
-    setPost((post) => ({
-      ...post,
-      options: newOptions,
-    }));
+    handlePostChange(e, setPost, setImageSrcs, index);
     fileRefs.current.splice(index, 1);
-    setImageSrcs((prevSrcs) => prevSrcs.filter((_, idx) => idx !== index));
   };
 
   const handlePreviewImageClick = (index: number) => {
@@ -143,12 +138,17 @@ export default function NewPost() {
               accept="image/*"
               onChange={(e) => handleChange(e, index)}
             />
-            <Button type="button" style="minus" onClick={() => handleSubtractButtonClick(index)}>
+            <Button
+              type="button"
+              name="subtract"
+              style="minus"
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleSubtractButtonClick(e, index)}
+            >
               −
             </Button>
           </div>
         ))}
-        <Button type="button" style="plus" onClick={handleAddButtonClick}>
+        <Button type="button" name="add" style="plus" onClick={handleAddButtonClick}>
           +
         </Button>
         <Button style="default">작성완료</Button>

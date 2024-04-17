@@ -22,13 +22,13 @@ export default function NewPost() {
     title: "",
     description: "",
     options: [
-      { value: "", image: undefined },
-      { value: "", image: undefined },
+      { value: "", image: null },
+      { value: "", image: null },
     ],
   });
   const [categories, setCategories] = useState<GetCategory[]>();
-  const fileRefs = useRef<null[] | HTMLInputElement[]>([]);
-  const [imageSrcs, setImageSrcs] = useState<string[]>([]);
+  const fileRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [imageSrcs, setImageSrcs] = useState<(string | null)[]>(new Array(2).fill(null));
   const [status, setStatus] = useState<Status>();
   const { mutation } = useMutationCreatePost(setStatus);
   const { vaildPostForm } = useValidPostForm(setStatus);

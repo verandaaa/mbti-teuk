@@ -8,7 +8,7 @@ export function useChangePostForm() {
       | React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
       | React.MouseEvent<HTMLButtonElement>,
     setPost: Dispatch<SetStateAction<CreatePost>>,
-    setImageSrcs: Dispatch<SetStateAction<string[]>>,
+    setImageSrcs: Dispatch<SetStateAction<(string | null)[]>>,
     index?: number
   ) => {
     const { name, value } = e.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement;
@@ -23,7 +23,7 @@ export function useChangePostForm() {
       }
       case "optionFile": {
         const files = (e.target as HTMLInputElement).files;
-        const file = files ? files[0] : undefined;
+        const file = files ? files[0] : null;
         setPost((post) => ({
           ...post,
           options: post.options.map((option, i) => (i === index ? { ...option, image: file } : option)),
@@ -34,7 +34,8 @@ export function useChangePostForm() {
         break;
       }
       case "add": {
-        setPost((post) => ({ ...post, options: [...post.options, { value: "", image: undefined }] }));
+        setPost((post) => ({ ...post, options: [...post.options, { value: "", image: null }] }));
+        setImageSrcs((prevSrcs) => [...prevSrcs, null]);
         break;
       }
       case "subtract": {
@@ -42,7 +43,7 @@ export function useChangePostForm() {
           ...post,
           options: post.options.filter((_, i) => i !== index),
         }));
-        setImageSrcs((prevSrcs) => prevSrcs.filter((_, idx) => idx !== index));
+        setImageSrcs((prevSrcs) => prevSrcs.filter((_, i) => i !== index));
         break;
       }
       default: {
@@ -51,7 +52,7 @@ export function useChangePostForm() {
     }
   };
 
-  const handleFileChange = (file: File, setImageSrcs: Dispatch<SetStateAction<string[]>>, index: number) => {
+  const handleFileChange = (file: File, setImageSrcs: Dispatch<SetStateAction<(string | null)[]>>, index: number) => {
     const reader = new FileReader();
     reader.onload = () => {
       setImageSrcs((prevState) => {

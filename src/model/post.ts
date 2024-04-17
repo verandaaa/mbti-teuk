@@ -27,7 +27,7 @@ export type CreatePost = {
 
 export type CreateOption = {
   value: string;
-  image?: File;
+  image: File | null;
 };
 
 export type GetOption = {

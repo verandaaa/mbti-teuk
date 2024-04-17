@@ -1,4 +1,4 @@
-import AuthModal from "@/components/AuthModal";
+import AuthModal from "@/components/modal/AuthModal";
 import { useState } from "react";
 import { FaRegUser } from "react-icons/fa6";
 import { UserComponentType } from "@/model/user";

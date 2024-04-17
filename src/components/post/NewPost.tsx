@@ -1,19 +1,19 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import StatusView from "@/components/StatusView";
+import StatusView from "@/components/common/StatusView";
 import { CreatePost } from "@/model/post";
 import { getCategoryList } from "@/service/postClient";
 import { GetCategory } from "@/model/post";
 import { useChangePostForm } from "@/hooks/useChangeForm";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import { CiImageOn } from "react-icons/ci";
 import Image from "next/image";
 import { useMutationCreatePost } from "@/hooks/usePostMutation";
 import { v4 as uuidv4 } from "uuid";
 import { Status } from "@/model/status";
 import { useValidPostForm } from "@/hooks/useValidForm";
-import LoadingModal from "@/components/LoadingModal";
+import LoadingModal from "@/components/modal/LoadingModal";
 
 export default function NewPost() {
   const [post, setPost] = useState<CreatePost>({
@@ -22,13 +22,13 @@ export default function NewPost() {
     title: "",
     description: "",
     options: [
-      { value: "", image: undefined },
-      { value: "", image: undefined },
+      { value: "", image: null },
+      { value: "", image: null },
     ],
   });
   const [categories, setCategories] = useState<GetCategory[]>();
-  const fileRefs = useRef<null[] | HTMLInputElement[]>([]);
-  const [imageSrcs, setImageSrcs] = useState<string[]>([]);
+  const fileRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [imageSrcs, setImageSrcs] = useState<(string | null)[]>(new Array(2).fill(null));
   const [status, setStatus] = useState<Status>();
   const { mutation } = useMutationCreatePost(setStatus);
   const { vaildPostForm } = useValidPostForm(setStatus);
@@ -58,22 +58,17 @@ export default function NewPost() {
     mutation.mutate({ post });
   };
 
-  const handleAddButtonClick = () => {
+  const handleAddButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!vaildPostForm(post, "add")) return;
 
-    setPost((post) => ({ ...post, options: [...post.options, { value: "", image: undefined }] }));
+    handlePostChange(e, setPost, setImageSrcs);
   };
 
-  const handleSubtractButtonClick = (index: number) => {
+  const handleSubtractButtonClick = (e: React.MouseEvent<HTMLButtonElement>, index: number) => {
     if (!vaildPostForm(post, "subtract")) return;
 
-    const newOptions = [...post.options.slice(0, index), ...post.options.slice(index + 1)];
-    setPost((post) => ({
-      ...post,
-      options: newOptions,
-    }));
+    handlePostChange(e, setPost, setImageSrcs, index);
     fileRefs.current.splice(index, 1);
-    setImageSrcs((prevSrcs) => prevSrcs.filter((_, idx) => idx !== index));
   };
 
   const handlePreviewImageClick = (index: number) => {
@@ -120,7 +115,7 @@ export default function NewPost() {
 
             {imageSrcs[index] ? (
               <Image
-                src={imageSrcs[index]}
+                src={imageSrcs[index]!}
                 className="top-1/2 right-2 absolute transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
                 onClick={() => handlePreviewImageClick(index)}
                 alt="option-image"
@@ -143,12 +138,17 @@ export default function NewPost() {
               accept="image/*"
               onChange={(e) => handleChange(e, index)}
             />
-            <Button type="button" style="minus" onClick={() => handleSubtractButtonClick(index)}>
+            <Button
+              type="button"
+              name="subtract"
+              style="minus"
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleSubtractButtonClick(e, index)}
+            >
               −
             </Button>
           </div>
         ))}
-        <Button type="button" style="plus" onClick={handleAddButtonClick}>
+        <Button type="button" name="add" style="plus" onClick={handleAddButtonClick}>
           +
         </Button>
         <Button style="default">작성완료</Button>

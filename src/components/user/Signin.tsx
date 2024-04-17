@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import StatusView from "@/components/StatusView";
+import StatusView from "@/components/common/StatusView";
 import { SigninUser } from "@/model/user";
 import Link from "next/link";
 import { useChangeUserForm } from "@/hooks/useChangeForm";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import { Status } from "@/model/status";
 import { useValidUserForm } from "@/hooks/useValidForm";
 import { useMutationSignin } from "@/hooks/useUserMutation";

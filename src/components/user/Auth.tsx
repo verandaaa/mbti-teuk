@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Signout from "@/components/Signout";
+import Signout from "@/components/user/Signout";
 import { useAuthContext } from "@/context/AuthContext";
-import User from "@/components/User";
+import User from "@/components/user/User";
 
 export default function Auth() {
   const { user } = useAuthContext();

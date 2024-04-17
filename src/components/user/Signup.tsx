@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import StatusView from "@/components/StatusView";
+import StatusView from "@/components/common/StatusView";
 import { SignupUser } from "@/model/user";
 import { useChangeUserForm } from "@/hooks/useChangeForm";
-import Button from "@/components/Button";
+import Button from "@/components/common/Button";
 import { getNewNickname } from "@/service/userClient";
 import { Status } from "@/model/status";
 import { useValidUserForm } from "@/hooks/useValidForm";

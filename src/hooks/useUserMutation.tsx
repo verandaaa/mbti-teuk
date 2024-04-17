@@ -7,13 +7,15 @@ import { Status } from "@/model/status";
 import { handleSigninError, handleSignupError } from "@/util/error";
 
 export function useMutationSignin(setStatus: Dispatch<SetStateAction<Status | undefined>>) {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const mutation = useMutation<void, Error, { user: SigninUser }>({
     mutationFn: ({ user }) => signin(user),
     onSuccess: () => {
-      router.refresh();
+      queryClient.invalidateQueries();
       router.back();
+      router.refresh();
     },
     onError: (error) => {
       setStatus(handleSigninError(error));
@@ -32,13 +34,15 @@ export function useMutationSigninAnonymously() {
 }
 
 export function useMutationSignup(setStatus: Dispatch<SetStateAction<Status | undefined>>) {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const mutation = useMutation<void, Error, { user: SignupUser }>({
     mutationFn: ({ user }) => signup(user),
     onSuccess: () => {
-      router.refresh();
+      queryClient.invalidateQueries();
       router.back();
+      router.refresh();
     },
     onError: (error) => {
       setStatus(handleSignupError(error));
@@ -49,11 +53,13 @@ export function useMutationSignup(setStatus: Dispatch<SetStateAction<Status | un
 }
 
 export function useMutationSignout() {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const mutation = useMutation<void, Error>({
     mutationFn: () => signout(),
     onSuccess: () => {
+      queryClient.invalidateQueries();
       router.refresh();
     },
   });

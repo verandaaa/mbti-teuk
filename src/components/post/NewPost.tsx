@@ -115,7 +115,7 @@ export default function NewPost() {
 
             {imageSrcs[index] ? (
               <Image
-                src={imageSrcs[index]}
+                src={imageSrcs[index]!}
                 className="top-1/2 right-2 absolute transform -translate-y-1/2 cursor-pointer aspect-square object-cover"
                 onClick={() => handlePreviewImageClick(index)}
                 alt="option-image"

@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StatusView from "@/components/common/StatusView";
 import { SignupUser } from "@/model/user";
 import { useChangeUserForm } from "@/hooks/useChangeForm";
 import Button from "@/components/common/Button";
-import { getNewNickname } from "@/service/userClient";
 import { Status } from "@/model/status";
 import { useValidUserForm } from "@/hooks/useValidForm";
 import { useMutationSignup } from "@/hooks/useUserMutation";
@@ -23,16 +22,6 @@ export default function Signup() {
   const { vaildUserForm } = useValidUserForm(setStatus);
   const { handleSignupChange } = useChangeUserForm();
   const { mutation } = useMutationSignup(setStatus);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await getNewNickname();
-      if (data) {
-        setUser({ ...user, nickname: data });
-      }
-    };
-    fetchData();
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     handleSignupChange(e, setUser);
@@ -66,13 +55,12 @@ export default function Signup() {
           ))}
         </select>
         <input
-          type="nickname"
+          type="text"
           name="nickname"
           value={user.nickname}
           placeholder="닉네임"
           onChange={handleChange}
-          className="bg-gray-100 el-primary"
-          readOnly
+          className="el-primary"
         />
         <input
           type="password"

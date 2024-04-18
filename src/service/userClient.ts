@@ -48,11 +48,3 @@ export async function signout() {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();
 }
-
-export async function getNewNickname() {
-  const supabase = createClient();
-  const { data, error } = await supabase.from("uniqueRandomNicknameView").select().limit(1).single();
-  const nickname = data.nickname;
-
-  return { data: nickname };
-}

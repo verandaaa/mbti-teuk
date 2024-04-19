@@ -32,6 +32,9 @@ export function isValidUserForm(user: SignupUser | SigninUser) {
   if ("mbti" in user && user.mbti.length === 0) {
     throw new Error("MBTI를 선택해주세요.");
   }
+  if ("nickname" in user && (user.nickname.length < 2 || user.nickname.length > 20)) {
+    throw new Error("닉네임은 2자 이상 20자 이하입니다.");
+  }
   if (user.password.length < 6) {
     throw new Error("비밀번호는 최소 6글자 이상입니다.");
   }

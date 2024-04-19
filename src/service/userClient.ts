@@ -3,6 +3,15 @@ import { createClient } from "@/lib/supabase/client";
 
 export async function signup(user: SignupUser) {
   const supabase = createClient();
+
+  const { count } = await supabase
+    .from("users")
+    .select("*", { count: "exact", head: true })
+    .eq("nickname", user.nickname);
+  if (count !== 0) {
+    throw new Error("존재하는 닉네임 입니다.");
+  }
+
   const { error } = await supabase.auth.signUp({
     email: user.email,
     password: user.password,

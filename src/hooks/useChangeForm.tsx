@@ -73,7 +73,6 @@ export function useChangeUserForm() {
     setUser: Dispatch<SetStateAction<SigninUser>>
   ) => {
     const { name, value } = e.target;
-    //if name==="nickname" 이면 중복확인요청 보내서 setUser에 사용한다.
     setUser((user) => ({ ...user, [name]: value }));
   };
 

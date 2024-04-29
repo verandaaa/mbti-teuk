@@ -32,6 +32,20 @@ CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
+CREATE OR REPLACE FUNCTION "public"."check_postId_from_options"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+BEGIN
+    if not ((select "userId" from posts where id=new."postId") = auth.uid()) then
+        raise exception 'Options can only be added to your own post';
+    end if;
+
+    return new;
+END;
+$$;
+
+ALTER FUNCTION "public"."check_postId_from_options"() OWNER TO "postgres";
+
 CREATE OR REPLACE FUNCTION "public"."get_user_mbti"() RETURNS "text"
     LANGUAGE "plpgsql"
     AS $$
@@ -143,7 +157,8 @@ CREATE TABLE IF NOT EXISTS "public"."options" (
     "postId" "uuid" NOT NULL,
     "imageId" "uuid",
     "userId" "uuid" DEFAULT "auth"."uid"() NOT NULL,
-    "participateCount" integer DEFAULT 0 NOT NULL
+    "participateCount" integer DEFAULT 0 NOT NULL,
+    CONSTRAINT "options_value_check" CHECK ((("length"("value") >= 1) AND ("length"("value") <= 30)))
 );
 
 ALTER TABLE "public"."options" OWNER TO "postgres";
@@ -205,7 +220,8 @@ CREATE TABLE IF NOT EXISTS "public"."posts" (
     "userNickname" "text" DEFAULT "public"."get_user_nickname"() NOT NULL,
     "userMbti" "text" DEFAULT "public"."get_user_mbti"() NOT NULL,
     "categoryId" integer NOT NULL,
-    "userId" "uuid" DEFAULT "auth"."uid"() NOT NULL
+    "userId" "uuid" DEFAULT "auth"."uid"() NOT NULL,
+    CONSTRAINT "posts_title_check" CHECK ((("length"("title") >= 1) AND ("length"("title") <= 50)))
 );
 
 ALTER TABLE "public"."posts" OWNER TO "postgres";
@@ -258,11 +274,16 @@ ALTER TABLE ONLY "public"."options"
 ALTER TABLE ONLY "public"."participates"
     ADD CONSTRAINT "participates_pkey" PRIMARY KEY ("id");
 
+ALTER TABLE ONLY "public"."participates"
+    ADD CONSTRAINT "participates_postId_userId_key" UNIQUE ("postId", "userId");
+
 ALTER TABLE ONLY "public"."posts"
     ADD CONSTRAINT "posts_pkey" PRIMARY KEY ("id");
 
 ALTER TABLE ONLY "public"."users"
     ADD CONSTRAINT "users_pkey" PRIMARY KEY ("id");
+
+CREATE OR REPLACE TRIGGER "options_before_insert_trigger" BEFORE INSERT ON "public"."options" FOR EACH ROW EXECUTE FUNCTION "public"."check_postId_from_options"();
 
 CREATE OR REPLACE TRIGGER "participate_insert_trigger" AFTER INSERT ON "public"."participates" FOR EACH ROW EXECUTE FUNCTION "public"."increment_participateCount_by_optionId"();
 
@@ -349,6 +370,10 @@ GRANT USAGE ON SCHEMA "public" TO "postgres";
 GRANT USAGE ON SCHEMA "public" TO "anon";
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
 GRANT USAGE ON SCHEMA "public" TO "service_role";
+
+GRANT ALL ON FUNCTION "public"."check_postId_from_options"() TO "anon";
+GRANT ALL ON FUNCTION "public"."check_postId_from_options"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."check_postId_from_options"() TO "service_role";
 
 GRANT ALL ON FUNCTION "public"."get_user_mbti"() TO "anon";
 GRANT ALL ON FUNCTION "public"."get_user_mbti"() TO "authenticated";

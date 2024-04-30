@@ -1,19 +1,6 @@
-import { createClient } from "@/lib/supabase/client";
-import { CreateComment, GetComment } from "@/model/comment";
+import { createClient } from "@/lib/supabase/server";
+import { GetComment } from "@/model/comment";
 import { parseDate } from "@/util/date";
-
-export async function createComment(comment: CreateComment) {
-  const supabase = createClient();
-
-  const { data, error } = await supabase.from("comments").insert({
-    postId: comment.postId,
-    text: comment.text,
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-}
 
 export async function getCommentList(postId: string): Promise<GetComment[] | null> {
   const supabase = createClient();

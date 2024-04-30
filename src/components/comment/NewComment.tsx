@@ -38,7 +38,7 @@ export default function NewComment({ postId }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 my-8">
       {user && <User user={user} componentType="comment" />}
       <form className="flex gap-1" onSubmit={handleSubmit}>
         <input

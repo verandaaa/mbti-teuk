@@ -1,5 +1,5 @@
 import PostRoute from "@/components/post/PostRoute";
-import CommentList from "@/components/comment/CommentList";
+import CommentListRoute from "@/components/comment/CommentListRoute";
 
 type Props = { params: { id: string } };
 
@@ -7,7 +7,7 @@ export default async function DetailPage({ params: { id } }: Props) {
   return (
     <>
       <PostRoute id={id} />
-      <CommentList postId={id} />
+      <CommentListRoute postId={id} />
     </>
   );
 }

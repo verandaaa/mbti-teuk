@@ -1,3 +1,4 @@
+import { CreateComment } from "@/model/comment";
 import { CreatePost } from "@/model/post";
 import { SigninUser, SignupUser } from "@/model/user";
 
@@ -22,6 +23,12 @@ export function isValidPostForm(post: CreatePost, optionButtonParam?: string) {
     if (value.length === 0 || value.length > 30) {
       throw new Error(i + 1 + "번째 보기는 1자 이상 30자 이하여야 합니다.");
     }
+  }
+}
+
+export function isValidCommentForm(comment: CreateComment) {
+  if (comment.text.length === 0 || comment.text.length > 100) {
+    throw new Error("댓글은 1자 이상 100자 이하여야 합니다.");
   }
 }
 

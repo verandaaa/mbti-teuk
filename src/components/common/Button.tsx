@@ -6,6 +6,7 @@ const buttonVariants = cva("", {
       default: "el-primary bg-defaultButton text-white",
       plus: "el-primary w-11 mx-auto",
       minus: "top-1/2 right-14 absolute transform -translate-y-1/2",
+      comment: "el-primary bg-defaultButton text-white w-24",
     },
   },
 });

@@ -131,7 +131,8 @@ CREATE TABLE IF NOT EXISTS "public"."comments" (
     "userNickname" "text" DEFAULT "public"."get_user_nickname"() NOT NULL,
     "userMbti" "text" DEFAULT "public"."get_user_mbti"() NOT NULL,
     "postId" "uuid" NOT NULL,
-    "userId" "uuid" DEFAULT "auth"."uid"() NOT NULL
+    "userId" "uuid" DEFAULT "auth"."uid"() NOT NULL,
+    CONSTRAINT "comments_text_check" CHECK ((("length"("text") >= 1) AND ("length"("text") <= 100)))
 );
 
 ALTER TABLE "public"."comments" OWNER TO "postgres";

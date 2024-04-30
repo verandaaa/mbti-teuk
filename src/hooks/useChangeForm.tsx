@@ -1,3 +1,4 @@
+import { CreateComment } from "@/model/comment";
 import { CreatePost } from "@/model/post";
 import { SigninUser, SignupUser } from "@/model/user";
 import { Dispatch, SetStateAction } from "react";
@@ -65,6 +66,18 @@ export function useChangePostForm() {
   };
 
   return { handlePostChange };
+}
+
+export function useChangeCommentForm() {
+  const handleCommentChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setComment: Dispatch<SetStateAction<CreateComment>>
+  ) => {
+    const { name, value } = e.target;
+    setComment((comment) => ({ ...comment, [name]: value }));
+  };
+
+  return { handleCommentChange };
 }
 
 export function useChangeUserForm() {

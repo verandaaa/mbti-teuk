@@ -3,6 +3,15 @@ import { createClient } from "@/lib/supabase/client";
 
 export async function signup(user: SignupUser) {
   const supabase = createClient();
+
+  const { count } = await supabase
+    .from("users")
+    .select("*", { count: "exact", head: true })
+    .eq("nickname", user.nickname);
+  if (count !== 0) {
+    throw new Error("존재하는 닉네임 입니다.");
+  }
+
   const { error } = await supabase.auth.signUp({
     email: user.email,
     password: user.password,
@@ -47,12 +56,4 @@ export async function signinAnonymously(mbti: String) {
 export async function signout() {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();
-}
-
-export async function getNewNickname() {
-  const supabase = createClient();
-  const { data, error } = await supabase.from("uniqueRandomNicknameView").select().limit(1).single();
-  const nickname = data.nickname;
-
-  return { data: nickname };
 }

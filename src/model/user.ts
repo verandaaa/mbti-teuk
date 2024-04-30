@@ -17,4 +17,4 @@ export type GetUser = {
   nickname: string;
 };
 
-export type UserComponentType = "navbar" | "post";
+export type UserComponentType = "navbar" | "post" | "comment";

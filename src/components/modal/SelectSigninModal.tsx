@@ -46,7 +46,7 @@ export default function SelectSigninModal({ setIsModalOpen }: Props) {
   ];
 
   return (
-    <div className="relative">
+    <div className="relative z-50">
       <div className="top-0 left-0 fixed bg-black opacity-50 w-screen h-screen" onClick={closeModal}></div>
       <div className="top-1/2 left-1/2 fixed flex flex-col gap-4 bg-white p-4 rounded-md w-1/2 max-w-md transform -translate-x-1/2 -translate-y-1/2">
         {!isSelectMbtiOpen ? (

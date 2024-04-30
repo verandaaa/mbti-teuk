@@ -1,3 +1,4 @@
+import { CreateComment } from "@/model/comment";
 import { CreatePost } from "@/model/post";
 import { SigninUser, SignupUser } from "@/model/user";
 
@@ -25,12 +26,21 @@ export function isValidPostForm(post: CreatePost, optionButtonParam?: string) {
   }
 }
 
+export function isValidCommentForm(comment: CreateComment) {
+  if (comment.text.length === 0 || comment.text.length > 100) {
+    throw new Error("댓글은 1자 이상 100자 이하여야 합니다.");
+  }
+}
+
 export function isValidUserForm(user: SignupUser | SigninUser) {
   if (!user.email.match(/^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
     throw new Error("올바른 이메일 형식을 입력하세요.");
   }
   if ("mbti" in user && user.mbti.length === 0) {
     throw new Error("MBTI를 선택해주세요.");
+  }
+  if ("nickname" in user && (user.nickname.length < 2 || user.nickname.length > 20)) {
+    throw new Error("닉네임은 2자 이상 20자 이하입니다.");
   }
   if (user.password.length < 6) {
     throw new Error("비밀번호는 최소 6글자 이상입니다.");

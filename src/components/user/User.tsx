@@ -24,6 +24,7 @@ export default function User({ user, componentType }: Props) {
   const cursorVariants = {
     navbar: "cursor-pointer",
     post: "",
+    comment: "",
   };
 
   return (

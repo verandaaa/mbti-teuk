@@ -11,6 +11,7 @@ export function useMutationCreateComment(setStatus: Dispatch<SetStateAction<Stat
   const mutation = useMutation<void, Error, { comment: CreateComment }>({
     mutationFn: ({ comment }) => createComment(comment),
     onSuccess: (data, { comment }) => {
+      queryClient.invalidateQueries({ queryKey: ["commentCount", comment.postId] });
       queryClient.invalidateQueries({ queryKey: ["comments", comment.postId] });
     },
     onError: (error) => {
@@ -27,6 +28,7 @@ export function useMutationDeleteComment() {
   const mutation = useMutation<void, Error, { id: number; postId: string }>({
     mutationFn: ({ id }) => deleteComment(id),
     onSuccess: (data, { postId }) => {
+      queryClient.invalidateQueries({ queryKey: ["commentCount", postId] });
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
     },
   });

@@ -9,7 +9,8 @@ import { useChangeCommentForm } from "@/hooks/useChangeForm";
 import { useValidCommentForm } from "@/hooks/useValidForm";
 import { Status } from "@/model/status";
 import { useMutationCreateComment } from "@/hooks/useCommentMutation";
-import StatusView from "../common/StatusView";
+import StatusView from "@/components/common/StatusView";
+import SelectSigninModal from "../modal/SelectSigninModal";
 
 type Props = {
   postId: string;
@@ -25,6 +26,7 @@ export default function NewComment({ postId }: Props) {
   const { handleCommentChange } = useChangeCommentForm();
   const { vaildCommentForm } = useValidCommentForm(setStatus);
   const { mutation } = useMutationCreateComment(setStatus);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleCommentChange(e, setComment);
@@ -37,21 +39,32 @@ export default function NewComment({ postId }: Props) {
     setComment((comment) => ({ ...comment, text: "" }));
   };
 
+  const hanldeInputFocus = () => {
+    if (!user) {
+      setIsModalOpen(true);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-2 my-8">
-      {user && <User user={user} componentType="comment" />}
-      <form className="flex gap-1" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="text"
-          value={comment.text}
-          placeholder="댓글을 입력하세요."
-          onChange={handleChange}
-          className="w-full el-primary"
-        />
-        <Button style="comment">등록</Button>
-      </form>
-      <StatusView status={status} />
+    <div>
+      <div className="flex flex-col gap-2 my-8">
+        {user && <User user={user} componentType="comment" />}
+        <form className="flex gap-1" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="text"
+            value={comment.text}
+            placeholder="댓글을 입력하세요."
+            onChange={handleChange}
+            onFocus={hanldeInputFocus}
+            autoComplete="off"
+            className="w-full el-primary"
+          />
+          <Button style="comment">등록</Button>
+        </form>
+        <StatusView status={status} />
+      </div>
+      {isModalOpen && <SelectSigninModal setIsModalOpen={setIsModalOpen} />}
     </div>
   );
 }

@@ -9,4 +9,5 @@ export type GetComment = {
   userNickname: string;
   userMbti: string;
   createdAt: string;
+  userId: string;
 };

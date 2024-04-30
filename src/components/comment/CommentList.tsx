@@ -3,6 +3,7 @@
 import NewComment from "@/components/comment/NewComment";
 import { useQueryGetComment } from "@/hooks/useCommentQuery";
 import User from "@/components/user/User";
+import CommentDeleteButton from "@/components/comment/CommentDeleteButton";
 
 type Props = {
   postId: string;
@@ -22,6 +23,7 @@ export default function CommentList({ postId }: Props) {
               <div>
                 <span className="text-gray-500 text-xs">{comment.createdAt}</span>
               </div>
+              <CommentDeleteButton userId={comment.userId} id={comment.id} postId={postId} />
             </div>
             <p className="pl-4">{comment.text}</p>
           </div>

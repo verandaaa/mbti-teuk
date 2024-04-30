@@ -32,3 +32,8 @@ export async function getCommentList(postId: string): Promise<GetComment[] | nul
 
   return comments;
 }
+
+export async function deleteComment(id: number) {
+  const supabase = createClient();
+  const { error } = await supabase.from("comments").delete().eq("id", id);
+}

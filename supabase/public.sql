@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS "public"."options" (
 
 ALTER TABLE "public"."options" OWNER TO "postgres";
 
-CREATE OR REPLACE VIEW "public"."mbtiTypesOptionsCrossView" AS
+CREATE OR REPLACE VIEW "public"."mbtiTypesOptionsCrossView" WITH ("security_invoker"='on') AS
  SELECT "mbtiTypes"."mbti",
     "options"."id" AS "optionId",
     "options"."postId"
@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXISTS "public"."participates" (
 
 ALTER TABLE "public"."participates" OWNER TO "postgres";
 
-CREATE OR REPLACE VIEW "public"."participateView" AS
+CREATE OR REPLACE VIEW "public"."participateView" WITH ("security_invoker"='on') AS
  SELECT "mbtiTypesOptionsCrossView"."optionId",
     "mbtiTypesOptionsCrossView"."mbti",
     "mbtiTypesOptionsCrossView"."postId",
@@ -227,7 +227,7 @@ CREATE TABLE IF NOT EXISTS "public"."posts" (
 
 ALTER TABLE "public"."posts" OWNER TO "postgres";
 
-CREATE OR REPLACE VIEW "public"."postView" AS
+CREATE OR REPLACE VIEW "public"."postView" WITH ("security_invoker"='on') AS
  SELECT "posts"."id",
     "posts"."title",
     "posts"."description",

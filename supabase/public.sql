@@ -337,6 +337,8 @@ CREATE POLICY "Enable read access for all users" ON "public"."categories" FOR SE
 
 CREATE POLICY "Enable read access for all users" ON "public"."comments" FOR SELECT USING (true);
 
+CREATE POLICY "Enable read access for all users" ON "public"."mbtiTypes" FOR SELECT USING (true);
+
 CREATE POLICY "Enable read access for all users" ON "public"."options" FOR SELECT USING (true);
 
 CREATE POLICY "Enable read access for all users" ON "public"."participates" FOR SELECT USING (true);

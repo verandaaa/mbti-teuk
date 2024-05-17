@@ -3,7 +3,7 @@
 import { deletePost } from "@/service/postClient";
 import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useMutationDeletePost } from "@/hooks/usePostMutation";
+import { useMutationDeletePost } from "@/query/usePostMutation";
 
 type Props = {
   userId: string;

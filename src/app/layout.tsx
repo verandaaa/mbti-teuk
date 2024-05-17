@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ReactQueryContextProvider } from "@/context/ReactQueryContext";
+import { ReactQueryContextProvider } from "@/lib/react-query/ReactQueryContext";
 import Navbar from "@/components/Navbar";
 import { AuthContextProvider } from "@/context/AuthContext";
 

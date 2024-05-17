@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthContext } from "@/context/AuthContext";
-import { useMutationDeleteComment } from "@/hooks/useCommentMutation";
+import { useMutationDeleteComment } from "@/query/useCommentMutation";
 import { TiDelete } from "react-icons/ti";
 
 type Props = {

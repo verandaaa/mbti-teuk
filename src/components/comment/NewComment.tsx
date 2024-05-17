@@ -8,7 +8,7 @@ import Button from "@/components/common/Button";
 import { useChangeCommentForm } from "@/hooks/useChangeForm";
 import { useValidCommentForm } from "@/hooks/useValidForm";
 import { Status } from "@/model/status";
-import { useMutationCreateComment } from "@/hooks/useCommentMutation";
+import { useMutationCreateComment } from "@/query/useCommentMutation";
 import StatusView from "@/components/common/StatusView";
 import SelectSigninModal from "../modal/SelectSigninModal";
 

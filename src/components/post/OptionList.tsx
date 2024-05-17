@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutationCreateParticipate } from "@/hooks/usePostMutation";
+import { useMutationCreateParticipate } from "@/query/usePostMutation";
 import { GetOption } from "@/model/post";
 import { calculatePercentage } from "@/util/percent";
 import { useEffect, useState } from "react";

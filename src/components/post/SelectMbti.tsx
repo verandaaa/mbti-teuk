@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import { useMutationSigninAnonymously } from "@/hooks/useUserMutation";
+import { useMutationSigninAnonymously } from "@/query/useUserMutation";
 
 type Props = {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;

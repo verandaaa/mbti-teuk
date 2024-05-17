@@ -1,7 +1,7 @@
 "use client";
 
 import { MdOutlineHowToVote } from "react-icons/md";
-import { useQueryGetPostList } from "@/hooks/usePostQuery";
+import { useQueryGetPostList } from "@/query/usePostQuery";
 import Link from "next/link";
 import { Fragment, useEffect } from "react";
 import { useInView } from "react-intersection-observer";

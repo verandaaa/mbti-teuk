@@ -1,7 +1,7 @@
 "use client";
 
 import User from "@/components/user/User";
-import { useAuthContext } from "@/context/AuthContext";
+import useUserStore from "@/store/user";
 import { CreateComment } from "@/model/comment";
 import { useState } from "react";
 import Button from "@/components/common/Button";
@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function NewComment({ postId }: Props) {
-  const { user } = useAuthContext();
+  const user = useUserStore((state) => state.user);
   const [comment, setComment] = useState<CreateComment>({
     text: "",
     postId: postId,

@@ -5,14 +5,14 @@ import OptionList from "@/components/post/OptionList";
 import Result from "@/components/post/Result";
 import { useQueryGetPost } from "@/query/usePostQuery";
 import User from "@/components/user/User";
-import { useAuthContext } from "@/context/AuthContext";
+import useUserStore from "@/store/user";
 import { MdOutlineHowToVote } from "react-icons/md";
 
 type Props = { id: string };
 
 export default function Post({ id }: Props) {
   const { data } = useQueryGetPost(id);
-  const { user } = useAuthContext();
+  const user = useUserStore((state) => state.user);
 
   return (
     <>

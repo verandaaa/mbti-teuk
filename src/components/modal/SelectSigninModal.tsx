@@ -1,7 +1,5 @@
 "use client";
 
-import { useAuthContext } from "@/context/AuthContext";
-import { signinAnonymously } from "@/service/userClient";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FaQuestion } from "react-icons/fa6";

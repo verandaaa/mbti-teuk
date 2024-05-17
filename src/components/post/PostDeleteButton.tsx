@@ -1,7 +1,6 @@
 "use client";
 
-import { deletePost } from "@/service/postClient";
-import { useAuthContext } from "@/context/AuthContext";
+import useUserStore from "@/store/user";
 import { useRouter } from "next/navigation";
 import { useMutationDeletePost } from "@/query/usePostMutation";
 
@@ -11,7 +10,7 @@ type Props = {
 };
 
 export default function PostDeleteButton({ userId, id }: Props) {
-  const { user } = useAuthContext();
+  const user = useUserStore((state) => state.user);
   const router = useRouter();
   const { mutation } = useMutationDeletePost();
 

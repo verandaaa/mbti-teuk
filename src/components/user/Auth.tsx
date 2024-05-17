@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Signout from "@/components/user/Signout";
-import { useAuthContext } from "@/context/AuthContext";
 import User from "@/components/user/User";
+import useUserStore from "@/store/user";
 
 export default function Auth() {
-  const { user } = useAuthContext();
+  const user = useUserStore((state) => state.user);
 
   return (
     <>

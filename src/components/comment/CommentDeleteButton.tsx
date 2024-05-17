@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuthContext } from "@/context/AuthContext";
-import { useMutationDeleteComment } from "@/hooks/useCommentMutation";
+import useUserStore from "@/store/user";
+import { useMutationDeleteComment } from "@/query/useCommentMutation";
 import { TiDelete } from "react-icons/ti";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function CommentDeleteButton({ userId, id, postId }: Props) {
-  const { user } = useAuthContext();
+  const user = useUserStore((state) => state.user);
   const { mutation } = useMutationDeleteComment();
 
   const handleDeleteCommentButtonClick = () => {

@@ -1,10 +1,10 @@
 "use client";
 
-import { useMutationCreateParticipate } from "@/hooks/usePostMutation";
+import { useMutationCreateParticipate } from "@/query/usePostMutation";
 import { GetOption } from "@/model/post";
 import { calculatePercentage } from "@/util/percent";
 import { useEffect, useState } from "react";
-import { useAuthContext } from "@/context/AuthContext";
+import useUserStore from "@/store/user";
 import SelectSigninModal from "@/components/modal/SelectSigninModal";
 import Image from "next/image";
 
@@ -18,7 +18,7 @@ export default function OptionList({ options, postId, selectedOptionId }: Props)
   const { mutation } = useMutationCreateParticipate();
   const [percentages, setPercentages] = useState<number[]>([]);
   const percentageWidths = require("/public/data/percentage_widths.json");
-  const { user } = useAuthContext();
+  const user = useUserStore((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {

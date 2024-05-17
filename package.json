@@ -34,7 +34,8 @@
     "typescript": "5.1.6",
     "utf-8-validate": "^6.0.3",
     "uuid": "^9.0.1",
-    "ws": "^8.16.0"
+    "ws": "^8.16.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "supabase": "^1.148.6"

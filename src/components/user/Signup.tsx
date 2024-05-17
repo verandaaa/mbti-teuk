@@ -7,7 +7,7 @@ import { useChangeUserForm } from "@/hooks/useChangeForm";
 import Button from "@/components/common/Button";
 import { Status } from "@/model/status";
 import { useValidUserForm } from "@/hooks/useValidForm";
-import { useMutationSignup } from "@/hooks/useUserMutation";
+import { useMutationSignup } from "@/query/useUserMutation";
 
 export default function Signup() {
   const [user, setUser] = useState<SignupUser>({

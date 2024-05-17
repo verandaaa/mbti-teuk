@@ -1,11 +1,11 @@
 "use client";
 
 import NewComment from "@/components/comment/NewComment";
-import { useQueryGetCommentList } from "@/hooks/useCommentQuery";
+import { useQueryGetCommentList } from "@/query/useCommentQuery";
 import User from "@/components/user/User";
 import CommentDeleteButton from "@/components/comment/CommentDeleteButton";
 import { Fragment } from "react";
-import { useQueryGetCommentCount } from "@/hooks/useCommentQuery";
+import { useQueryGetCommentCount } from "@/query/useCommentQuery";
 import Button from "@/components/common/Button";
 
 type Props = {

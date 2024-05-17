@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutationSignout } from "@/hooks/useUserMutation";
+import { useMutationSignout } from "@/query/useUserMutation";
 
 type Props = {
   closeModal: () => void;

@@ -9,7 +9,7 @@ import { useChangePostForm } from "@/hooks/useChangeForm";
 import Button from "@/components/common/Button";
 import { CiImageOn } from "react-icons/ci";
 import Image from "next/image";
-import { useMutationCreatePost } from "@/hooks/usePostMutation";
+import { useMutationCreatePost } from "@/query/usePostMutation";
 import { v4 as uuidv4 } from "uuid";
 import { Status } from "@/model/status";
 import { useValidPostForm } from "@/hooks/useValidForm";
@@ -46,7 +46,7 @@ export default function NewPost() {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-    index?: number
+    index?: number,
   ) => {
     handlePostChange(e, setPost, setImageSrcs, index);
   };
